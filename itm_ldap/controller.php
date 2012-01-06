@@ -27,6 +27,9 @@ class ItmLdapPackage extends Package
 		// install pages
 		$sp1 = SinglePage::add('/dashboard/itm_ldap', $pkg);
 		$sp1->update(array('cName' => t('ITM LDAP'), 'cDescription' => t('LDAP settings and info')));
+
+		// add ldap group
+		Group::add('ldap', t('Includes all users from LDAP servers.'));
 		
 		// fields
 		
@@ -39,10 +42,11 @@ class ItmLdapPackage extends Package
 		ItmLdapPackage::addUserTextAttr('telefax_number', t('Telefax number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('consultation', t('Consultation'), $pkg);
 		
-		UserAttributeKey::add('boolean', array(
-			'akHandle' => 'ldap_entry',
-			'akName' => t('This is an LDAP entry'), 'akIsSearchable' => true
-		), $pkg);
+		// legacy since group is used
+//		UserAttributeKey::add('boolean', array(
+//			'akHandle' => 'ldap_entry',
+//			'akName' => t('This is an LDAP entry'), 'akIsSearchable' => true
+//		), $pkg);
 	}
 	
 	public static function addUserTextAttr($handle, $name, $pkg)
