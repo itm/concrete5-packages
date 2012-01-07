@@ -21,7 +21,14 @@ class ItmThesisPackage extends Package
 	public function install()
 	{
 		$pkg = parent::install();
-
+		$themePkg = Package::getByHandle('itm_theme');
+		
+		if (empty($themePkg))
+		{		
+			$pkg->uninstall();
+			throw new Exception("Required package <b>itm_theme</b> not found. Install it in advance.");
+		}
+		
 		// install blocks
 		BlockType::installBlockTypeFromPackage('itm_thesis_entry', $pkg);
 		BlockType::installBlockTypeFromPackage('itm_thesis_overview', $pkg);
