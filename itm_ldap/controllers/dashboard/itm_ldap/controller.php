@@ -27,6 +27,8 @@ class DashboardItmLdapController extends Controller
 			$this->set('dispatchTo', 'noldapauth');
 			return;
 		}
+		
+		$this->synchronize();
 	}
 
 	public function hasLdapAuth()
@@ -53,28 +55,13 @@ class DashboardItmLdapController extends Controller
 		$c5LdapUsers = $this->getLdapStaffFromC5();
 		$ldapLdapUsers = $this->getLdapStaff();
 
-//		$c5LdapUsers = array(
-//			array('uid' => 'david'),
-//			array('uid' => 'jo'),
-//			array('uid' => 'ronny'),
-//			array('uid' => 'richard'),
-//			array('uid' => 'lukas')
-//		);
-//
-//		$ldapLdapUsers = array(
-//			array('uid' => 'sergej'),
-//			array('uid' => 'ronny'),
-//			array('uid' => 'david')
-//		);
-
-
 		$resultSet = $this->intersect($c5LdapUsers, $ldapLdapUsers);
 		$this->mergeAssocArray($resultSet, $this->subtract($c5LdapUsers, $ldapLdapUsers));
 		$this->mergeAssocArray($resultSet, $this->subtract($ldapLdapUsers, $c5LdapUsers));
 
+		ksort($resultSet);
+		
 		$this->set('userlist', $resultSet);
-
-		$this->set('dispatchTo', 'synchronize');
 	}
 
 	protected function mergeAssocArray(&$arr1, &$arr2)
@@ -227,7 +214,7 @@ class DashboardItmLdapController extends Controller
 		$ldapUser = $this->getLdapUser($uName);
 		if (empty($ldapUser))
 		{
-			$val->add(t('LDAP user does not exist. Update process aborted.'));
+			$val->add(sprintf(t("LDAP user <b>%s</b> does not exist. Update process aborted."), $uName));
 			$this->set('error', $val);
 			return;
 		}
@@ -243,10 +230,48 @@ class DashboardItmLdapController extends Controller
 			$this->synchronize();
 			return;
 		}
-		$this->set('message', 'User successfully inserted.');
+		$this->set('message', 'User successfully updated.');
 		$this->synchronize();
 	}
 
+	public function update_users()
+	{
+		$val = Loader::helper('validation/error');
+		$json = Loader::helper('json');
+		
+		$items = $json->decode($this->post('items'));
+		
+		if (!is_array($items))
+		{
+			$val->add(t('Fatal error: user list is corrupted.'));
+			$this->set('error', $val);
+			$this->synchronize();
+			return;
+		}
+		
+		foreach ($items as $uName)
+		{
+			$ldapUser = $this->getLdapUser($uName);
+			if (empty($ldapUser))
+			{
+				$val->add(sprintf(t("LDAP user <b>%s</b> does not exist. Skip this entry."), $uName));
+			}
+			
+			try
+			{
+				$this->addUserFromLdap($ldapUser);
+			}
+			catch (Exception $e)
+			{
+				$val->add(sprintf(t('Error updating user <b>%s</b>: %s. Skip this entry.'), $uName, $e->getMessage()));
+			}
+		}
+		
+		$this->set('error', $val);
+		$this->set('message', 'Users successfully updated.');
+		$this->synchronize();
+	}
+	
 	public function addUserFromLdap($ldapUser)
 	{
 		$group = Group::getByName('ldap');
@@ -290,19 +315,64 @@ class DashboardItmLdapController extends Controller
 
 	public function remove_user()
 	{
-		echo "REMOVED";
-	}
-
-// remove LDAP users from Concrete5 user list
-	public function clear()
-	{
+		$val = Loader::helper('validation/error');
 		
-	}
-
-// refresh all LDAP user settings from LDAP server
-	public function clean()
-	{
+		$uName = $this->post('uid');
 		
+		$user = UserInfo::getByUserName($uName);
+		
+		if (empty($user))
+		{
+			$val->add(t("User <b>$uName</b> does not exist. Deletion process aborted."));
+			$this->set('error', $val);
+			$this->synchronize();
+			return;
+		}
+		
+		if ($user->delete() === false)
+		{
+			$val->add(t("User <b>$uName</b> has not been deleted."));
+			$this->set('error', $val);
+			$this->synchronize();
+			return;
+		}
+		
+		$this->set('message', t('User has been successfully deleted.'));
+		$this->synchronize();
+	}
+	
+	public function remove_users()
+	{
+		$val = Loader::helper('validation/error');
+		$json = Loader::helper('json');
+		
+		$items = $json->decode($this->post('items'));
+		
+		if (!is_array($items))
+		{
+			$val->add(t('Fatal error: user list is corrupted.'));
+			$this->set('error', $val);
+			$this->synchronize();
+			return;
+		}
+		
+		foreach ($items as $uName)
+		{
+			$user = UserInfo::getByUserName($uName);
+			if (empty($user))
+			{
+				continue;
+			}
+			
+			if ($user->delete() === false)
+			{
+				$val->add(sprintf(t('Unknown error while deleting user <b>%s</b>. Skip this entry.'), $uName));
+			}
+		}
+		
+		$this->set('error', $val);
+		$this->set('message', 'Users successfully deleted.');
+		$this->synchronize();
 	}
 
 	public static function ldapBindStaff()
@@ -383,7 +453,6 @@ class DashboardItmLdapController extends Controller
 			return null;
 		}
 	}
-
 }
 
 ?>
