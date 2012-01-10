@@ -1,5 +1,11 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 <?php
+$ih = Loader::helper('concrete/interface');
+
+$uidFilter = htmlentities($filter['value']);
+$c5Filter = $filter['c5'] == 1;
+$ldapFilter = $filter['ldap'] == 1;
+
 $userArray = array();
 foreach ($userlist as $key => $item)
 {
@@ -37,17 +43,32 @@ $json = Loader::helper('json');
 	var LdapC5Users =
 		{
 		userlist: <?= $json->encode($userArray) ?>,
+		filterValue: '',
+		filterC5: true,
+		filterLdap: true,
+		updateFilter: function()
+		{
+			this.filterValue = $('#ldapC5UserFilterValue').val();
+			this.filterC5 = $('#ldapC5UserFilterC5').filter(':checked').length;
+			this.filterLdap = $('#ldapC5UserFilterLdap').filter(':checked').length;
+		},
 		confirmRemove: function(name)
 		{
-			if( confirm('Are you sure you want to remove ' + name + ' from the concrete5 database?') )
-				return true;
-			else return false;
+			return confirm('Are you sure you want to remove ' + name + ' from the concrete5 database?');
+
 		},
 		confirmUpdate: function(name)
 		{
-			if( confirm('Are you sure you want to update ' + name + ' in the concrete5 database?') )
-				return true;
-			else return false;
+			return confirm('Are you sure you want to update ' + name + ' in the concrete5 database?');
+
+		},
+		confirmRemoveSelected: function()
+		{
+			return confirm('Are you sure you want to remove selected users?');
+		},
+		confirmUpdateSelected: function()
+		{
+			return confirm('Are you sure you want to update selected users?');
 		},
 		selectAll : function()
 		{
@@ -64,20 +85,54 @@ $json = Loader::helper('json');
 				return el.checked ? el.value : null;
 			}).get();
 		},
-		filter: function(value)
+		serializeSelectedUsers: function()
+		{
+			return JSON.stringify(this.getSelectedUsers());
+		},
+		serializeFilter: function()
+		{
+			this.updateFilter();
+			return JSON.stringify({
+				'value': this.filterValue,
+				'c5': this.filterC5,
+				'ldap': this.filterLdap
+			});
+		},
+		filter: function()
 		{		
-			$('.userlistRow').detach();
-						
-			var tbody = $('#userlistTable').children('tbody');
+			$('.ldapC5UserUserlistRow').detach();
+			
+			this.updateFilter();
+			
+			var tbody = $('#ldapC5UserUserlistTable').children('tbody');
 						
 			for (var i = 0; i < this.userlist.length; i++)
 			{
 				var uid = this.userlist[i]['uid'];
 				var isC5 = this.userlist[i]['isC5'];
 				var isLdap = this.userlist[i]['isLdap'];
-				if (uid.indexOf(value) > -1)
+				
+				if (this.filterC5 || this.filterLdap)
+				{
+					if (this.filterC5 && this.filterLdap && (!isC5 || !isLdap))
+					{
+						continue;
+					}
+					
+					if (!this.filterC5 && isC5)
+					{
+						continue;
+					}
+
+					if (!this.filterLdap && isLdap)
+					{
+						continue;
+					}
+				}
+				
+				if (uid.indexOf(this.filterValue) > -1)
 				{		
-					tbody.append('<tr class="userlistRow">\n\
+					tbody.append('<tr class="ldapC5UserUserlistRow">\n\
 				<td class="center">\n\
 					<div class="ldapC5UserCheckbox">\n\
 						<input type="checkbox" checked="checked" value="' + uid + '" class="ldapC5UserCheckbox" name="selected_users">\n\
@@ -93,12 +148,12 @@ $json = Loader::helper('json');
 					<img src="<?= ASSETS_URL_IMAGES ?>/icons/' + (isLdap ? 'success.png' : 'error.png') + '" width="16" height="16" alt="' + (isLdap ? 'Yes' : 'No') + '" />\n\
 				</td>\n\
 				<td class="center">\n\
-					<form onsubmit="this.filter.value=$(\'#userlistFilter\').val(); return LdapC5Users.confirmUpdate(\'' + uid + '\');" action="<?= $this->action('update_user') ?>" method="post" style="display: inline">\n\
+					<form onsubmit="this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmUpdate(\'' + uid + '\');" action="<?= $this->action('update_user') ?>" method="post" style="display: inline">\n\
 						<input type="hidden" value="' + uid + '" name="uid"/>\n\
 						<input type="hidden" value="" name="filter"/>\n\
 						<input type="submit" value="<?= t('Update') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-left"/>\n\
 					</form>\n\
-					<form onsubmit="this.filter.value=$(\'#userlistFilter\').val(); return LdapC5Users.confirmRemove(\'' + uid + '\');" action="<?= $this->action('remove_user') ?>" method="post" style="display: inline">\n\
+					<form onsubmit="this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmRemove(\'' + uid + '\');" action="<?= $this->action('remove_user') ?>" method="post" style="display: inline">\n\
 						<input type="hidden" value="' + uid + '" name="uid"/>\n\
 						<input type="hidden" value="" name="filter"/>\n\
 						<input type="submit" value="<?= t('Remove') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-left"/>\n\
@@ -112,12 +167,12 @@ $json = Loader::helper('json');
 
 							$(document).ready(function()
 							{
-								$('#userlistFilter').keyup(function(event)
+								$('#ldapC5UserFilterValue').keyup(function(event)
 								{
-									LdapC5Users.filter(event.target.value);
+									LdapC5Users.filter();
 								});
-								LdapC5Users.filter($('#userlistFilter').val());
-							});		
+								LdapC5Users.filter();
+							});	
 </script>
 <style type="text/css">
 	.userTableClearfix:after
@@ -133,22 +188,24 @@ $json = Loader::helper('json');
 <div class="ccm-dashboard-inner">
 	<p>
 	<form style="display: inline; line-height: 36px" onsubmit="return false">
-		<?= t('Filter') ?>: <input type="text" value="<?= htmlentities($_POST['filter']) ?>" name="userlistFilter" id="userlistFilter"/>
+		<?= t('Filter') ?>: <input type="text" value="<?= $uidFilter ?>" name="ldapC5UserFilterValue" id="ldapC5UserFilterValue"/>&nbsp;&nbsp;&nbsp;
+		<input onchange="LdapC5Users.filter();" type="checkbox" value="1" id="ldapC5UserFilterC5" name="filterC5"<?= $c5Filter ? ' checked="checked' : '"' ?>/><label for="ldapC5UserFilterC5"><?= t('Available at concrete5') ?></label>&nbsp;&nbsp;&nbsp;
+		<input onchange="LdapC5Users.filter();" type="checkbox" value="1" id="ldapC5UserFilterLdap" name="filterLdap"<?= $ldapFilter ? ' checked="checked' : '"' ?>/><label for="ldapC5UserFilterLdap"><?= t('Available at LDAP server') ?></label>
 	</form>
 	<div style="display: inline;" class="userTableClearfix">
-		<form style="display: inline;" action="<?= $this->action('remove_users') ?>" method="post" onsubmit="this.items.value=JSON.stringify(LdapC5Users.getSelectedUsers()); this.filter.value=$('#userlistFilter').val();">
+		<form style="display: inline;" action="<?= $this->action('remove_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmRemoveSelected()">
 			<input type="submit" value="<?= t('Remove selected') ?>"  class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
 			<input type="hidden" value="" name="items"/>
 			<input type="hidden" value="" name="filter"/>
 		</form>
-		<form style="display: inline;" action="<?= $this->action('update_users') ?>" method="post" onsubmit="this.items.value=JSON.stringify(LdapC5Users.getSelectedUsers()); this.filter.value=$('#userlistFilter').val();">
+		<form style="display: inline;" action="<?= $this->action('update_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmUpdateSelected()">
 			<input type="submit" value="<?= t('Update selected') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
 			<input type="hidden" value="" name="items"/>
 			<input type="hidden" value="" name="filter"/>
 		</form>
 	</div>
 </p>
-<table width="100%" cellspacing="1" cellpadding="0" border="0" class="grid-list" id="userlistTable">
+<table width="100%" cellspacing="1" cellpadding="0" border="0" class="grid-list" id="ldapC5UserUserlistTable">
 	<thead>
 		<tr>
 			<td class="subheader center" style="width: 50px">
@@ -161,7 +218,7 @@ $json = Loader::helper('json');
 		</tr>
 	</thead>
 	<tbody>
-		<tr class="userlistRow">
+		<tr class="ldapC5UserUserlistRow">
 			<td colspan="5">
 				<?= t('If you can read this, JavaScript is not enabled.') ?>
 			</td>
@@ -170,12 +227,12 @@ $json = Loader::helper('json');
 </table>
 <p>
 <div class="userTableClearfix">
-	<form style="display: inline;" action="<?= $this->action('remove_users') ?>" method="post" onsubmit="this.items.value=JSON.stringify(LdapC5Users.getSelectedUsers()); this.filter.value=$('#userlistFilter').val();">
-		<input type="submit" value="<?= t('Remove selected') ?>"  class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
+	<form style="display: inline;" action="<?= $this->action('remove_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmRemoveSelected()">
+		<input type="submit" value="<?= t('Remove selected') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
 		<input type="hidden" value="" name="items"/>
 		<input type="hidden" value="" name="filter"/>
 	</form>
-	<form style="display: inline;" action="<?= $this->action('update_users') ?>" method="post" onsubmit="this.items.value=JSON.stringify(LdapC5Users.getSelectedUsers()); this.filter.value=$('#userlistFilter').val();">
+	<form style="display: inline;" action="<?= $this->action('update_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmUpdateSelected()">
 		<input type="submit" value="<?= t('Update selected') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
 		<input type="hidden" value="" name="items"/>
 		<input type="hidden" value="" name="filter"/>
