@@ -22,13 +22,13 @@ class ItmThesisPackage extends Package
 	{
 		$pkg = parent::install();
 		$themePkg = Package::getByHandle('itm_theme');
-		
+
 		if (empty($themePkg))
-		{		
+		{
 			$pkg->uninstall();
 			throw new Exception("Required package <b>itm_theme</b> not found. Install it in advance.");
 		}
-		
+
 		// install blocks
 		BlockType::installBlockTypeFromPackage('itm_thesis_entry', $pkg);
 		BlockType::installBlockTypeFromPackage('itm_thesis_overview', $pkg);
@@ -41,6 +41,9 @@ class ItmThesisPackage extends Package
 		{
 			$ctItmThesisPage = CollectionType::add(array('ctHandle' => 'itm_thesis_page', 'ctName' => t('ITM Thesis Page Type')), $pkg);
 		}
+
+		// add default attribute
+		$ctItmThesisPage->assignCollectionAttribute(CollectionAttributeKey::getByHandle('exclude_nav'));
 
 		// install default page of itm_thesis_page page type
 		// this includes setting up a default itm_thesis_entry block,
@@ -69,7 +72,7 @@ class ItmThesisPackage extends Package
 			'tutor' => '',
 			'supervisor' => ''
 		);
-		
+
 		$bThesisData = $mTplItmThesisPage->addBlock($btThesisEntry, $aThesisInformation, $data);
 		$bThesisData->getController()->save($defaultThesisEntryData);
 
@@ -87,11 +90,10 @@ class ItmThesisPackage extends Package
 		);
 		$bThesisTopic = $mTplItmThesisPage->addBlock($btThesisCustomContent, $aThesisInformation, $data);
 		$bThesisTopic->getController()->save($defaultThesisTopicData);
-		
+
 		ItmThemePackage::addBreadcrumbsBlock($mTplItmThesisPage);
 		ItmThemePackage::addNavigationBlock($mTplItmThesisPage);
 	}
-
 }
 
 ?>
