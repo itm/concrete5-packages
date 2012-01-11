@@ -15,7 +15,7 @@ class ItmLdapHelper
 	 * @global array $LDAP_CONNECT_OPTIONS will be overwritten.
 	 * @return mixed ADOdb connection. 
 	 */
-	public static function ldapBindStaff()
+	public function ldapBindStaff()
 	{
 		$ldap = NewADOConnection('ldap');
 		global $LDAP_CONNECT_OPTIONS;
@@ -29,7 +29,19 @@ class ItmLdapHelper
 			array("OPTION_NAME" => LDAP_OPT_RESTART, "OPTION_VALUE" => false)
 		);
 
-		if (!$ldap->Connect('ldap.itm.uni-luebeck.de', '', '', 'ou=Staff,ou=People,dc=itm,dc=uni-luebeck,dc=de'))
+		if (!$this->hasLdapAuth())
+		{
+			throw new Exception('LDAP connection failed. Reason: no ldap_auth package found.');
+		}
+
+		$config = new Config();
+		$config->setPackageObject(Package::getByHandle('ldap_auth'));
+		if ($config->get('LDAP_HOST') == NULL)
+		{
+			throw new Exception('LDAP host has not been specified.');
+		}
+
+		if (!$ldap->Connect($config->get('LDAP_HOST'), '', '', $config->get('LDAP_BASE')))
 		{
 			throw new Exception(t('LDAP connection failed!'));
 		}
@@ -82,12 +94,17 @@ class ItmLdapHelper
 	public function addUserFromLdap($ldapUser)
 	{
 		$group = Group::getByName('ldap');
-		$gId = $group->getGroupID();
+		$ldapGID = $group->getGroupID();
 
-		if (!$gId)
+		if (!$ldapGID)
 		{
 			throw new Exception("Required group named ldap not found. Update process aborted.");
 		}
+		
+		// by now put all users to the Administrators group
+		// later on it might be useful to costumize this
+		$group = Group::getByName('Administrators');
+		$adminGID = $group->getGroupID();
 
 		$userInfo = UserInfo::getByUserName($ldapUser['uid']);
 		if (empty($userInfo))
@@ -106,7 +123,7 @@ class ItmLdapHelper
 			throw new Exception('Inserting LDAP user in concrete5 database failed. Update process aborted.');
 		}
 
-		$userInfo->updateGroups(array($gId));
+		$userInfo->updateGroups(array($ldapGID, $adminGID));
 
 		if (isset($ldapUser['telephoneNumber']))
 		{

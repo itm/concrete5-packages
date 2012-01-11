@@ -8,6 +8,10 @@ switch ($dispatchTo)
 		include_once('noldapauth.php');
 		break;
 	
+	case 'configerror':
+		include_once('configerror.php');
+		break;
+	
 	default:
 		include_once('synchronize.php');
 		break;

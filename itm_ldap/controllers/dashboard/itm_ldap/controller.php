@@ -7,13 +7,13 @@ Loader::model('user_list');
 class DashboardItmLdapController extends Controller
 {
 	private $helper; // package helper class
-	
+
 	public function __construct()
 	{
 		parent::__construct();
 		$this->helper = Loader::helper('itm_ldap', 'itm_ldap');
 	}
-	
+
 	public function view()
 	{
 		if (!$this->helper->hasLdapAuth())
@@ -22,9 +22,18 @@ class DashboardItmLdapController extends Controller
 			$this->set('dispatchTo', 'noldapauth');
 			return;
 		}
-		
-		//show overview
-		$this->synchronize();
+
+		try
+		{
+			//show overview
+			$this->synchronize();
+		}
+		catch (Exception $e)
+		{
+			$this->set('msg', t('Reason:') . ' ' . $e->getMessage());
+			$this->set('dispatchTo', 'configerror');
+			return;
+		}
 	}
 
 	public function synchronize()
@@ -47,10 +56,10 @@ class DashboardItmLdapController extends Controller
 
 		// sort them ascending
 		ksort($resultSet);
-		
+
 		// set result set
 		$this->set('userlist', $resultSet);
-		
+
 		// apply filter
 		$filter = array(
 			'value' => '',
@@ -58,7 +67,7 @@ class DashboardItmLdapController extends Controller
 			'ldap' => false
 		);
 		$this->set('filter', $filter);
-		
+
 		$filter = $this->post('filter');
 		if (!empty($filter))
 		{
@@ -105,7 +114,7 @@ class DashboardItmLdapController extends Controller
 	{
 		$val = Loader::helper('validation/error');
 		$json = Loader::helper('json');
-		
+
 		$items = $json->decode($this->post('items'));
 
 		if (!is_array($items))
@@ -115,7 +124,7 @@ class DashboardItmLdapController extends Controller
 			$this->synchronize();
 			return;
 		}
-		
+
 		foreach ($items as $uName)
 		{
 			$ldapUser = $this->helper->getLdapUser($uName);
@@ -123,7 +132,7 @@ class DashboardItmLdapController extends Controller
 			{
 				$val->add(sprintf(t("LDAP user <b>%s</b> does not exist. Skip this entry."), $uName));
 			}
-			
+
 			try
 			{
 				$this->helper->addUserFromLdap($ldapUser);
@@ -133,22 +142,20 @@ class DashboardItmLdapController extends Controller
 				$val->add(sprintf(t('Error updating user <b>%s</b>: %s. Skip this entry.'), $uName, $e->getMessage()));
 			}
 		}
-		
+
 		$this->set('error', $val);
 		$this->set('message', 'Users successfully updated.');
 		$this->synchronize();
 	}
-	
-	
 
 	public function remove_user()
 	{
 		$val = Loader::helper('validation/error');
-		
+
 		$uName = $this->post('uid');
-		
+
 		$user = UserInfo::getByUserName($uName);
-		
+
 		if (empty($user))
 		{
 			$val->add(t("User <b>$uName</b> does not exist. Deletion process aborted."));
@@ -156,7 +163,7 @@ class DashboardItmLdapController extends Controller
 			$this->synchronize();
 			return;
 		}
-		
+
 		if ($user->delete() === false)
 		{
 			$val->add(t("User <b>$uName</b> has not been deleted."));
@@ -164,18 +171,18 @@ class DashboardItmLdapController extends Controller
 			$this->synchronize();
 			return;
 		}
-		
+
 		$this->set('message', t('User has been successfully deleted.'));
 		$this->synchronize();
 	}
-	
+
 	public function remove_users()
 	{
 		$val = Loader::helper('validation/error');
 		$json = Loader::helper('json');
-		
+
 		$items = $json->decode($this->post('items'));
-		
+
 		if (!is_array($items))
 		{
 			$val->add(t('Fatal error: user list is corrupted.'));
@@ -183,7 +190,7 @@ class DashboardItmLdapController extends Controller
 			$this->synchronize();
 			return;
 		}
-		
+
 		foreach ($items as $uName)
 		{
 			$user = UserInfo::getByUserName($uName);
@@ -191,17 +198,18 @@ class DashboardItmLdapController extends Controller
 			{
 				continue;
 			}
-			
+
 			if ($user->delete() === false)
 			{
 				$val->add(sprintf(t('Unknown error while deleting user <b>%s</b>. Skip this entry.'), $uName));
 			}
 		}
-		
+
 		$this->set('error', $val);
 		$this->set('message', 'Users successfully deleted.');
 		$this->synchronize();
 	}
+
 }
 
 ?>
