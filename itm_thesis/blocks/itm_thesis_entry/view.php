@@ -68,9 +68,31 @@ else
 </div>
 <div class="itmThesisEntryTutor">
 	<span class="itmThesisEntryCaption"><?= t('Tutor') ?>:</span>
-	<span class="itmThesisEntryValue"><?= $tutor ?></span>
+	<span class="itmThesisEntryValue">
+	<?php
+			if ($this->controller->isLdapTutor())
+			{
+				echo '<a href="javascript:alert(\'Dead link.\')">'.$tutor.'</a>';
+			}
+			else
+			{
+				echo $tutor;
+			}
+		?>
+	</span>
 </div>
 <div class="itmThesisEntrySupervisor">
 	<span class="itmThesisEntryCaption"><?= t('Supervisor') ?>:</span>
-	<span class="itmThesisEntryValue"><?= $supervisor ?></span>
+	<span class="itmThesisEntryValue">
+		<?php
+			if ($this->controller->isLdapSupervisor())
+			{
+				echo '<a href="javascript:alert(\'Dead link.\')">'.$supervisor.'</a>';
+			}
+			else
+			{
+				echo $supervisor;
+			}
+		?>
+	</span>
 </div>

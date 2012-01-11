@@ -2,6 +2,8 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
+Loader::model('user_list');
+
 /**
  * Helper class for the concrete5 itm_ldap package.
  */
@@ -305,7 +307,7 @@ class ItmLdapHelper
 	public function hasLdapAuth()
 	{
 		$ldapAuthPkg = Package::getByHandle('ldap_auth');
-		return!empty($ldapAuthPkg);
+		return !empty($ldapAuthPkg);
 	}
 
 }

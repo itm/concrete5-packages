@@ -56,6 +56,13 @@ if (!isset($type))
 	<table class="itmThesisEntry" cellpadding="0" cellspacing="0">
 		<tr>
 			<th class="lightGray"><?= t('Topic *') ?></th>
+			<?php
+				$cp = Page::getCurrentPage();
+				if ($topic == t('Thesis topic goes here'))
+				{
+					$topic = $cp->getCollectionName();
+				}
+			?>
 			<td class="lightGray"><?= $form->text('topic', $topic, array('style' => 'width: 90%')) ?></td>
 		</tr>
 		<tr>
@@ -125,15 +132,45 @@ if (!isset($type))
 		</tr>
 		<tr>
 			<th><?= t('Tutor *') ?></th>
-			<td><?= $form->text('tutor', $tutor, array('style' => 'width: 90%')) ?></td>
+			<td>
+				<?php if ($this->controller->hasItmLdap()) :?>
+				<div id="tutorLdap">
+					<?= $form->select('tutor_ldap', $this->controller->getLdapUsers(), $this->controller->isLdapTutor() ? $tutor : false, $this->controller->isLdapTutor() ? array('style' => 'width: 80%') : array('style' => 'width: 80%', 'disabled' => 'disabled'))?>
+					<span style="font-size: 8pt"><a href="#" onclick="LdapEntry.switchEntry('tutor', '', ''); return false;">Customize...</a></span>
+				</div>
+				<div id="tutorRaw" style="margin-top: 5px; display: <?= $this->controller->isLdapTutor() ? 'none' : 'block' ?>;">
+					<?= $form->text('tutor', $this->controller->isLdapTutor() ? '' : $tutor, array('style' => 'width: 80%')) ?>
+					<a href="#" onclick="LdapEntry.hideEntry('tutor', ''); return false;">
+						<img src="<?= ASSETS_URL_IMAGES ?>/icons/remove.png" width="16" height="16" alt="<?= t('Remove') ?>" style="vertical-align: middle"/>
+					</a>
+				</div>
+				<?php else : ?>
+					<?= $form->text('tutor', $tutor, array('style' => 'width: 90%')) ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th class="lightGray"><?= t('Supervisor *') ?></th>
-			<td class="lightGray"><?= $form->text('supervisor', $supervisor, array('style' => 'width: 90%')) ?></td>
+			<td class="lightGray">
+				<?php if ($this->controller->hasItmLdap()) :?>
+				<div id="supervisorLdap">
+					<?= $form->select('supervisor_ldap', $this->controller->getLdapUsers(), $this->controller->isLdapSupervisor() ? $supervisor : false, $this->controller->isLdapSupervisor() ? array('style' => 'width: 80%') : array('style' => 'width: 80%', 'disabled' => 'disabled'))?>
+					<span style="font-size: 8pt"><a href="#" onclick="LdapEntry.switchEntry('supervisor', '', ''); return false;">Customize...</a></span>
+				</div>
+				<div id="supervisorRaw" style="margin-top: 5px; display: <?= $this->controller->isLdapSupervisor() ? 'none' : 'block' ?>;">
+					<?= $form->text('supervisor', $this->controller->isLdapSupervisor() ? '' : $supervisor, array('style' => 'width: 80%')) ?>
+					<a href="#" onclick="LdapEntry.hideEntry('supervisor', ''); return false;">
+						<img src="<?= ASSETS_URL_IMAGES ?>/icons/remove.png" width="16" height="16" alt="<?= t('Remove') ?>" style="vertical-align: middle"/>
+					</a>
+				</div>
+				<?php else : ?>
+					<?= $form->text('supervisor', $supervisor, array('style' => 'width: 90%')) ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 	</table>
 	<p>
-		For additional content, please use the block type <i>ITM Thesis Paragraph</i>.
+		Hint: for additional content please use the block type <i>ITM Thesis Paragraph</i>.
 	</p>
 	<p class="note">
 <?= t('* Required information') ?>
