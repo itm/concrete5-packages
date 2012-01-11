@@ -41,12 +41,6 @@ class ItmLdapPackage extends Package
 		ItmLdapPackage::addUserTextAttr('telephone_number', t('Telephone number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('telefax_number', t('Telefax number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('consultation', t('Consultation'), $pkg);
-		
-		// legacy since group is used
-//		UserAttributeKey::add('boolean', array(
-//			'akHandle' => 'ldap_entry',
-//			'akName' => t('This is an LDAP entry'), 'akIsSearchable' => true
-//		), $pkg);
 	}
 	
 	public static function addUserTextAttr($handle, $name, $pkg)
