@@ -33,8 +33,9 @@ class LdapAuthPackage extends Package {
 		Config::save('ENABLE_OPENID_AUTHENTICATION', false);
 		Config::save('USER_REGISTRATION_WITH_EMAIL_ADDRESS', false);
 		
-		Loader::model('job');
-		Job::installByPackage('poll_ldap_users', $pkg);
+		// Jobs not required - remove to prevent errors performing this job
+		//Loader::model('job');
+		//Job::installByPackage('poll_ldap_users', $pkg);
 		
 		Cache::flush();
 	}
