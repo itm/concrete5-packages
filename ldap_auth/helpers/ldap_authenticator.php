@@ -6,7 +6,7 @@ class LdapAuthenticatorHelper {
 		$config = new Config;
 		$config->setPackageObject(Package::getByHandle('ldap_auth'));
 		$filter = $config->get('LDAP_FILTER');
-		if(empty($filter)) $filter = '(objectCategory=person)';
+		//if(empty($filter)) $filter = '(objectCategory=person)';
 		return $filter;
 	}
 	
@@ -26,8 +26,9 @@ class LdapAuthenticatorHelper {
 			$config = new Config;
 			$config->setPackageObject(Package::getByHandle('ldap_auth'));
 			
-			if(strpos($uName, '@') === false) $uName = $uName.'@'.$config->get('LDAP_DOMAIN_NAME');
-			if($uName == '@') $uName = NULL;
+			//if(strpos($uName, '@') === false) $uName = $uName.'@'.$config->get('LDAP_DOMAIN_NAME');
+			//if($uName == '@') $uName = NULL;
+			$uName = "uid=$uName,".$config->get('LDAP_DOMAIN_NAME');
 			$ldap->Connect(
 				$config->get('LDAP_HOST'), 
 				$uName, 
@@ -35,6 +36,7 @@ class LdapAuthenticatorHelper {
 				$config->get('LDAP_BASE')
 			);
 			$message .= 'Successfully connected and authenticated';
+			/* No longer required
 			try {
 				$ldap->SetFetchMode(ADODB_FETCH_ASSOC);
 				$ldap_return = $ldap->GetArray($filter);
@@ -42,7 +44,7 @@ class LdapAuthenticatorHelper {
 				$message .= ' and completed query';
 			} catch (Exception $e) {
 				$errors[] = 'Authentication successful, however, query could not be performed.';
-			}
+			} */
 		} catch (Exception $e) {
 			$errors[] = 'Could not authenticate.';
 		}
@@ -63,16 +65,33 @@ class LdapAuthenticatorHelper {
 		
 		$ldap->Close();
 		
-		return array('return' => $ldap_return, 'message' => $message, 'errors' => $errors);
+		//return array('return' => $ldap_return, 'message' => $message, 'errors' => $errors);
+		return array('return' => true, 'message' => $message, 'errors' => $errors);
 	}
 	
 	public function login($uName, $uPassword) {
-		$q = self::query($uName, $uPassword, '(&'.self::getFilter().'(sAMAccountName='.$uName.'))');
-		if(!empty($q['return'])) {
+		$filter = self::getFilter();
+		if (empty($filter))
+		{
+			$filter = '(uid='.$uName.'))';
+		}
+		else
+		{
+			$filter = '(&'.self::getFilter().'(uid='.$uName.'))';
+		}
+		$q = self::query($uName, $uPassword, $filter);
+
+		if (!empty($q['errors']))
+		{
+			throw new Exception($q['errors'][0]);
+		}
+		
+		/* if(!empty($q['return'])) {
 			foreach($q['return'] as $item) {
 				self::register($item, $uPassword);
 			}
-		}
+		} */
+		
 		return new User($uName, $uPassword);
 	}
 	

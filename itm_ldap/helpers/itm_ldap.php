@@ -102,27 +102,34 @@ class ItmLdapHelper
 		{
 			throw new Exception("Required group named ldap not found. Update process aborted.");
 		}
-		
+
 		// by now put all users to the Administrators group
 		// later on it might be useful to costumize this
 		$group = Group::getByName('Administrators');
 		$adminGID = $group->getGroupID();
 
 		$userInfo = UserInfo::getByUserName($ldapUser['uid']);
+
+		$data = array(
+			'uName' => $ldapUser['uid'],
+			'uPassword' => '',
+			'uEmail' => $ldapUser['mail'],
+			'uIsActive' => 1
+		);
+
 		if (empty($userInfo))
 		{
-			$data = array(
-				'uName' => $ldapUser['uid'],
-				'uPassword' => '',
-				'uEmail' => $ldapUser['mail'],
-				'uIsActive' => 1
-			);
+
 			$userInfo = UserInfo::add($data);
+		}
+		else
+		{
+			$userInfo->update($data);
 		}
 
 		if (empty($userInfo))
 		{
-			throw new Exception('Inserting LDAP user in concrete5 database failed. Update process aborted.');
+			throw new Exception('Updating LDAP user in concrete5 database failed. Update process aborted.');
 		}
 
 		$userInfo->updateGroups(array($ldapGID, $adminGID));
@@ -151,7 +158,7 @@ class ItmLdapHelper
 			}
 		}
 	}
-	
+
 	/**
 	 * Generates intersection of the given sets (depending on the user name).
 	 * Defined by: $set1 \cap $set2
@@ -321,7 +328,7 @@ class ItmLdapHelper
 	public function hasLdapAuth()
 	{
 		$ldapAuthPkg = Package::getByHandle('ldap_auth');
-		return !empty($ldapAuthPkg);
+		return!empty($ldapAuthPkg);
 	}
 
 }

@@ -155,6 +155,38 @@ class LDAPLoginController extends Controller {
 				}
 			}
 			
+			// get user - if exist, is his password empty?
+			// if empty, try LDAP connect via LDAP once and collect password
+			// otherwise perform general login
+			$userInfo = UserInfo::getByUserName($this->post('uName'));
+			if (empty($userInfo))
+			{
+				throw new Exception(t('Invalid username or password.'));
+			}
+			
+			if ($userInfo->uPassword == User::encryptPassword(''))
+			{
+				$config = new Config();
+				$config->setPackageObject(Package::getByHandle('ldap_auth'));
+				if($config->get('LDAP_HOST') == NULL) {
+					throw new Exception('LDAP host has been specified.');
+				}
+				Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
+				
+				$res = $userInfo->update(array(
+					'uPassword' => $this->post('uPassword'),
+					'uPasswordConfirm' => $this->post('uPassword')
+				));
+				
+				if (empty($res))
+				{
+					throw new Exception(t('LDAP user could not be updated. Login cancelled.'));
+				}
+			}
+			
+			$u = new User($this->post('uName'), $this->post('uPassword'));
+			
+			/* Original stuff, not not use anymore
 			// Check to see if the super user is logging in. If not, check LDAP.
 			if(User::getByUserID(1)->uName == $this->post('uName')) {
 				$u = new User($this->post('uName'), $this->post('uPassword'));
@@ -165,7 +197,7 @@ class LDAPLoginController extends Controller {
 					throw new Exception('LDAP host has been specified.');
 				}
 				$u = Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
-			}
+			}*/
 			
 			if ($u->isError()) {
 				switch($u->getError()) {

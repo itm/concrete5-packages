@@ -33,7 +33,7 @@ if (!strlen($uName)) :
 		if ($userInfo->hasAvatar())
 		{
 			$av = Loader::helper('concrete/avatar');
-			$av->outputUserAvatar($userInfo, true);
+			echo $av->outputUserAvatar($userInfo, true);
 		}
 		else
 		{
