@@ -127,17 +127,31 @@ class ItmLdapHelper
 
 		$userInfo->updateGroups(array($ldapGID, $adminGID));
 
-		if (isset($ldapUser['telephoneNumber']))
-		{
-			$userInfo->setAttribute('telephone_number', $ldapUser['telephoneNumber']);
-		}
-
-		if (isset($ldapUser['roomNumber']))
-		{
-			$userInfo->setAttribute('room_number', $ldapUser['roomNumber']);
-		}
+		$this->setAttr($userInfo, $ldapUser['telephoneNumber'], 'telephone_number');
+		$this->setAttr($userInfo, $ldapUser['telefaxNumber'], 'telefax_number');
+		$this->setAttr($userInfo, $ldapUser['roomNumber'], 'room_number');
+		$this->setAttr($userInfo, $ldapUser['gecos'], 'name');
+		$this->setAttr($userInfo, $ldapUser['displayName'], 'name');
+		$this->setAttr($userInfo, $ldapUser['skypeNumber'], 'skype');
+		$this->setAttr($userInfo, $ldapUser['icqNumber'], 'icq');
+		$this->setAttr($userInfo, $ldapUser['title'], 'title');
 	}
 
+	private function setAttr($userInfo, $ldapVal, $c5Key)
+	{
+		if ($ldapVal != '')
+		{
+			try
+			{
+				$userInfo->setAttribute($c5Key, $ldapVal);
+			}
+			catch (Exception $e)
+			{
+				throw new Exception(t('Attribute not found while updating users:') . " $c5Key");
+			}
+		}
+	}
+	
 	/**
 	 * Generates intersection of the given sets (depending on the user name).
 	 * Defined by: $set1 \cap $set2
