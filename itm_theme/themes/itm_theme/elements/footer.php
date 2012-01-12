@@ -4,11 +4,9 @@
 	$themeUrl = $theme->getThemeURL();
 	$imgBase = $themeUrl . "/images";
 ?>
+</div>
 <div id="fuss">
-	<div>
-		<img src="<?=$imgBase?>/strichSchmalGrau.gif" width="280" height="10" hspace="10">
-		<img src="<?=$imgBase?>/balkenBreitGrauHell.gif" width="650" height="10">
-	</div>
+	<div><img src="<?=$imgBase?>/strichSchmalGrau.gif" width="280" height="10" style="margin-left: 10px; margin-right: 10px"><img src="<?=$imgBase?>/balkenBreitGrauHell.gif" width="650" height="10"></div>
 	<div style="font-size: 10px; text-align: right; padding-right: 10px">
 		&copy; <?php echo date('Y') ?> <a href="<?php echo DIR_REL ?>/"><?php echo SITE ?></a>.
 		&nbsp;&nbsp;
