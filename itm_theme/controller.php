@@ -25,6 +25,9 @@ class ItmThemePackage extends Package
 		// install theme
 		PageTheme::add('itm_theme', $pkg);
 
+		// install
+		BlockType::installBlockTypeFromPackage('itm_titled_paragraph', $pkg);
+		
 		// install page type defaults
 		Loader::model('collection_types');
 		
@@ -36,9 +39,9 @@ class ItmThemePackage extends Package
 		);
 		
 		$hDescr = array(
-			'full' => t('One Column Layout'),
-			'right_sidebar' => t('Two Column Layout with Right Sidebar'),
-			'left_sidebar' => t('Two Column Layout with Left Sidebar')
+			'full' => t('One Column'),
+			'right_sidebar' => t('Right Sidebar'),
+			'left_sidebar' => t('Left Sidebar')
 		);
 		
 		$hIcon = array(

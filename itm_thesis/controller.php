@@ -32,14 +32,13 @@ class ItmThesisPackage extends Package
 		// install blocks
 		BlockType::installBlockTypeFromPackage('itm_thesis_entry', $pkg);
 		BlockType::installBlockTypeFromPackage('itm_thesis_overview', $pkg);
-		BlockType::installBlockTypeFromPackage('itm_thesis_custom_content', $pkg);
 
 		// install page type
 		Loader::model('collection_types');
 		$ctItmThesisPage = CollectionType::getByHandle('itm_thesis_page');
 		if (!$ctItmThesisPage || !intval($ctItmThesisPage->getCollectionTypeID()))
 		{
-			$ctItmThesisPage = CollectionType::add(array('ctHandle' => 'itm_thesis_page', 'ctName' => t('ITM Thesis Page Type')), $pkg);
+			$ctItmThesisPage = CollectionType::add(array('ctHandle' => 'itm_thesis_page', 'ctName' => t('Thesis')), $pkg);
 		}
 
 		// add default attribute
@@ -60,7 +59,7 @@ class ItmThesisPackage extends Package
 
 		// get thesis entry and thesis custom content block types
 		$btThesisEntry = BlockType::getByHandle("itm_thesis_entry");
-		$btThesisCustomContent = BlockType::getByHandle("itm_thesis_custom_content");
+		$btThesisCustomContent = BlockType::getByHandle("itm_titled_paragraph");
 
 		// set default data for thesis entry block, add and save it
 		$defaultThesisEntryData = array(

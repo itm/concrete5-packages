@@ -2,18 +2,18 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class ItmThesisCustomContentBlockController extends ContentBlockController
+class ItmTitledParagraphBlockController extends ContentBlockController
 {
-	protected $btTable = 'btItmThesisCustomContent';
+	protected $btTable = 'btItmTitledParagraph';
 
 	public function getBlockTypeDescription()
 	{
-		return t("HTML/WYSIWYG Editor for ITM Thesis Custom Content blocks.");
+		return t("HTML/WYSIWYG Editor with extra title field.");
 	}
 
 	public function getBlockTypeName()
 	{
-		return t("ITM Thesis Custom Content");
+		return t("ITM Titled Paragraph");
 	}
 
 	function save($data)
