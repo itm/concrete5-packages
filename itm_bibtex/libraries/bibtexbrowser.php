@@ -3226,6 +3226,6 @@ class Dispatcher {
 
 } // end if (!defined('BIBTEXBROWSER'))
 
-new Dispatcher();
+//new Dispatcher();
 
 ?>
