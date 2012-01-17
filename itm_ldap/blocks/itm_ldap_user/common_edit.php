@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 
-<div class="ccm-block-field-group itmThesisEntry">
+<div class="ccm-block-field-group">
 	<h2><?= t('Choose user') ?></h2>
 
 	<?php if ($this->controller->hasUsers()) : ?>

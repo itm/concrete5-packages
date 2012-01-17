@@ -31,7 +31,7 @@ class ItmBibtexPackage extends Package
 		}
 
 		// install block
-		//BlockType::installBlockTypeFromPackage('itm_bibtex', $pkg);
+		BlockType::installBlockTypeFromPackage('itm_bibtex', $pkg);
 		
 		Loader::model('single_page');
 		
