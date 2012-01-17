@@ -4,6 +4,15 @@ Loader::model('file_list');
 $uh = Loader::helper('concrete/urls');
 $ih = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
+
+$fl = new FileList();
+$fl->filterByExtension('bib');
+$bibFiles = $fl->get(1000);
+$selectList = array();
+array_walk($bibFiles, function($val, $key) use(&$selectList)
+		{
+			$selectList[(string) $val->fID] = $val->getApprovedVersion()->fvTitle . " (ID: " . $val->fID . ")";
+		});
 ?>
 <script language="JavaScript">
 	BibFileEditor = {
@@ -82,28 +91,25 @@ $form = Loader::helper('form');
 			this.changed = doChange;
 		}
 	}
-	
+	<?php if (count($selectList)): ?>
 	$(document).ready(function ()
 	{
 		BibFileEditor.loadFile();
 	});
+	<?php endif; ?>
 
 </script>
 <h1><span><?php echo t('Bib-File Editor') ?></span></h1>
 <div class="ccm-dashboard-inner">
-	<?php
-	$fl = new FileList();
-	$fl->filterByExtension('bib');
-	$bibFiles = $fl->get(1000);
-	$selectList = array();
-	array_walk($bibFiles, function($val, $key) use(&$selectList)
-			{
-				$selectList[(string) $val->fID] = $val->getApprovedVersion()->fvTitle . " (ID: " . $val->fID . ")";
-			});
-	?>
+	<?php if (count($selectList)): ?>
 	<div>
 		<?= t('Select file:') ?>&nbsp;<?= $form->select('bibfiles', $selectList, $since, array('style' => 'width: 300px', 'onchange' => 'return BibFileEditor.loadFile();')) ?>
 	</div>
+	<?php else: ?>
+	<p>
+		There are currently no Bib files available.
+	</p>
+	<?php endif; ?>
 	<div id="bibFileContainer"  style="margin-top: 20px; display: none">
 		<form>
 			<div><?= $form->textarea('bibFileContent', array('style' => 'width: 90%; height: 400px', 'onchange' => 'BibFileEditor.setChanged(true)')) ?></div>
