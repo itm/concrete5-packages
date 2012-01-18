@@ -2,20 +2,25 @@
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
-class ItmLdapUserBlockController extends BlockController
+define('BIBTEXBROWSER_BIB_IN_NEW_WINDOW', true);
+define('BIBTEXBROWSER_URL_BUILDER', ItmBibtexBuildUrl);
+
+Loader::library('bibtexbrowser', 'itm_bibtex');
+
+class ItmBibtexBlockController extends BlockController
 {
-	protected $btTable = 'btItmLdapUser';
+	protected $btTable = 'btItmBibtex';
 	protected $btInterfaceWidth = "500";
 	protected $btInterfaceHeight = "400";
 
 	public function getBlockTypeDescription()
 	{
-		return t("Adds a LDAP user entry to a page.");
+		return t("Adds a Bibtex entries.");
 	}
 
 	public function getBlockTypeName()
 	{
-		return t("ITM LDAP User Entry");
+		return t("ITM Bibtex Entry");
 	}
 
 	public function save($data)
@@ -25,40 +30,62 @@ class ItmLdapUserBlockController extends BlockController
 
 	public function view()
 	{
-		$userInfo = UserInfo::getByUserName($this->uName);
-		$this->set('userInfo', $userInfo);
+		
 	}
-	
-	public function getLdapUsers()
+
+	public function getFileID()
 	{
-		if (!$this->hasUsers())
+		return $this->fID;
+	}
+
+	public function getFileObject()
+	{
+		return File::getByID($this->fID);
+	}
+
+	public function getFilteredPubList()
+	{
+		if (empty($this->author))
 		{
 			return array();
 		}
 
-		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
-
-		foreach ($ilh->getLdapStaffFromC5() as $user)
+		$filter = array();
+		if (!empty($this->since))
 		{
-			$result[$user->uName] = $user->uName;
+			$filter['year'] = $since;
 		}
+
+		$filter['author'] = $this->author;
+
+		$bh = Loader::helper('itm_bibtex', 'itm_bibtex');
+		$bibDb = $bh->getBibDb($this->fID);
+		if (empty($bibDb))
+		{
+			return array();
+		}
+
+		if (empty($this->since))
+		{
+			$this->since = 1990;
+		}
+
+		$result = array();
+		for ($i = date('Y'); $i >= $this->since; $i--)
+		{
+			$tmpResult = $bibDb->multisearch(array(
+				"author" => $this->author,
+				"year" => $i));
+
+			if (!count($tmpResult))
+			{
+				continue;
+			}
+
+			$result[(string) $i] = $tmpResult;
+		}
+
 		return $result;
-	}
-
-	public function hasUsers()
-	{
-		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
-		if ($ilh->hasLdapAuth())
-		{
-			try
-			{
-				return count($ilh->getLdapStaffFromC5()) > 0;
-			}
-			catch (Exception $e)
-			{
-				return false;
-			}
-		}
 	}
 
 }

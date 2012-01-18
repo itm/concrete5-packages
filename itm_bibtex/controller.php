@@ -31,88 +31,12 @@ class ItmBibtexPackage extends Package
 		}
 
 		// install block
-		//BlockType::installBlockTypeFromPackage('itm_bibtex', $pkg);
+		BlockType::installBlockTypeFromPackage('itm_bibtex', $pkg);
 		
 		Loader::model('single_page');
 		
 		$sp1 = SinglePage::add('/dashboard/itm_bibtex', $pkg);
-		$sp1->update(array('cName' => t('ITM BibTex'), 'cDescription' => t('BibTex playground')));
-		
-		/*
-		Loader::model('single_page');
-		// install pages
-		$sp1 = SinglePage::add('/dashboard/itm_ldap', $pkg);
-		$sp1->update(array('cName' => t('ITM LDAP'), 'cDescription' => t('LDAP sync and config')));
-
-		$sp2 = SinglePage::add('dashboard/itm_ldap/synchronization', $pkg);
-		$sp2->update(array('cName' => t('Synchronization')));
-
-		$sp3 = SinglePage::add('dashboard/itm_ldap/config', $pkg);
-		$sp3->update(array('cName' => t('Configuration')));
-
-		// install block
-		BlockType::installBlockTypeFromPackage('itm_ldap_user', $pkg);
-
-		// install page type
-		Loader::model('collection_types');
-		$ctItmLdapUserPage = CollectionType::getByHandle('itm_ldap_user');
-		if (!$ctItmLdapUserPage || !intval($ctItmLdapUserPage->getCollectionTypeID()))
-		{
-			$ctItmLdapUserPage = CollectionType::add(array('ctHandle' => 'itm_ldap_user_page', 'ctName' => t('ITM LDAP User')), $pkg);
-		}
-
-		// add default attribute
-		$ctItmLdapUserPage->assignCollectionAttribute(CollectionAttributeKey::getByHandle('exclude_nav'));
-
-		// install default page of itm_ldap_user_page page type
-		// this includes setting up a default itm_ldap_user_entry block,
-		// obtain master template
-		$mTplItmLdapUserPage = $ctItmLdapUserPage->getMasterTemplate();
-
-		// create content area within master template
-		$aUserInformation = Area::getOrCreate($mTplItmLdapUserPage, 'User Information');
-
-		// create data array that is passed to addBlock() - what data ever...
-		$data = array();
-
-		// get LDAP user block type
-		$btLdapUser = BlockType::getByHandle("itm_ldap_user");
-
-		// set default data for thesis entry block, add and save it
-		$defaultLdapUserData = array(
-			'uName' => '',
-		);
-
-		$bLdapUserData = $mTplItmLdapUserPage->addBlock($btLdapUser, $aUserInformation, $data);
-		$bLdapUserData->getController()->save($defaultLdapUserData);
-		*/
-		
-		//ItmThemePackage::addBreadcrumbsBlock($mTplItmLdapUserPage);
-		//ItmThemePackage::addNavigationBlock($mTplItmLdapUserPage);
-
-		/*
-		// add ldap group
-		try
-		{
-			Group::add('ldap', t('Includes all users from LDAP servers.'));
-		}
-		catch (Exception $e)
-		{
-			// ignore
-		}
-
-		// fields
-
-		Loader::model('user_attributes');
-
-		$akc = AttributeKeyCategory::getByHandle('user');
-
-		
-
-		ItmLdapPackage::setupLdapAttributes($pkg);
-		
-		ItmLdapPackage::setupConfig($pkg);
-		*/
+		$sp1->update(array('cName' => t('ITM BibTex'), 'cDescription' => t('Bib File Editor')));
 	}
 
 	public static function addUserTextAttr($handle, $name, $pkg)
