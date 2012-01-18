@@ -169,9 +169,6 @@ if (!isset($type))
 			</td>
 		</tr>
 	</table>
-	<p>
-		Hint: for additional content please use the block type <i>ITM Thesis Paragraph</i>.
-	</p>
 	<p class="note">
 <?= t('* Required information') ?>
 	</p>

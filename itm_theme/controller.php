@@ -98,6 +98,13 @@ class ItmThemePackage extends Package
 		}
 	}
 	
+	/**
+	 * Adds a Breadcrumbs block to a collection.
+	 * 
+	 * @param Collection $collection Collection object where to add the block
+	 * @param array $data additional for Collection::addBlock() method
+	 * @return Block inserted block 
+	 */
 	public static function addBreadcrumbsBlock($collection, $data = array())
 	{
 		$aBreadcrumbs = Area::getOrCreate($collection, 'Breadcrumbs');
@@ -125,6 +132,13 @@ class ItmThemePackage extends Package
 		return $bBreadcrumbs;
 	}
 	
+	/**
+	 * Adds a Navigation block to a collection.
+	 * 
+	 * @param Collection $collection Collection object where to add the block
+	 * @param array $data additional for Collection::addBlock() method
+	 * @return Block inserted block 
+	 */
 	public static function addNavigationBlock($collection, $data = array())
 	{
 		$aNavigation = Area::getOrCreate($collection, 'Navigation');

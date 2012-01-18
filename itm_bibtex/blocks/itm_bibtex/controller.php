@@ -10,8 +10,8 @@ Loader::library('bibtexbrowser', 'itm_bibtex');
 class ItmBibtexBlockController extends BlockController
 {
 	protected $btTable = 'btItmBibtex';
-	protected $btInterfaceWidth = "500";
-	protected $btInterfaceHeight = "400";
+	protected $btInterfaceWidth = "350";
+	protected $btInterfaceHeight = "300";
 
 	public function getBlockTypeDescription()
 	{

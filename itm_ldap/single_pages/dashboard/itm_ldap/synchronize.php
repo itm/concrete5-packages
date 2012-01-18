@@ -40,6 +40,10 @@ foreach ($userlist as $key => $item)
 $json = Loader::helper('json');
 ?>
 <script language="JavaScript" type="text/javascript">
+	/*
+	 * Dynamically organizes the LDAP user list. No AJAX calls will be made,
+	 * there is just a reorganization of the user list be effected
+	 */
 	var LdapC5Users =
 		{
 		userlist: <?= $json->encode($userArray) ?>,

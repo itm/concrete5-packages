@@ -5,8 +5,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 class ItmLdapUserBlockController extends BlockController
 {
 	protected $btTable = 'btItmLdapUser';
-	protected $btInterfaceWidth = "500";
-	protected $btInterfaceHeight = "400";
+	protected $btInterfaceWidth = "300";
+	protected $btInterfaceHeight = "200";
 
 	public function getBlockTypeDescription()
 	{
@@ -29,6 +29,9 @@ class ItmLdapUserBlockController extends BlockController
 		$this->set('userInfo', $userInfo);
 	}
 	
+	/**
+	 * @return array assoc. array of UserInfo objects with user names as keys
+	 */
 	public function getLdapUsers()
 	{
 		if (!$this->hasUsers())
@@ -45,6 +48,10 @@ class ItmLdapUserBlockController extends BlockController
 		return $result;
 	}
 
+	/**
+	 *
+	 * @return bool true if LDAP users are present, otherwise false
+	 */
 	public function hasUsers()
 	{
 		$ilh = Loader::helper('itm_ldap', 'itm_ldap');

@@ -14,20 +14,24 @@ ccmValidateBlockForm = function() {
 		{
 			ccm_addError(ccm_t('invalid_supervisor'));
 		}
-
-		/*
-		if (!LdapEntry.isHidden('tutorRaw') && $('#tutorRaw').val().substr(0, LdapEntry.DEFAULT_LDAP_PREFIX.length))
-		{
-			ccm_addError(ccm_t('invalid_tutor'));
-		}*/
 	}
 	
 	return false;
 }
 
+/*
+ * Handles JavaScript actions on LDAP list entries within the add/edit view
+ * (entries consists of a select and a textfield).
+ * 
+ * Actions: show/hide custom name field
+ */
 var LdapEntry = 
 {
 	DEFAULT_LDAP_PREFIX: 'ldap:',
+	/*
+	 * Does the main work - sets value and state (shown/hidden) of the textfield
+	 * and enables/disables select field if textfield is hidden/shown.
+	 */
 	switchState: function(divId, state, value)
 	{
 		var selDiv = $('#'+divId+'Ldap');
@@ -39,14 +43,23 @@ var LdapEntry =
 		txtDiv.css('display', state);
 		
 	},
+	/*
+	 * Pass valid value to switchState() to show textfield
+	 */
 	showEntry: function(divId, value)
 	{
 		this.switchState(divId, 'block', value);
 	},
+	/*
+	 * Pass valid value to switchState() to hide textfield
+	 */
 	hideEntry: function(divId, value)
 	{
 		this.switchState(divId, 'none', value);
 	},
+	/*
+	 * Switches the state depending on isHidden(divId)
+	 */
 	switchEntry: function(divId, showVal, hideVal)
 	{
 		if (this.isHidden(divId + 'Raw'))
@@ -58,6 +71,9 @@ var LdapEntry =
 			this.hideEntry(divId, hideVal);
 		}
 	},
+	/*
+	 * Checks whether given div is hidden
+	 */
 	isHidden: function(divId)
 	{
 		return $('#'+divId).css('display') == 'none';

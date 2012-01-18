@@ -36,6 +36,9 @@ class DashboardItmLdapSynchronizationController extends Controller
 		}
 	}
 
+	/**
+	 * Fetches users from LDAP and concrete5 and lists them up
+	 */
 	public function synchronize()
 	{
 		if (!$this->helper->hasLdapAuth())
@@ -81,6 +84,9 @@ class DashboardItmLdapSynchronizationController extends Controller
 		}
 	}
 
+	/**
+	 * Updates a user
+	 */
 	public function update_user()
 	{
 		$val = Loader::helper('validation/error');
@@ -110,6 +116,9 @@ class DashboardItmLdapSynchronizationController extends Controller
 		$this->synchronize();
 	}
 
+	/**
+	 * Updates several users
+	 */
 	public function update_users()
 	{
 		$val = Loader::helper('validation/error');
@@ -148,6 +157,9 @@ class DashboardItmLdapSynchronizationController extends Controller
 		$this->synchronize();
 	}
 
+	/**
+	 * Removes a user
+	 */
 	public function remove_user()
 	{
 		$val = Loader::helper('validation/error');
@@ -176,6 +188,9 @@ class DashboardItmLdapSynchronizationController extends Controller
 		$this->synchronize();
 	}
 
+	/**
+	 * Removes several users
+	 */
 	public function remove_users()
 	{
 		$val = Loader::helper('validation/error');

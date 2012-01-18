@@ -332,6 +332,14 @@ class ItmLdapHelper
 		return!empty($ldapAuthPkg);
 	}
 	
+	/**
+	 * Searches all pages which are derived from itm_ldap_user_page page type
+	 * and returns the page link if there exist an itm_ldap_user block that
+	 * corresponds to the given user name.
+	 * 
+	 * @param string $uName user name
+	 * @return string URL of the page. 
+	 */
 	public function getUserPageLink($uName)
 	{
 		$nh = Loader::helper('navigation');
@@ -359,6 +367,14 @@ class ItmLdapHelper
 		return false;
 	}
 	
+	/**
+	 * Checks whether there is a title available and - if true - returns a
+	 * combination of title plus name. If no title is available, merely the name
+	 * will be returned.
+	 * 
+	 * @param UserInfo $userInfo user data
+	 * @return string name
+	 */
 	public function getFullName($userInfo)
 	{
 		if (!($userInfo instanceof UserInfo))

@@ -7,7 +7,7 @@
 class ItmThesisOverviewBlockController extends BlockController
 {
 	protected $btTable = "btItmThesisOverview";
-	protected $btInterfaceWidth = "350";
+	protected $btInterfaceWidth = "300";
 	protected $btInterfaceHeight = "200";
 
 	public function getBlockTypeDescription()
@@ -33,6 +33,11 @@ class ItmThesisOverviewBlockController extends BlockController
 		$this->addHeaderItem('<link rel="stylesheet" type="text/css" href="'. $uh->getBlockTypeAssetsURL($bt, 'style.css') .'" />');
 	}
 	
+	/**
+	 * @return array array of thesis items. Thesis items are assoc. arrays with
+	 *               keys 'topic', 'status', 'type' and 'link', whereby 'link'
+	 *               is a URL to the thesis resource.
+	 */
 	public function getThesisList()
 	{
 		// get current page collection

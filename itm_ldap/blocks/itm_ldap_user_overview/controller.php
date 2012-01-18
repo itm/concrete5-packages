@@ -5,8 +5,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 class ItmLdapUserOverviewBlockController extends BlockController
 {
 	protected $btTable = 'btItmLdapUserOverview';
-	protected $btInterfaceWidth = "500";
-	protected $btInterfaceHeight = "400";
+	protected $btInterfaceWidth = "300";
+	protected $btInterfaceHeight = "200";
 
 	public function getBlockTypeDescription()
 	{

@@ -24,6 +24,8 @@ class ItmThesisEntryBlockController extends BlockController
 
 	public function save($data)
 	{
+		// save special value for supervior/tutor if none is specified
+		
 		if (!strlen($data['supervisor']))
 		{
 			$data['supervisor'] = $data['supervisor_ldap'] == 'none' ? '' : $data['supervisor_ldap'];
@@ -47,21 +49,41 @@ class ItmThesisEntryBlockController extends BlockController
 		);
 	}
 
+	/**
+	 * Checks whether a given name is a LDAP uid or not. This depends on the
+	 * thesis specific assumption that the name begins with
+	 * ITM_THESIS_LDAP_PREFIX (which is defaulty set to 'ldap:').
+	 * 
+	 * @param string $name The name to check
+	 * @return bool true if it is a LDAP uid, otherwise false 
+	 */
 	public function isLdapName($name)
 	{
 		return strpos($name, ITM_THESIS_LDAP_PREFIX) === 0 || $name == '';
 	}
 
+	/**
+	 * @return bool true if supervisor is from LDAP, otherwise false
+	 */
 	public function isLdapSupervisor()
 	{
 		return $this->isLdapName($this->supervisor);
 	}
 
+	/**
+	 * @return bool true if tutor is from LDAP, otherwise false 
+	 */
 	public function isLdapTutor()
 	{
 		return $this->isLdapName($this->tutor);
 	}
 
+	/**
+	 * Returns the supervisor name excluding the ITM_THESIS_LDAP_PREFIX
+	 * (defaultly set to 'ldap:').
+	 * 
+	 * @return string name without ITM_THESIS_LDAP_PREFIX
+	 */
 	public function getSupervisorName()
 	{
 		if ($this->isLdapSupervisor())
@@ -74,6 +96,12 @@ class ItmThesisEntryBlockController extends BlockController
 		}
 	}
 
+	/**
+	 * Returns the tutor name excluding the ITM_THESIS_LDAP_PREFIX
+	 * (defaultly set to 'ldap:').
+	 * 
+	 * @return string name without ITM_THESIS_LDAP_PREFIX
+	 */
 	public function getTutorName()
 	{
 		if ($this->isLdapTutor())
@@ -86,6 +114,11 @@ class ItmThesisEntryBlockController extends BlockController
 		}
 	}
 
+	/**
+	 * @return array asso. array of UserInfo elements with qualified user names
+	 *               as keys (qualified means: ITM_THESIS_LDAP_PREFIX + user
+	 *               name)
+	 */
 	public function getLdapUsers()
 	{
 		if (!$this->hasItmLdap())
@@ -103,6 +136,10 @@ class ItmThesisEntryBlockController extends BlockController
 		return $result;
 	}
 
+	/**
+	 * @return bool true if ITM LDAP package is available and at least one LDAP
+	 *                   user entry exists, otherwise false
+	 */
 	public function hasItmLdap()
 	{
 		$ldapAuthPkg = Package::getByHandle('ldap_auth');

@@ -335,3 +335,26 @@ table.Download td {
 	padding:5px;
 	margin:0px;
 }
+
+.itmTable
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.itmTableTh
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	background-color: #E4E4DD;
+}
+
+.itmTableTd
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	border-bottom: 1px dotted #B8B8B2;
+}

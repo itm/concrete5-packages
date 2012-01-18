@@ -16,12 +16,12 @@
 
 <div class="ccm-block-field-group">
 	<h2><?= t('Choose Bibtex file') ?></h2>
-	<p><?php echo $al->file('ccm-b-file', 'fID', t('Choose File'), $bf, array('fExtension' => 'bib'));?></p>
+	<div style="margin-bottom: 15px"><?php echo $al->file('ccm-b-file', 'fID', t('Choose File'), $bf, array('fExtension' => 'bib'));?></div>
 	
 	<h2><?= t('Author') ?></h2>
-	<p><?= $form->text('author', $author, array('style' => 'width: 90%')) ?></p>
+	<div style="margin-bottom: 15px"><?= $form->text('author', $author, array('style' => 'width: 90%')) ?></div>
 	
 	<h2><?= t('Publications since') ?></h2>
-	<p><?= $form->select('since', $years, $since, array('style' => 'width: 90%')) ?></p>
+	<div style="margin-bottom: 15px"><?= $form->select('since', $years, $since, array('style' => 'width: 90%')) ?></div>
 	
 </div>

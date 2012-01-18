@@ -7,6 +7,8 @@ class DashboardItmLdapConfigController extends Controller
 
 	public function view()
 	{
+		//load and save config data
+		
 		$config = new Config();
 		$config->setPackageObject(Package::getByID($this->c->pkgID));
 		$street = $config->get('ITM_LDAP_STREET');
