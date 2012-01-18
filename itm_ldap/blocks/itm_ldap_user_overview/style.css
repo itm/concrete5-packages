@@ -1,0 +1,32 @@
+table.itmStaffGroupTable
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+table.itmStaffGroupTable th
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	background-color: #E4E4DD;
+}
+
+table.itmStaffGroupTable td
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	border-bottom: 1px dotted #B8B8B2;
+}
+
+table.itmStaffGroupTable topic
+{
+	padding-right: 10px;
+}
+
+table.itmStaffGroupTable type
+{
+	padding-right: 10px;
+}

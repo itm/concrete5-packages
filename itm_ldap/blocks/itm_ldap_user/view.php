@@ -1,5 +1,6 @@
 <?php
 defined('C5_EXECUTE') or die(_("Access Denied."));
+$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
 
 if (!strlen($uName)) :
 	?>
@@ -7,7 +8,7 @@ if (!strlen($uName)) :
 		<?php echo t('Please select a user.'); ?>
 	</h1>
 <?php else : ?>
-	<h1><?= $userInfo->getAttribute('name') ?></h1>
+	<h1><?= $ldapHelper->getFullName($userInfo) ?></h1>
 	<div>
 		<?php
 		$config = new Config();
@@ -41,12 +42,11 @@ if (!strlen($uName)) :
 		}
 
 		echo '</div>';
-
 		echo '<div style="margin-left: 160px;">';
 		
 		if ($name != '')
 		{
-			echo ($title == '' ? '' : "$title ") . "$name<br/>";
+			echo $ldapHelper->getFullName($userInfo). "<br/>";
 		}
 		else
 		{

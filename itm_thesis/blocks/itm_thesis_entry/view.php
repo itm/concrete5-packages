@@ -1,7 +1,6 @@
-<h1 class="itmThesisEntryTitle"><?=$topic?></h1>
+<h1 class="itmThesisEntryTitle"><?= $topic ?></h1>
 
 <?php
-
 switch ($type)
 {
 	case 0:
@@ -64,36 +63,36 @@ else
 	<span class="itmThesisEntryValue"><?= $beginningPlain ?></span>
 </div>
 <div class="itmThesisEntryStudent"">
-	<span class="itmThesisEntryCaption"><?= t('Student') ?>:</span>
+	 <span class="itmThesisEntryCaption"><?= t('Student') ?>:</span>
 	<span class="itmThesisEntryValue"><?= $studentPlain ?></span>
 </div>
 <div class="itmThesisEntryTutor">
 	<span class="itmThesisEntryCaption"><?= t('Tutor') ?>:</span>
 	<span class="itmThesisEntryValue">
-	<?php
-			if ($this->controller->isLdapTutor())
+		<?php
+		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
+		if ($this->controller->isLdapTutor())
+		{
+			$ui = UserInfo::getByUserName($this->controller->getTutorName());
+			$name = $ui->getAttribute('name');
+			if (!empty($name))
 			{
-				$ui = UserInfo::getByUserName($this->controller->getTutorName());
-				$title = $ui->getAttribute('title');
-				$name = $ui->getAttribute('name');
-				if (!empty($name))
+				$fullName = $ldapHelper->getFullName($ui);
+				$link = $ldapHelper->getUserPageLink($this->controller->getTutorName());
+				if ($link)
 				{
-					$fullName = (empty($title) ? '' : "$title ") . $name;
-					$link = $this->controller->getUserPageLink($this->controller->getTutorName());
-					if ($link)
-					{
-						echo '<a href="' . $link . '">'.$fullName.'</a>';
-					}
-					else
-					{
-						echo $fullName;
-					}
+					echo '<a href="' . $link . '">' . $fullName . '</a>';
+				}
+				else
+				{
+					echo $fullName;
 				}
 			}
-			else
-			{
-				echo $tutor;
-			}
+		}
+		else
+		{
+			echo $tutor;
+		}
 		?>
 	</span>
 </div>
@@ -101,29 +100,28 @@ else
 	<span class="itmThesisEntryCaption"><?= t('Supervisor') ?>:</span>
 	<span class="itmThesisEntryValue">
 		<?php
-			if ($this->controller->isLdapSupervisor())
+		if ($this->controller->isLdapSupervisor())
+		{
+			$ui = UserInfo::getByUserName($this->controller->getSupervisorName());
+			$name = $ui->getAttribute('name');
+			if (!empty($name))
 			{
-				$ui = UserInfo::getByUserName($this->controller->getSupervisorName());
-				$title = $ui->getAttribute('title');
-				$name = $ui->getAttribute('name');
-				if (!empty($name))
+				$fullName = $ldapHelper->getFullName($ui);;
+				$link = $ldapHelper->getUserPageLink($this->controller->getSupervisorName());
+				if ($link)
 				{
-					$fullName = (empty($title) ? '' : "$title ") . $name;
-					$link = $this->controller->getUserPageLink($this->controller->getSupervisorName());
-					if ($link)
-					{
-						echo '<a href="' . $link . '">'.$fullName.'</a>';
-					}
-					else
-					{
-						echo $fullName;
-					}
+					echo '<a href="' . $link . '">' . $fullName . '</a>';
+				}
+				else
+				{
+					echo $fullName;
 				}
 			}
-			else
-			{
-				echo $supervisor;
-			}
+		}
+		else
+		{
+			echo $supervisor;
+		}
 		?>
 	</span>
 </div>

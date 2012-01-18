@@ -124,34 +124,6 @@ class ItmThesisEntryBlockController extends BlockController
 
 		return false;
 	}
-
-	public function getUserPageLink($uName)
-	{
-		$nh = Loader::helper('navigation');
-	//$pl = new PageList::filterByCollectionTypeHandle
-		$pl = new PageList();
-		$pl->ignoreAliases();
-		$pl->ignorePermissions();
-		$pl->filterByCollectionTypeHandle('itm_ldap_user_page');
-		$collections = $pl->get();
-		foreach ($collections as $collection)
-		{
-			$blocks = $collection->getBlocks();
-			foreach ($blocks as $block)
-			{
-				$bCtrl = $block->getController();
-				if ($bCtrl instanceof ItmLdapUserBlockController)
-				{
-					if ($bCtrl->uName == $uName)
-					{
-						return $nh->getCollectionURL($collection);
-					}
-				}
-			}
-		}
-		
-		return false;
-	}
 	
 }
 

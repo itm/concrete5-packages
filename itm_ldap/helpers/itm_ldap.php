@@ -3,6 +3,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 Loader::model('user_list');
+Loader::model('page_list');
 
 /**
  * Helper class for the concrete5 itm_ldap package.
@@ -329,6 +330,44 @@ class ItmLdapHelper
 	{
 		$ldapAuthPkg = Package::getByHandle('ldap_auth');
 		return!empty($ldapAuthPkg);
+	}
+	
+	public function getUserPageLink($uName)
+	{
+		$nh = Loader::helper('navigation');
+		$pl = new PageList();
+		$pl->ignoreAliases();
+		$pl->ignorePermissions();
+		$pl->filterByCollectionTypeHandle('itm_ldap_user_page');
+		$collections = $pl->get();
+		foreach ($collections as $collection)
+		{
+			$blocks = $collection->getBlocks();
+			foreach ($blocks as $block)
+			{
+				$bCtrl = $block->getController();
+				if ($bCtrl instanceof ItmLdapUserBlockController)
+				{
+					if ($bCtrl->uName == $uName)
+					{
+						return $nh->getCollectionURL($collection);
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public function getFullName($userInfo)
+	{
+		if (!($userInfo instanceof UserInfo))
+		{
+			return '';
+		}
+		$title = $userInfo->getAttribute('title');
+		$name = $userInfo->getAttribute('name');
+		return empty($title) ? $name : "$title $name";
 	}
 
 }

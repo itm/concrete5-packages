@@ -36,6 +36,7 @@ class ItmLdapPackage extends Package
 
 		// install block
 		BlockType::installBlockTypeFromPackage('itm_ldap_user', $pkg);
+		BlockType::installBlockTypeFromPackage('itm_ldap_user_overview', $pkg);
 
 		// install page type
 		Loader::model('collection_types');
@@ -89,8 +90,6 @@ class ItmLdapPackage extends Package
 
 		$akc = AttributeKeyCategory::getByHandle('user');
 
-		
-
 		ItmLdapPackage::setupLdapAttributes($pkg);
 		
 		ItmLdapPackage::setupConfig($pkg);
@@ -114,6 +113,7 @@ class ItmLdapPackage extends Package
 		ItmLdapPackage::addUserTextAttr('skype_number', t('Skype number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('name', t('Name'), $pkg);
 		ItmLdapPackage::addUserTextAttr('title', t('Title'), $pkg);
+		ItmLdapPackage::addUserTextAttr('staff_group', t('Staff group'), $pkg);
 	}
 	
 	public static function setupConfig($pkg)
