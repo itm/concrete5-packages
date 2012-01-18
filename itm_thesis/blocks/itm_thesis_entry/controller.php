@@ -4,6 +4,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 
 define('ITM_THESIS_LDAP_PREFIX', 'ldap:');
 
+Loader::model('page_list');
+
 class ItmThesisEntryBlockController extends BlockController
 {
 	protected $btTable = 'btItmThesis';
@@ -18,12 +20,6 @@ class ItmThesisEntryBlockController extends BlockController
 	public function getBlockTypeName()
 	{
 		return t("ITM Thesis Entry");
-	}
-
-	public function on_page_view()
-	{
-		//$html = Loader::helper('html');
-		//$this->addHeaderItem($html->javascript('ldapfield.js'));
 	}
 
 	public function save($data)
@@ -129,6 +125,34 @@ class ItmThesisEntryBlockController extends BlockController
 		return false;
 	}
 
+	public function getUserPageLink($uName)
+	{
+		$nh = Loader::helper('navigation');
+	//$pl = new PageList::filterByCollectionTypeHandle
+		$pl = new PageList();
+		$pl->ignoreAliases();
+		$pl->ignorePermissions();
+		$pl->filterByCollectionTypeHandle('itm_ldap_user_page');
+		$collections = $pl->get();
+		foreach ($collections as $collection)
+		{
+			$blocks = $collection->getBlocks();
+			foreach ($blocks as $block)
+			{
+				$bCtrl = $block->getController();
+				if ($bCtrl instanceof ItmLdapUserBlockController)
+				{
+					if ($bCtrl->uName == $uName)
+					{
+						return $nh->getCollectionURL($collection);
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 }
 
 ?>

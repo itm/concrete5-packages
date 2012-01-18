@@ -1,6 +1,7 @@
 <h1 class="itmThesisEntryTitle"><?=$topic?></h1>
 
 <?php
+
 switch ($type)
 {
 	case 0:
@@ -72,7 +73,22 @@ else
 	<?php
 			if ($this->controller->isLdapTutor())
 			{
-				echo '<a href="javascript:alert(\'Dead link.\')">'.$tutor.'</a>';
+				$ui = UserInfo::getByUserName($this->controller->getTutorName());
+				$title = $ui->getAttribute('title');
+				$name = $ui->getAttribute('name');
+				if (!empty($name))
+				{
+					$fullName = (empty($title) ? '' : "$title ") . $name;
+					$link = $this->controller->getUserPageLink($this->controller->getTutorName());
+					if ($link)
+					{
+						echo '<a href="' . $link . '">'.$fullName.'</a>';
+					}
+					else
+					{
+						echo $fullName;
+					}
+				}
 			}
 			else
 			{
@@ -87,7 +103,22 @@ else
 		<?php
 			if ($this->controller->isLdapSupervisor())
 			{
-				echo '<a href="javascript:alert(\'Dead link.\')">'.$supervisor.'</a>';
+				$ui = UserInfo::getByUserName($this->controller->getSupervisorName());
+				$title = $ui->getAttribute('title');
+				$name = $ui->getAttribute('name');
+				if (!empty($name))
+				{
+					$fullName = (empty($title) ? '' : "$title ") . $name;
+					$link = $this->controller->getUserPageLink($this->controller->getSupervisorName());
+					if ($link)
+					{
+						echo '<a href="' . $link . '">'.$fullName.'</a>';
+					}
+					else
+					{
+						echo $fullName;
+					}
+				}
 			}
 			else
 			{
