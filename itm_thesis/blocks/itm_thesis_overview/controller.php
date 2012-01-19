@@ -1,4 +1,7 @@
 <?php
+defined('C5_EXECUTE') or die("Access Denied.");
+
+Loader::model('page_list');
 
 /**
  * The itm_thesis_overview block outputs a list of thesis topics linking
@@ -22,7 +25,7 @@ class ItmThesisOverviewBlockController extends BlockController
 
 	public function save($data)
 	{
-		// do nothing on save - this is a read only block
+		parent::save($data);
 	}
 
 	// is called during page view and adds custom stylesheet
@@ -40,57 +43,48 @@ class ItmThesisOverviewBlockController extends BlockController
 	 */
 	public function getThesisList()
 	{
-		// get current page collection
-		$c = Page::getCurrentPage();
-
-		// resolve children - these will be all thesis entries
-		$children = $c->getCollectionChildrenArray();
+		// load navigation helper to create links from pages
+		$nh = Loader::helper('navigation');
 		
-		// if there is no data, leave
-		if (empty($children))
-		{
-			return array();
-		}
+		// load thesis helper
+		$th = Loader::helper('itm_thesis', 'itm_thesis');
+		$pl = new PageList();
+		$pl->ignoreAliases();
+		$pl->ignorePermissions();
+		$pl->filterByCollectionTypeHandle('itm_thesis_page');
 
+		$collections = $pl->get();
+		
 		// create placeholder for thesis entries and their maintained data
 		$items = array();
 		
-		// load navigation helper to create links from pages
-		$nh = Loader::helper('navigation');
-
-		// loop children and fill $items array
-		for ($i = 0; $i < count($children); $i++)
+		foreach ($collections as $collection)
 		{
-			$child = $children[$i];
-			
-			// since $children list only contains numbers, fetch corresponding
-			// objects from database
-			$page = Page::getByID($child);
-			
-			// fetch the pages blocks
-			$blocks = $page->getBlocks();
-
-			// try to discover ITM Thesis Entry item
-			// the page will be ignored if no such item is found
-			for ($j = 0; $j < count($blocks); $j++)
+			$blocks = $collection->getBlocks();
+			foreach ($blocks as $block)
 			{
-				$block = $blocks[$j];
-				
-				// get controller to compare block type and
-				// finally ascertain thesis data
-				$bController = $block->getController();
-				if ($bController instanceof ItmThesisEntryBlockController)
+				$bCtrl = $block->getController();
+				if ($bCtrl instanceof ItmThesisEntryBlockController)
 				{
 					// get controller data - amongst others the thesis
 					// data is included
-					$ctrlData = $bController->getBlockControllerData();
+					$ctrlData = $bCtrl->getBlockControllerData();
+					
+					//check user filter
+					if (!empty($this->uName) && $th->isLdapName($ctrlData->tutor))
+					{
+						if (ITM_THESIS_LDAP_PREFIX . $this->uName != $ctrlData->tutor)
+						{
+							continue;
+						}
+					}
 					
 					// copy that data to a new item array plus a page link
 					$item = array(
 						'topic' => $ctrlData->topic,
 						'status' => $ctrlData->status,
 						'type' => $ctrlData->type,
-						'link' => $nh->getCollectionURL($page)
+						'link' => $nh->getCollectionURL($collection)
 					);
 					
 					// add item to result list
@@ -100,10 +94,50 @@ class ItmThesisOverviewBlockController extends BlockController
 				}
 			}
 		}
-
+		
 		return $items;
 	}
 
+	/**
+	 * @return array assoc. array of UserInfo objects with user names as keys
+	 */
+	public function getLdapUsers()
+	{
+		if (!$this->hasUsers())
+		{
+			return array();
+		}
+
+		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
+
+		$result['0'] = t('Show all');
+		foreach ($ilh->getLdapStaffFromC5() as $user)
+		{
+			$result[$user->uName] = $user->uName;
+		}
+		return $result;
+	}
+
+	/**
+	 *
+	 * @return bool true if LDAP users are present, otherwise false
+	 */
+	public function hasUsers()
+	{
+		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
+		if ($ilh->hasLdapAuth())
+		{
+			try
+			{
+				return count($ilh->getLdapStaffFromC5()) > 0;
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
+		}
+	}
+	
 }
 
 ?>

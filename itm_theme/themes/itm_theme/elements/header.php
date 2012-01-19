@@ -20,7 +20,7 @@
 	</div>
 	<div id="kopfBalken"><img src="<?=$imgBase?>/strichSchmalGrau.gif" width="280" height="10" hspace="10"><img src="<?=$imgBase?>/balkenBreitGrauHell.gif" width="650" height="10"></div>
 	<div id="pfad">
-		<div id="pfadTitel"><a href="index.html">ITM Testsuite</a></div>
+		<div id="pfadTitel"><a href="<?= DIR_REL ?>">INSTITUTE OF TELEMATICS</a></div>
 		<div id="pfadLeiste">
 			<?php
 			$as = new Area('Breadcrumbs');

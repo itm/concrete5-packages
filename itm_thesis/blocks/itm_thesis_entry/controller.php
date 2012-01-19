@@ -2,8 +2,6 @@
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
-define('ITM_THESIS_LDAP_PREFIX', 'ldap:');
-
 Loader::model('page_list');
 
 class ItmThesisEntryBlockController extends BlockController
@@ -50,24 +48,11 @@ class ItmThesisEntryBlockController extends BlockController
 	}
 
 	/**
-	 * Checks whether a given name is a LDAP uid or not. This depends on the
-	 * thesis specific assumption that the name begins with
-	 * ITM_THESIS_LDAP_PREFIX (which is defaulty set to 'ldap:').
-	 * 
-	 * @param string $name The name to check
-	 * @return bool true if it is a LDAP uid, otherwise false 
-	 */
-	public function isLdapName($name)
-	{
-		return strpos($name, ITM_THESIS_LDAP_PREFIX) === 0 || $name == '';
-	}
-
-	/**
 	 * @return bool true if supervisor is from LDAP, otherwise false
 	 */
 	public function isLdapSupervisor()
 	{
-		return $this->isLdapName($this->supervisor);
+		return Loader::helper('itm_thesis', 'itm_thesis')->isLdapName($this->supervisor);
 	}
 
 	/**
@@ -75,7 +60,7 @@ class ItmThesisEntryBlockController extends BlockController
 	 */
 	public function isLdapTutor()
 	{
-		return $this->isLdapName($this->tutor);
+		return Loader::helper('itm_thesis', 'itm_thesis')->isLdapName($this->tutor);
 	}
 
 	/**
