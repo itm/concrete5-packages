@@ -14,7 +14,7 @@
 <body>
 <div id="rahmen">
 	<div id="logo">
-		<div id="logoUni"><img src="<?=$imgBase?>/logoUni.gif" width="280" height="87" alt="Universit&auml;t zu L&uuml;beck"></div>
+		<div id="logoUni"><img src="<?=$imgBase?>/LogoITM.png" width="280" height="87" alt="Universit&auml;t zu L&uuml;beck"></div>
 		<div id="logoSlogan"><img src="<?=$imgBase?>/sloganHell.gif" width="158" height="28" alt="Im Focus das Leben"></div>
 
 	</div>
