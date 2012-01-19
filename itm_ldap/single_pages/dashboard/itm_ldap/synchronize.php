@@ -68,11 +68,21 @@ $json = Loader::helper('json');
 		},
 		confirmRemoveSelected: function()
 		{
-			return confirm('Are you sure you want to remove selected users?');
+			if (confirm('Are you sure you want to remove selected users?'))
+			{
+				$('#submissionProcessing').css('display', 'block');
+				return true;
+			}
+			return false;
 		},
 		confirmUpdateSelected: function()
 		{
-			return confirm('Are you sure you want to update selected users?');
+			if (confirm('Are you sure you want to update selected users?'))
+			{
+				$('#submissionProcessing').css('display', 'block');
+				return true;
+			}
+			return false;
 		},
 		selectAll : function()
 		{
@@ -190,6 +200,10 @@ $json = Loader::helper('json');
 </style>
 <h1><span><?php echo t('Synchronize concrete5 users with LDAP users') ?></span></h1>
 <div class="ccm-dashboard-inner">
+	<p id="submissionProcessing" style="display: none;">
+		<img src="<?= ASSETS_URL_IMAGES ?>/throbber_white_32.gif" width="32" height="32" alt="<?= t('Loading...') ?>" style="vertical-align: middle; margin-right: 10px"/>
+		<?= t('Processing...') ?>
+	</p>
 	<p>
 	<form style="display: inline; line-height: 36px" onsubmit="return false">
 		<?= t('Filter') ?>: <input type="text" value="<?= $uidFilter ?>" name="ldapC5UserFilterValue" id="ldapC5UserFilterValue"/>&nbsp;&nbsp;&nbsp;
