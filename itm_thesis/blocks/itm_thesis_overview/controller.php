@@ -71,9 +71,16 @@ class ItmThesisOverviewBlockController extends BlockController
 					$ctrlData = $bCtrl->getBlockControllerData();
 					
 					//check user filter
-					if (!empty($this->uName) && $th->isLdapName($ctrlData->tutor))
+					if (!empty($this->uName))
 					{
-						if (ITM_THESIS_LDAP_PREFIX . $this->uName != $ctrlData->tutor)
+						if ($th->isLdapName($ctrlData->tutor))
+						{
+							if (ITM_THESIS_LDAP_PREFIX . $this->uName != $ctrlData->tutor)
+							{
+								continue;
+							}
+						}
+						else
 						{
 							continue;
 						}
