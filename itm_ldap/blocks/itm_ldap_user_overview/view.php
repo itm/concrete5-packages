@@ -32,11 +32,11 @@ if (!count($members)):
 		$name = $user->getAttribute('name');
 		?>
 			<tr>
-				<td><?= $link ? '<a href="'.$link.'>' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?></td>
+				<td><?= $link ? '<a href="'.$link.'">' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?></td>
 
 				<td><a href="mailto:<?= $user->uEmail ?>"><?= $user->uEmail ?></a></td>
 
-				<td><?= $user->getAttribute('phone_number') ?></td>
+				<td><?= $user->getAttribute('telephone_number') ?></td>
 
 				<td><?= $user->getAttribute('room_number') ?></td>
 			</tr>
