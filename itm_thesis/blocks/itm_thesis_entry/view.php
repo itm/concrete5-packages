@@ -74,18 +74,21 @@ else
 		if ($this->controller->isLdapTutor())
 		{
 			$ui = UserInfo::getByUserName($this->controller->getTutorName());
-			$name = $ui->getAttribute('name');
-			if (!empty($name))
+			if (!empty($ui))
 			{
-				$fullName = $ldapHelper->getFullName($ui);
-				$link = $ldapHelper->getUserPageLink($this->controller->getTutorName());
-				if ($link)
+				$name = $ui->getAttribute('name');
+				if (!empty($name))
 				{
-					echo '<a href="' . $link . '">' . $fullName . '</a>';
-				}
-				else
-				{
-					echo $fullName;
+					$fullName = $ldapHelper->getFullName($ui);
+					$link = $ldapHelper->getUserPageLink($this->controller->getTutorName());
+					if ($link)
+					{
+						echo '<a href="' . $link . '">' . $fullName . '</a>';
+					}
+					else
+					{
+						echo $fullName;
+					}
 				}
 			}
 		}
@@ -103,18 +106,21 @@ else
 		if ($this->controller->isLdapSupervisor())
 		{
 			$ui = UserInfo::getByUserName($this->controller->getSupervisorName());
-			$name = $ui->getAttribute('name');
-			if (!empty($name))
+			if (!empty($ui))
 			{
-				$fullName = $ldapHelper->getFullName($ui);;
-				$link = $ldapHelper->getUserPageLink($this->controller->getSupervisorName());
-				if ($link)
+				$name = $ui->getAttribute('name');
+				if (!empty($name))
 				{
-					echo '<a href="' . $link . '">' . $fullName . '</a>';
-				}
-				else
-				{
-					echo $fullName;
+					$fullName = $ldapHelper->getFullName($ui);;
+					$link = $ldapHelper->getUserPageLink($this->controller->getSupervisorName());
+					if ($link)
+					{
+						echo '<a href="' . $link . '">' . $fullName . '</a>';
+					}
+					else
+					{
+						echo $fullName;
+					}
 				}
 			}
 		}
