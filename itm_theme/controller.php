@@ -23,8 +23,9 @@ class ItmThemePackage extends Package
 		$pkg = parent::install();
 		
 		// install theme
-		PageTheme::add('itm_theme', $pkg);
-
+		$theme = PageTheme::add('itm_theme', $pkg);
+		$theme->applyToSite();
+		
 		// install
 		BlockType::installBlockTypeFromPackage('itm_titled_paragraph', $pkg);
 		
@@ -61,40 +62,6 @@ class ItmThemePackage extends Package
 					'ctIcon' => $hIcon[$handle]
 				), $pkg);
 			}
-		}
-		
-		// add default page type
-		$handles[] = 'page';
-		
-		// loop page type handles
-		foreach ($handles as $handle)
-		{
-			// get page types and their master template
-			$ct = CollectionType::getByHandle($handle);
-			if (!$ct)
-				continue;
-			
-			$mTpl = $ct->getMasterTemplate();
-			
-			// now remove all elements from Navigation area
-			$aNavigation = Area::getOrCreate($mTpl, 'Navigation');
-			$blocks = $aNavigation->getAreaBlocksArray($mTpl);
-			foreach ($blocks as $block)
-			{
-				$block->delete();
-			}
-			
-			ItmThemePackage::addNavigationBlock($mTpl);
-			
-			// do the same for Breadcrumbs area
-			$aBreadcrumbs = Area::getOrCreate($mTpl, 'Breadcrumbs');
-			$blocks = $aBreadcrumbs->getAreaBlocksArray($mTpl);
-			foreach($blocks as $block)
-			{
-				$block->delete();
-			}
-			
-			ItmThemePackage::addBreadcrumbsBlock($mTpl);
 		}
 	}
 	

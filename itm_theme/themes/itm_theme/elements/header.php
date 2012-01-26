@@ -23,7 +23,8 @@
 		<div id="pfadTitel"><a href="<?= DIR_REL ?>">INSTITUTE OF TELEMATICS</a></div>
 		<div id="pfadLeiste">
 			<?php
-			$as = new Area('Breadcrumbs');
+			$as = new GlobalArea('Breadcrumbs');
+			$as->setBlockLimit(1);
 			$as->display($c);
 			?>
 		</div>
@@ -32,12 +33,14 @@
 		<div id="teaserLinks">
 			<?php
 			$as = new Area('Teaser Image Left');
+			$as->setBlockLimit(1);
 			$as->display($c);
 			?>
 		</div>
 		<div id="teaserRechts">
 			<?php
 			$as = new Area('Teaser Image Right');
+			$as->setBlockLimit(1);
 			$as->display($c);
 			?>
 		</div>
@@ -45,7 +48,7 @@
 	<div id="mitte">
 		<div id="menu">
 			<?php
-			$as = new Area('Navigation');
+			$as = new GlobalArea('Navigation');
 			$as->display($c);
 			?>
 		</div>
