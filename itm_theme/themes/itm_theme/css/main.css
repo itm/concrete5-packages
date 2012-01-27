@@ -232,6 +232,12 @@ a:bb:hover {color: #cd0000; }
 	padding:20px 10px 20px 0px;
 }
 
+#links {
+	float:left;
+	width:160px;
+	padding:20px 10px 20px 0px;
+}
+
 #fuss {
 	clear:both;
 	padding:20px 0 10px 0;
