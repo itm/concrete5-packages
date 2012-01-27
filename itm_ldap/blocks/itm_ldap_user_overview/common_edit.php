@@ -1,10 +1,9 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 
-<div class="ccm-block-field-group">
-	<h2><?= t('Staff group name') ?></h2>
+<div>
+	<h4><?= t('Staff group name') ?></h4>
 
-	<p id="userp">
-		<?= $form->text('groupName', $groupName, array('style' => 'width: 90%')) ?>
+	<p id="userp" style="padding-right: 10px">
+		<?= $form->text('groupName', $groupName, array('style' => 'width: 100%')) ?>
 	</p>
-
 </div>

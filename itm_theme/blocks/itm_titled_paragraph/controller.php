@@ -5,6 +5,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class ItmTitledParagraphBlockController extends ContentBlockController
 {
 	protected $btTable = 'btItmTitledParagraph';
+	protected $btWrapperClass = 'ccm-ui';
 
 	public function getBlockTypeDescription()
 	{

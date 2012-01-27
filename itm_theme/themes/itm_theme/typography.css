@@ -162,3 +162,8 @@ table.Download td {
 	padding: 5px;
 	border-bottom: 1px dotted #B8B8B2;
 }
+
+a[href^="http://"]:before,
+a[href^="https://"]:before {
+  content: "\2197\00A0";
+}

@@ -7,7 +7,8 @@ class ItmLdapUserOverviewBlockController extends BlockController
 	protected $btTable = 'btItmLdapUserOverview';
 	protected $btInterfaceWidth = "300";
 	protected $btInterfaceHeight = "200";
-
+	protected $btWrapperClass = 'ccm-ui';
+	
 	public function getBlockTypeDescription()
 	{
 		return t("Adds a list of users to a page.");

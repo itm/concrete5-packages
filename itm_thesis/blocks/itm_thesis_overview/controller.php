@@ -12,6 +12,7 @@ class ItmThesisOverviewBlockController extends BlockController
 	protected $btTable = "btItmThesisOverview";
 	protected $btInterfaceWidth = "300";
 	protected $btInterfaceHeight = "200";
+	protected $btWrapperClass = 'ccm-ui';
 
 	public function getBlockTypeDescription()
 	{

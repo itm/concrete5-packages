@@ -37,6 +37,26 @@ class ItmBibtexPackage extends Package
 		
 		$sp1 = SinglePage::add('/dashboard/itm_bibtex', $pkg);
 		$sp1->update(array('cName' => t('ITM BibTex'), 'cDescription' => t('Bib File Editor')));
+		
+		// add allowed file type "bib" if not already exists
+		$helper_file = Loader::helper('concrete/file');
+		
+		$file_access_file_types = UPLOAD_FILE_EXTENSIONS_ALLOWED;
+		if (!$file_access_file_types) {
+			$file_access_file_types = $helper_file->unserializeUploadFileExtensions(UPLOAD_FILE_EXTENSIONS_ALLOWED);
+		}
+		else {
+			$file_access_file_types = $helper_file->unserializeUploadFileExtensions($file_access_file_types);		
+		}
+		
+		$filteredTypes = array_filter($file_access_file_types, function($val){ return trim($val) == 'bib'; });
+		
+		if (!count($filteredTypes))
+		{
+			$file_access_file_types[] = 'bib';
+			$types = $helper_file->serializeUploadFileExtensions($file_access_file_types);
+			Config::save('UPLOAD_FILE_EXTENSIONS_ALLOWED', $types);
+		}
 	}
 
 	public static function addUserTextAttr($handle, $name, $pkg)
