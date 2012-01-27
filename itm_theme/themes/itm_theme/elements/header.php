@@ -47,9 +47,17 @@
 	</div>
 	<div id="mitte">
 		<div id="menu">
-			<?php
-			$as = new GlobalArea('Navigation');
-			$as->display($c);
-			?>
+			<div>
+				<?php
+				$as = new GlobalArea('Navigation');
+				$as->display($c);
+				?>
+			</div>
+			<div>
+				<?php
+				$as = new Area('Local Navigation');
+				$as->display($c);
+				?>
+			</div>
 		</div>
 	
