@@ -92,7 +92,7 @@ class ItmThesisOverviewBlockController extends BlockController
 						'topic' => $ctrlData->topic,
 						'status' => $ctrlData->status,
 						'type' => $ctrlData->type,
-						'link' => $nh->getCollectionURL($collection)
+						'link' => $nh->getLinkToCollection($collection)
 					);
 					
 					// add item to result list
