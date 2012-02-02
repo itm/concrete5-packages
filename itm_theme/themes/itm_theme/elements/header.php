@@ -14,16 +14,17 @@
 <body>
 <div id="rahmen">
 	<div id="logo">
-		<div id="logoUni"><img src="<?=$imgBase?>/logoUni.gif" width="280" height="87" alt="Universit&auml;t zu L&uuml;beck"></div>
+		<div id="logoUni"><img src="<?=$imgBase?>/LogoITM.png" width="280" height="87" alt="Universit&auml;t zu L&uuml;beck"></div>
 		<div id="logoSlogan"><img src="<?=$imgBase?>/sloganHell.gif" width="158" height="28" alt="Im Focus das Leben"></div>
 
 	</div>
 	<div id="kopfBalken"><img src="<?=$imgBase?>/strichSchmalGrau.gif" width="280" height="10" hspace="10"><img src="<?=$imgBase?>/balkenBreitGrauHell.gif" width="650" height="10"></div>
 	<div id="pfad">
-		<div id="pfadTitel"><a href="index.html">ITM Testsuite</a></div>
+		<div id="pfadTitel"><a href="<?= DIR_REL ?>">INSTITUTE OF TELEMATICS</a></div>
 		<div id="pfadLeiste">
 			<?php
-			$as = new Area('Breadcrumbs');
+			$as = new GlobalArea('Breadcrumbs');
+			$as->setBlockLimit(1);
 			$as->display($c);
 			?>
 		</div>
@@ -32,21 +33,31 @@
 		<div id="teaserLinks">
 			<?php
 			$as = new Area('Teaser Image Left');
+			$as->setBlockLimit(1);
 			$as->display($c);
 			?>
 		</div>
 		<div id="teaserRechts">
 			<?php
 			$as = new Area('Teaser Image Right');
+			$as->setBlockLimit(1);
 			$as->display($c);
 			?>
 		</div>
 	</div>
 	<div id="mitte">
 		<div id="menu">
-			<?php
-			$as = new Area('Navigation');
-			$as->display($c);
-			?>
+			<div>
+				<?php
+				$as = new GlobalArea('Navigation');
+				$as->display($c);
+				?>
+			</div>
+			<div>
+				<?php
+				$as = new Area('Local Navigation');
+				$as->display($c);
+				?>
+			</div>
 		</div>
-	</div>
+	

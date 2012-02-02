@@ -1,0 +1,169 @@
+body,td,th {
+	font-family: Tahoma, sans-serif, Arial, Helvetica;
+	font-size: 12px;
+	color: #000;
+}
+body {
+	background-color: #fff;
+	margin-left: 0px;
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+h1 {
+	font-size:20px;
+	color:#008799;
+	font-weight:normal;
+	margin-top:0;
+}
+
+h2 {
+	font-size:14px;
+	color:#666;
+	font-weight:bold;
+}
+
+h4 {
+	font-size:13px;
+	color:#008799;
+	font-weight:bold;
+	display:block;
+	line-height:24px;
+	/*border-top:10px solid #e4e4dd;*/
+	border-top:1px solid #b8b8b2;
+}
+
+h5 {
+	font-size:12px;
+	color:#008799;
+	font-weight:bold;
+	display:block;
+	line-height:24px;
+	border-top:1px solid #b8b8b2;
+}
+
+a { text-decoration: none; }
+
+a:link     {color: #006977; } 
+a:visited  {color: #006977; }
+a:active   {color: #cd0000; }
+a:hover    {color: #cd0000; }
+a:bb:hover {color: #cd0000; }
+
+/* Form */
+
+.formRow {
+	position:relative;
+	width:475px;
+	line-height:16px;
+	padding-bottom:10px;
+}
+
+.formRowLabel {
+	float:left;
+	width:75px;
+	color:#666;
+	font-size:11px;
+}
+
+.formRowContent {
+	float:right;
+	width:390px;
+	background-color:#F3F3F0;
+	padding-top:3px;
+	padding-bottom:3px;
+	padding-left:5px;
+	min-height:16px;
+}
+
+.formRowContent.edit {
+	float:right;
+	width:390px;
+	background-color:#FFF;
+	padding-top:3px;
+	padding-bottom:3px;
+	padding-left:5px;
+	min-height:16px;
+	border:1px dotted #b8b8b2;
+}
+
+.formRowDelimiter {
+	/*clear:both;*/
+	height:1px;
+	padding:0;
+	margin:0;
+	border:none;
+	height:16px;
+}
+
+/* Prado Controls */
+
+.formsTText {
+	width:340px;
+}
+
+.formsTLabel {
+}
+
+.TLinkButton {
+	font-size:11px;
+}
+
+.TTextBox100{
+	width:385px;	
+	font-size:12px;
+	font-family: Tahoma, sans-serif, Arial, Helvetica;
+	border:none;
+	background-color:#FFF;
+	
+}
+
+
+/* Tabelle Downloads */
+table.Download{
+	border:none;
+	border-collapse: collapse;
+	margin:0px;
+}
+
+table.Download tr {
+	background:#CCCCCC;	
+}
+
+table.Download td {
+	width:480px;
+	text-align:left;
+	vertical-align:top;
+	background-color:#F3F3F0;
+	padding:5px;
+	margin:0px;
+}
+
+.itmTable
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.itmTableTh
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	background-color: #E4E4DD;
+}
+
+.itmTableTd
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	border-bottom: 1px dotted #B8B8B2;
+}
+
+a[href^="http://"]:before,
+a[href^="https://"]:before {
+  content: "\2197\00A0";
+}

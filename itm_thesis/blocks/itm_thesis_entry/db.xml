@@ -20,6 +20,9 @@
 			Beginning should be a date, but can be any other stuff limited
 			to 100 characters. Per convention an empty value or a zero are
 			recognized as an "as-soon-as-possible"-value.
+			
+			Fields supervisor and tutor might be LDAP user names. If so,
+			names should begin with a qualifier, defaultly set to 'ldap:'.
 		-->
 		<field name="topic" type="C" size="255" />
 		<field name="type" type="I" size="255" />

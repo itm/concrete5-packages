@@ -5,7 +5,7 @@ $this->inc('elements/header.php');
 
 <div id="rechts">
 	<?php
-	$as = new Area('Right Sidebar');
+	$as = new Area('Sidebar');
 	$as->display($c);
 	?>
 </div>

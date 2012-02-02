@@ -5,8 +5,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 class ItmThemePackage extends Package
 {
 	protected $pkgHandle = 'itm_theme';
-	protected $appVersionRequired = '5.4.2';
-	protected $pkgVersion = '0.1';
+	protected $appVersionRequired = '5.5.1';
+	protected $pkgVersion = '1.0';
 
 	public function getPackageDescription()
 	{
@@ -23,8 +23,12 @@ class ItmThemePackage extends Package
 		$pkg = parent::install();
 		
 		// install theme
-		PageTheme::add('itm_theme', $pkg);
-
+		$theme = PageTheme::add('itm_theme', $pkg);
+		$theme->applyToSite();
+		
+		// install
+		BlockType::installBlockTypeFromPackage('itm_titled_paragraph', $pkg);
+		
 		// install page type defaults
 		Loader::model('collection_types');
 		
@@ -36,9 +40,9 @@ class ItmThemePackage extends Package
 		);
 		
 		$hDescr = array(
-			'full' => t('One Column Layout'),
-			'right_sidebar' => t('Two Column Layout with Right Sidebar'),
-			'left_sidebar' => t('Two Column Layout with Left Sidebar')
+			'full' => t('One Column'),
+			'right_sidebar' => t('Right Sidebar'),
+			'left_sidebar' => t('Left Sidebar')
 		);
 		
 		$hIcon = array(
@@ -59,42 +63,15 @@ class ItmThemePackage extends Package
 				), $pkg);
 			}
 		}
-		
-		// add default page type
-		$handles[] = 'page';
-		
-		// loop page type handles
-		foreach ($handles as $handle)
-		{
-			// get page types and their master template
-			$ct = CollectionType::getByHandle($handle);
-			if (!$ct)
-				continue;
-			
-			$mTpl = $ct->getMasterTemplate();
-			
-			// now remove all elements from Navigation area
-			$aNavigation = Area::getOrCreate($mTpl, 'Navigation');
-			$blocks = $aNavigation->getAreaBlocksArray($mTpl);
-			foreach ($blocks as $block)
-			{
-				$block->delete();
-			}
-			
-			ItmThemePackage::addNavigationBlock($mTpl);
-			
-			// do the same for Breadcrumbs area
-			$aBreadcrumbs = Area::getOrCreate($mTpl, 'Breadcrumbs');
-			$blocks = $aBreadcrumbs->getAreaBlocksArray($mTpl);
-			foreach($blocks as $block)
-			{
-				$block->delete();
-			}
-			
-			ItmThemePackage::addBreadcrumbsBlock($mTpl);
-		}
 	}
 	
+	/**
+	 * Adds a Breadcrumbs block to a collection.
+	 * 
+	 * @param Collection $collection Collection object where to add the block
+	 * @param array $data additional for Collection::addBlock() method
+	 * @return Block inserted block 
+	 */
 	public static function addBreadcrumbsBlock($collection, $data = array())
 	{
 		$aBreadcrumbs = Area::getOrCreate($collection, 'Breadcrumbs');
@@ -122,6 +99,13 @@ class ItmThemePackage extends Package
 		return $bBreadcrumbs;
 	}
 	
+	/**
+	 * Adds a Navigation block to a collection.
+	 * 
+	 * @param Collection $collection Collection object where to add the block
+	 * @param array $data additional for Collection::addBlock() method
+	 * @return Block inserted block 
+	 */
 	public static function addNavigationBlock($collection, $data = array())
 	{
 		$aNavigation = Area::getOrCreate($collection, 'Navigation');

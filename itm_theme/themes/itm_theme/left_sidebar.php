@@ -3,9 +3,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $this->inc('elements/header.php');
 ?>
 
-<div id="rechts">
+<div id="links">
 	<?php
-	$as = new Area('Left Sidebar');
+	$as = new Area('Sidebar');
 	$as->display($c);
 	?>
 </div>
