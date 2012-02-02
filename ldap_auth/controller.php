@@ -3,7 +3,7 @@
 class LdapAuthPackage extends Package {
 
 	protected $pkgHandle = 'ldap_auth';
-	protected $appVersionRequired = '5.4.0';
+	protected $appVersionRequired = '5.5.1';
 	protected $pkgVersion = '1.0';
 	
 	public function getPackageDescription() {

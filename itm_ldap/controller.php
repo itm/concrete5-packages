@@ -5,7 +5,7 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 class ItmLdapPackage extends Package
 {
 	protected $pkgHandle = 'itm_ldap';
-	protected $appVersionRequired = '5.3.3';
+	protected $appVersionRequired = '5.5.1';
 	protected $pkgVersion = '1.0';
 
 	public function getPackageDescription()

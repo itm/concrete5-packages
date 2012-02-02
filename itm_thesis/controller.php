@@ -5,8 +5,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 class ItmThesisPackage extends Package
 {
 	protected $pkgHandle = 'itm_thesis';
-	protected $appVersionRequired = '5.4.2';
-	protected $pkgVersion = '0.1';
+	protected $appVersionRequired = '5.5.1';
+	protected $pkgVersion = '1.0';
 
 	public function getPackageDescription()
 	{
