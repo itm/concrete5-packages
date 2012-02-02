@@ -11,10 +11,15 @@ $fl = new FileList();
 $fl->filterByExtension('bib');
 $bibFiles = $fl->get(1000);
 $selectList = array();
-array_walk($bibFiles, function($val, $key) use(&$selectList)
-		{
-			$selectList[(string) $val->fID] = $val->getApprovedVersion()->fvTitle . " (ID: " . $val->fID . ")";
-		});
+// the cool way with PHP 5.3
+//array_walk($bibFiles, function($val, $key) use(&$selectList)
+//		{
+//			$selectList[(string) $val->fID] = $val->getApprovedVersion()->fvTitle . " (ID: " . $val->fID . ")";
+//		});
+foreach ($bibFiles as $key => $val)
+{
+	$selectList[(string) $val->fID] = $val->getApprovedVersion()->fvTitle . " (ID: " . $val->fID . ")";
+}
 ?>
 <script language="JavaScript">
 	BibFileEditor = {

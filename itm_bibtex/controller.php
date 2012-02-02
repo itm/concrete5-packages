@@ -49,7 +49,17 @@ class ItmBibtexPackage extends Package
 			$file_access_file_types = $helper_file->unserializeUploadFileExtensions($file_access_file_types);		
 		}
 		
-		$filteredTypes = array_filter($file_access_file_types, function($val){ return trim($val) == 'bib'; });
+		// the cool way with PHP 5.3
+		//$filteredTypes = array_filter($file_access_file_types, function($val){ return trim($val) == 'bib'; });
+		
+		$filteredTypes = array();
+		foreach ($file_access_file_types as $val)
+		{
+			if (trim($val) == 'bib')
+			{
+				array_push($filteredTypes, $val);
+			}
+		}
 		
 		if (!count($filteredTypes))
 		{
