@@ -358,7 +358,7 @@ class ItmLdapHelper
 				{
 					if ($bCtrl->uName == $uName)
 					{
-						return $nh->getCollectionURL($collection);
+						return $nh->getLinkToCollection($collection);
 					}
 				}
 			}

@@ -12,7 +12,7 @@ $list = $this->controller->getThesisList();
 echo '<h2>' . t('Theses') . '</h2>';
 
 if (!count($list)) :
-	echo '<p>' . t('There are currently no theses supervised by me.') . '</p>';
+	echo '<p>' . (empty($uName) ? t('There are currently no theses available.') : t('There are currently no theses supervised by me.')) . '</p>';
 else :
 	?>
 	<table class="itmThesisOverview">
