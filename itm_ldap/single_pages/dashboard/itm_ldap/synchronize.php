@@ -166,12 +166,12 @@ $json = Loader::helper('json');
 					<form onsubmit="this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmUpdate(\'' + uid + '\');" action="<?= $this->action('update_user') ?>" method="post" style="display: inline">\n\
 						<input type="hidden" value="' + uid + '" name="uid"/>\n\
 						<input type="hidden" value="" name="filter"/>\n\
-						<input type="submit" value="<?= t('Update') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-left"/>\n\
+						<?= $ih->submit(t('Update'), false, 'left', null, array('style' => 'margin-right: 5px')) ?>\n\
 					</form>\n\
 					<form onsubmit="this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmRemove(\'' + uid + '\');" action="<?= $this->action('remove_user') ?>" method="post" style="display: inline">\n\
 						<input type="hidden" value="' + uid + '" name="uid"/>\n\
 						<input type="hidden" value="" name="filter"/>\n\
-						<input type="submit" value="<?= t('Remove') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-left"/>\n\
+						<?= $ih->submit(t('Remove'), false, 'left') ?>\n\
 					</form>\n\
 				</td>\n\
 			</tr>');
@@ -198,6 +198,25 @@ $json = Loader::helper('json');
 		clear: both;
 		visibility: hidden;
 	}
+	
+	#ldapC5UserUserlistTable .center
+	{
+		text-align: center;
+	}
+	
+	#ldapC5UserUserlistTable td, th
+	{
+		vertical-align: middle;
+	}
+	
+	label.syncStyle
+	{
+		cursor: pointer;
+		float: none;
+		text-align: left;
+		width: 100%;
+		padding-left: 5px;
+	}
 </style>
 <?php echo $dh->getDashboardPaneHeaderWrapper(t('Synchronize concrete5 users with LDAP users'), false, false, true, array(), Page::getByPath("/dashboard")); ?>
 	<p id="submissionProcessing" style="display: none;">
@@ -207,17 +226,17 @@ $json = Loader::helper('json');
 	<p>
 	<form style="display: inline; line-height: 36px" onsubmit="return false">
 		<?= t('Filter') ?>: <input type="text" value="<?= $uidFilter ?>" name="ldapC5UserFilterValue" id="ldapC5UserFilterValue"/>&nbsp;&nbsp;&nbsp;
-		<input onchange="LdapC5Users.filter();" type="checkbox" value="1" id="ldapC5UserFilterC5" name="filterC5"<?= $c5Filter ? ' checked="checked' : '"' ?>/><label for="ldapC5UserFilterC5"><?= t('Available at concrete5') ?></label>&nbsp;&nbsp;&nbsp;
-		<input onchange="LdapC5Users.filter();" type="checkbox" value="1" id="ldapC5UserFilterLdap" name="filterLdap"<?= $ldapFilter ? ' checked="checked' : '"' ?>/><label for="ldapC5UserFilterLdap"><?= t('Available at LDAP server') ?></label>
+		<input onchange="LdapC5Users.filter();" type="checkbox" value="1" id="ldapC5UserFilterC5" name="filterC5"<?= $c5Filter ? ' checked="checked' : '"' ?>/><label for="ldapC5UserFilterC5" class="syncStyle"><?= t('Available at concrete5') ?></label>&nbsp;&nbsp;&nbsp;
+		<input onchange="LdapC5Users.filter();" type="checkbox" value="1" id="ldapC5UserFilterLdap" name="filterLdap"<?= $ldapFilter ? ' checked="checked' : '"' ?>/><label for="ldapC5UserFilterLdap" class="syncStyle"><?= t('Available at LDAP server') ?></label>
 	</form>
 	<div style="display: inline;" class="userTableClearfix">
 		<form style="display: inline;" action="<?= $this->action('remove_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmRemoveSelected()">
-			<input type="submit" value="<?= t('Remove selected') ?>"  class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
+			<?= $ih->submit(t('Remove selected'), false, 'right') ?>
 			<input type="hidden" value="" name="items"/>
 			<input type="hidden" value="" name="filter"/>
 		</form>
 		<form style="display: inline;" action="<?= $this->action('update_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmUpdateSelected()">
-			<input type="submit" value="<?= t('Update selected') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
+			<?= $ih->submit(t('Update selected'), false, 'right', null, array('style' => 'margin-right: 5px')) ?>
 			<input type="hidden" value="" name="items"/>
 			<input type="hidden" value="" name="filter"/>
 		</form>
@@ -226,13 +245,13 @@ $json = Loader::helper('json');
 <table width="100%" cellspacing="1" cellpadding="0" border="0" class="grid-list" id="ldapC5UserUserlistTable">
 	<thead>
 		<tr>
-			<td class="subheader center" style="width: 50px">
+			<th class="subheader center" style="width: 50px">
 				<a onclick="LdapC5Users.selectAll()" href="javascript:void(0)"><?= t('All') ?></a> | <a onclick="LdapC5Users.selectNone()" href="javascript:void(0)"><?= t('None') ?></a>
-			</td>
-			<td class="subheader" style=""><?= t('Common user ID') ?></td>
-			<td class="subheader center" style="width: 150px"><?= t('Available via concrete5') ?></td>
-			<td class="subheader center" style="width: 150px"><?= t('Available via LDAP server') ?></td>
-			<td class="subheader center" style="width: 200px"><?= t('Actions for single user') ?></td>
+			</th>
+			<th class="subheader" style=""><?= t('Common user ID') ?></td>
+			<th class="subheader center" style="width: 150px"><?= t('Available via concrete5') ?></th>
+			<th class="subheader center" style="width: 150px"><?= t('Available via LDAP') ?></th>
+			<th class="subheader" style="width: 160px"><?= t('Actions for single user') ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -246,12 +265,12 @@ $json = Loader::helper('json');
 <p>
 <div class="userTableClearfix">
 	<form style="display: inline;" action="<?= $this->action('remove_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmRemoveSelected()">
-		<input type="submit" value="<?= t('Remove selected') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
+		<?= $ih->submit(t('Remove selected'), false, 'right') ?>
 		<input type="hidden" value="" name="items"/>
 		<input type="hidden" value="" name="filter"/>
 	</form>
 	<form style="display: inline;" action="<?= $this->action('update_users') ?>" method="post" onsubmit="this.items.value=LdapC5Users.serializeSelectedUsers(); this.filter.value=LdapC5Users.serializeFilter(); return LdapC5Users.confirmUpdateSelected()">
-		<input type="submit" value="<?= t('Update selected') ?>" class="ccm-button-v2 ccm-button-inactive ccm-button-v2-right"/>
+		<?= $ih->submit(t('Update selected'), false, 'right', null, array('style' => 'margin-right: 5px')) ?>
 		<input type="hidden" value="" name="items"/>
 		<input type="hidden" value="" name="filter"/>
 	</form>
