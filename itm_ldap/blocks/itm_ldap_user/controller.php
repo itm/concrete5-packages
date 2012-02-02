@@ -7,6 +7,7 @@ class ItmLdapUserBlockController extends BlockController
 	protected $btTable = 'btItmLdapUser';
 	protected $btInterfaceWidth = "300";
 	protected $btInterfaceHeight = "200";
+	protected $btWrapperClass = 'ccm-ui';
 
 	public function getBlockTypeDescription()
 	{

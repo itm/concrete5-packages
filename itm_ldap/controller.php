@@ -71,9 +71,6 @@ class ItmLdapPackage extends Package
 		$bLdapUserData = $mTplItmLdapUserPage->addBlock($btLdapUser, $aUserInformation, $data);
 		$bLdapUserData->getController()->save($defaultLdapUserData);
 
-		ItmThemePackage::addBreadcrumbsBlock($mTplItmLdapUserPage);
-		ItmThemePackage::addNavigationBlock($mTplItmLdapUserPage);
-
 		// add ldap group
 		try
 		{

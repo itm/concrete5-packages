@@ -9,7 +9,8 @@ class ItmThesisEntryBlockController extends BlockController
 	protected $btTable = 'btItmThesis';
 	protected $btInterfaceWidth = "500";
 	protected $btInterfaceHeight = "400";
-
+	protected $btWrapperClass = 'ccm-ui';
+	
 	public function getBlockTypeDescription()
 	{
 		return t("Adds a thesis entry to a page.");

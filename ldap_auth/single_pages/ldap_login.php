@@ -3,39 +3,48 @@
 <?php  $form = Loader::helper('form'); ?>
 <?php  $this->setThemeForView('core', 'concrete.php'); ?>
 
-<div style="position: relative">
+<script type="text/javascript">
+$(function() {
+	$("input[name=uName]").focus();
+});
+</script>
 
-<h1><?php echo t('Sign in to %s', SITE)?></h1>
+<?php  if (isset($intro_msg)) { ?>
+<div class="alert-message block-message success"><p><?php echo $intro_msg?></p></div>
+<?php  } ?>
+
+<div class="page-header">
+	<h1><?php echo t('Sign in to %s', SITE)?></h1>
+</div>
 
 <?php  if( $passwordChanged ){ ?>
 
-	<div style="margin-bottom:16px; font-weight:bold"><?php echo t('Password changed.  Please login to continue. ') ?></div>
+	<div class="block-message info alert-message"><p><?php echo t('Password changed.  Please login to continue. ') ?></p></div>
 
 <?php  } ?> 
 
 <?php  if($changePasswordForm){ ?>
 
-	<div style="margin-bottom:16px; font-weight:bold"><?php echo t('Enter your new password below.') ?></div>
-
-	<?php  if (isset($errorMsg)) { ?>
-		<div class="ccm-error" style="margin-bottom:16px;"><?php echo $errorMsg?></div>
-	<?php  } ?>
+	<p><?php echo t('Enter your new password below.') ?></p>
 
 	<div class="ccm-form">	
 
 	<form method="post" action="<?php echo $this->url( $this->getCollectionObject()->getCollectionPath(), 'change_password', $uHash )?>"> 
 
-		<div>
-		<label for="uPassword"><?php echo t('New Password')?></label><br/>
-		<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+		<div class="clearfix">
+		<label for="uPassword"><?php echo t('New Password')?></label>
+		<div class="input">
+			<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
 		</div>
-		&nbsp;<br>
-		<div>
-		<label for="uPasswordConfirm"><?php echo t('Confirm Password')?></label><br/>
-		<input type="password" name="uPasswordConfirm" id="uPasswordConfirm" class="ccm-input-text">
+		</div>
+		<div class="clearfix">
+		<label for="uPasswordConfirm"><?php echo t('Confirm Password')?></label>
+		<div class="input">
+			<input type="password" name="uPasswordConfirm" id="uPasswordConfirm" class="ccm-input-text">
+		</div>
 		</div>
 
-		<div class="ccm-button">
+		<div class="actions">
 		<?php echo $form->submit('submit', t('Sign In') . ' &gt;')?>
 		</div>
 	</form>
@@ -44,12 +53,15 @@
 
 <?php  }elseif($validated) { ?>
 
-<h2><?php echo t('Email Address Verified')?></h2>
+<h3><?php echo t('Email Address Verified')?></h3>
 
+<div class="success alert-message block-message">
 <p>
 <?php echo t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail)?>
 </p>
-<p><a href="<?php echo $this->url('/')?>"><?php echo t('Return to Home')?> &gt;</a></p>
+<div class="alert-actions"><a class="btn small" href="<?php echo $this->url('/')?>"><?php echo t('Continue to Site')?></a></div>
+</div>
+
 
 <?php  } else if (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
 
@@ -127,8 +139,8 @@
 	}
 	?>
 	
-	<?php echo $form->hidden('uName', $_POST['uName'])?>
-	<?php echo $form->hidden('uPassword', $_POST['uPassword'])?>
+	<?php echo $form->hidden('uName', Loader::helper('text')->entities($_POST['uName']))?> <!-- <?php echo $form->hidden('uName', $_POST['uName'])?> -->
+	<?php echo $form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']))?> <!-- <?php echo $form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']))?> -->
 	<?php echo $form->hidden('uOpenID', $uOpenID)?>
 	<?php echo $form->hidden('completePartialProfile', true)?>
 
@@ -142,78 +154,118 @@
 
 <?php  } else { ?>
 
-<?php  if (isset($intro_msg)) { ?>
-<h2><?php echo $intro_msg?></h2>
-<?php  } ?>
-
-<div class="ccm-form">
-<?php  if (ENABLE_REGISTRATION == 1) { ?><div style="position: absolute; top: 36px; right: 0px; font-size: 11px"><?php echo t('Not a member?')?> <a href="<?php echo $this->url('/register')?>"><?php echo t('Register here!')?></a></div><?php  } ?>
-
 <form method="post" action="<?php echo $this->url($this->getCollectionObject()->getCollectionPath(), 'do_login')?>">
-	<div>
+
+<div class="row">
+<div class="span8 columns">
+
+<fieldset>
+	
+	<legend><?php echo t('User Account')?></legend>
+
+	<div class="clearfix">
+	
 	<label for="uName"><?php  if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
 		<?php echo t('Email Address')?>
 	<?php  } else { ?>
 		<?php echo t('Username')?>
-	<?php  } ?></label><br/>
-	<input type="text" name="uName" id="uName" <?php echo  (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
+	<?php  } ?></label>
+	<div class="input">
+		<input type="text" name="uName" id="uName" <?php echo  (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
 	</div>
-	<br>
-	<div>
-	<label for="uPassword"><?php echo t('Password')?></label><br/>
-	<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
-	</div>
-
-	<hr />
 	
-	<?php  if (OpenIDAuth::isEnabled()) { ?>
-		<div>
-		<label for="uOpenID"><?php echo t('Or login using an OpenID')?>:</label><br/>
-		<input type="text" name="uOpenID" id="uOpenID" <?php echo  (isset($uOpenID)?'value="'.$uOpenID.'"':'');?> class="ccm-input-openid">
+	</div>
+	<div class="clearfix">
+
+	<label for="uPassword"><?php echo t('Password')?></label>
+	
+	<div class="input">
+		<input type="password" name="uPassword" id="uPassword" class="ccm-input-text" />
+	</div>
+	
+	</div>
+</fieldset>
+
+<?php  if (OpenIDAuth::isEnabled()) { ?>
+	<fieldset>
+
+	<legend><?php echo t('OpenID')?></legend>
+
+	<div class="clearfix">
+		<label for="uOpenID"><?php echo t('Login with OpenID')?>:</label>
+		<div class="input">
+			<input type="text" name="uOpenID" id="uOpenID" <?php echo  (isset($uOpenID)?'value="'.$uOpenID.'"':'');?> class="ccm-input-openid">
+		</div>
+	</div>
+	</fieldset>
+<?php  } ?>
+
+</div>
+<div class="span8 columns">
+
+	<fieldset>
+
+	<legend><?php echo t('Options')?></legend>
+
+	<?php  if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
+		<div class="clearfix">
+			<label for="USER_LOCALE"><?php echo t('Language')?></label>
+			<div class="input"><?php echo $form->select('USER_LOCALE', $locales)?></div>
 		</div>
 	<?php  } ?>
-	<?php echo $form->checkbox('uMaintainLogin', 1)?> <label for="uMaintainLogin"><?php echo t('Remember Me')?></label>
 	
-	<div class="ccm-button">
-	<?php echo $form->submit('submit', t('Sign In') . ' &gt;')?>
+	<div class="clearfix">
+		<label for="uMaintainLogin"><?php echo t('Remember Me')?></label>
+		<div class="input">
+		<ul class="inputs-list">
+			<li><label><?php echo $form->checkbox('uMaintainLogin', 1)?> <span><?php echo t('Remain logged in to website.')?></span></label></li>
+		</ul>
+		</div>
 	</div>
-	<?php  $rcID = isset($_REQUEST['rcID']) ? preg_replace('/<|>/', '', $_REQUEST['rcID']) : $rcID; ?>
+	<?php  $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
 	<input type="hidden" name="rcID" value="<?php echo $rcID?>" />
-</form>
+	
+	</fieldset>
 </div>
+<div class="span16 columns">
+	<div class="actions">
+	<?php echo $form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary'))?>
+	</div>
+</div>
+</div>
+</form>
 
-<div class="ccm-form">
-
-<h2 style="margin-top:32px"><?php echo t('Forgot Your Password?')?></h2>
+<h3><?php echo t('Forgot Your Password?')?></h3>
 
 <p><?php echo t("If you've forgotten your password, enter your email address below. We will reset it to a new password, and send the new one to you.")?></p>
-
-</div>
-
-<div class="ccm-form">
 
 <a name="forgot_password"></a>
 
 <form method="post" action="<?php echo $this->url($this->getCollectionObject()->getCollectionPath(), 'forgot_password')?>">
+<input type="hidden" name="rcID" value="<?php echo $rcID?>" />
 	
-	<label for="uEmail"><?php echo t('Email Address')?></label><br/>
-	<input type="hidden" name="rcID" value="<?php echo $rcID?>" />
-	<input type="text" name="uEmail" value="" class="ccm-input-text" >
-
-	<div class="ccm-button">
-	<?php echo $form->submit('submit', t('Reset and Email Password') . ' &gt;')?>
+	<div class="clearfix">
+		<label for="uEmail"><?php echo t('Email Address')?></label>
+		<div class="input">
+			<input type="text" name="uEmail" value="" class="ccm-input-text" >
+		</div>
+	</div>
+	
+	<div class="actions">
+		<?php echo $form->submit('submit', t('Reset and Email Password') . ' &gt;')?>
 	</div>
 	
 </form>
 
+
+<?php  if (ENABLE_REGISTRATION == 1) { ?>
+<div class="clearfix">
+<h3><?php echo t('Not a Member')?></h3>
+<p><?php echo t('Create a user account for use on this website.')?></p>
+<div class="actions">
+<a class="btn" href="<?php echo $this->url('/register')?>"><?php echo t('Register here!')?></a>
 </div>
-
-
-<script type="text/javascript">
-	document.getElementById("uName").focus();
-</script>
-
+</div>
 <?php  } ?>
 
-</div>
-
+<?php  } ?>

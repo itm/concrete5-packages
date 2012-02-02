@@ -7,7 +7,7 @@ class LdapAuthPackage extends Package {
 	protected $pkgVersion = '1.0';
 	
 	public function getPackageDescription() {
-		return t("Authenticate users via Active Directory or any LDAP compliant user directory.");
+		return t("Derived package tailored to the ITM Website.");
 	}
 	
 	public function getPackageName() {

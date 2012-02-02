@@ -1,6 +1,7 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 <?php
 $ih = Loader::helper('concrete/interface');
+$dh = Loader::helper('concrete/dashboard');
 
 $uidFilter = htmlentities($filter['value']);
 $c5Filter = $filter['c5'] == 1;
@@ -198,8 +199,7 @@ $json = Loader::helper('json');
 		visibility: hidden;
 	}
 </style>
-<h1><span><?php echo t('Synchronize concrete5 users with LDAP users') ?></span></h1>
-<div class="ccm-dashboard-inner">
+<?php echo $dh->getDashboardPaneHeaderWrapper(t('Synchronize concrete5 users with LDAP users'), false, false, true, array(), Page::getByPath("/dashboard")); ?>
 	<p id="submissionProcessing" style="display: none;">
 		<img src="<?= ASSETS_URL_IMAGES ?>/throbber_white_32.gif" width="32" height="32" alt="<?= t('Loading...') ?>" style="vertical-align: middle; margin-right: 10px"/>
 		<?= t('Processing...') ?>
@@ -257,4 +257,4 @@ $json = Loader::helper('json');
 	</form>
 </div>
 </p>
-</div>
+<?php echo $dh->getDashboardPaneFooterWrapper(); ?>

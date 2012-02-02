@@ -12,6 +12,7 @@ class ItmBibtexBlockController extends BlockController
 	protected $btTable = 'btItmBibtex';
 	protected $btInterfaceWidth = "350";
 	protected $btInterfaceHeight = "300";
+	protected $btWrapperClass = 'ccm-ui';
 
 	public function getBlockTypeDescription()
 	{

@@ -89,10 +89,6 @@ class ItmThesisPackage extends Package
 		);
 		$bThesisTopic = $mTplItmThesisPage->addBlock($btThesisCustomContent, $aThesisInformation, $data);
 		$bThesisTopic->getController()->save($defaultThesisTopicData);
-
-		// add navigation elements to master template of the thesis page type
-		ItmThemePackage::addBreadcrumbsBlock($mTplItmThesisPage);
-		ItmThemePackage::addNavigationBlock($mTplItmThesisPage);
 	}
 }
 

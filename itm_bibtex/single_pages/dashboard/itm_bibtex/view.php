@@ -1,6 +1,8 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 <?php
 Loader::model('file_list');
+
+$dh = Loader::helper('concrete/dashboard');
 $uh = Loader::helper('concrete/urls');
 $ih = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
@@ -99,32 +101,37 @@ array_walk($bibFiles, function($val, $key) use(&$selectList)
 	<?php endif; ?>
 
 </script>
-<h1><span><?php echo t('Bib-File Editor') ?></span></h1>
-<div class="ccm-dashboard-inner">
-	<?php if (count($selectList)): ?>
-	<div>
-		<?= t('Select file:') ?>&nbsp;<?= $form->select('bibfiles', $selectList, $since, array('style' => 'width: 300px', 'onchange' => 'return BibFileEditor.loadFile();')) ?>
-	</div>
-	<?php else: ?>
-	<p>
-		There are currently no Bib files available.
-	</p>
-	<?php endif; ?>
-	<div id="bibFileContainer"  style="margin-top: 20px; display: none">
-		<form>
-			<div><?= $form->textarea('bibFileContent', array('style' => 'width: 90%; height: 400px', 'onchange' => 'BibFileEditor.setChanged(true)')) ?></div>
-			<p class="ccm-buttons">
-				<?= $ih->button_js(t('Save'), 'BibFileEditor.saveFile()', 'left') ?>
+<?php echo $dh->getDashboardPaneHeaderWrapper(t('Bib-File Editor'), false, false, !count($selectList), array(), Page::getByPath("/dashboard")); ?>
+	<form>
+		<div class="ccm-pane-body">
+			<?php if (count($selectList)): ?>
+			<div>
+				<?= t('Select file:') ?>&nbsp;<?= $form->select('bibfiles', $selectList, $since, array('style' => 'width: 300px', 'onchange' => 'return BibFileEditor.loadFile();')) ?>
+			</div>
+			<?php else: ?>
+			<p>
+				There are currently no Bib files available.
 			</p>
-			<div class="ccm-spacer">&nbsp;</div>
-		</form>
-	</div>
-	<div id="bibFileLoading" style="display: none; margin-top: 20px">
-		<img src="<?= ASSETS_URL_IMAGES ?>/throbber_white_32.gif" width="32" height="32" alt="<?= t('Loading...') ?>" style="vertical-align: middle; margin-right: 10px"/>
-		<?= t('Load file...') ?>
-	</div>
-	<div id="bibFileSaving" style="display: none; margin-top: 20px">
-		<img src="<?= ASSETS_URL_IMAGES ?>/throbber_white_32.gif" width="32" height="32" alt="<?= t('Loading...') ?>" style="vertical-align: middle; margin-right: 10px"/>
-		<?= t('Save file...') ?>
-	</div>
-</div>
+			<?php endif; ?>
+			<div id="bibFileContainer"  style="margin-top: 20px; display: none">
+				<p><?= $form->textarea('bibFileContent', array('style' => 'width: 100%; height: 400px', 'onchange' => 'BibFileEditor.setChanged(true)')) ?></p>
+			</div>
+			<div id="bibFileLoading" style="display: none; margin-top: 20px">
+				<img src="<?= ASSETS_URL_IMAGES ?>/throbber_white_32.gif" width="32" height="32" alt="<?= t('Loading...') ?>" style="vertical-align: middle; margin-right: 10px"/>
+				<?= t('Load file...') ?>
+			</div>
+			<div id="bibFileSaving" style="display: none; margin-top: 20px">
+				<img src="<?= ASSETS_URL_IMAGES ?>/throbber_white_32.gif" width="32" height="32" alt="<?= t('Loading...') ?>" style="vertical-align: middle; margin-right: 10px"/>
+				<?= t('Save file...') ?>
+			</div>
+		</div>
+		<?php if (count($selectList)): ?>
+		<div class="ccm-pane-footer">
+			<div class="ccm-buttons">
+				<input type="hidden" name="create" value="1" />
+				<?= $ih->button_js(t('Save'), 'BibFileEditor.saveFile()', 'right', 'primary') ?>
+			</div>	
+		</div>
+		<?php endif; ?>
+	</form>
+<?php echo $dh->getDashboardPaneFooterWrapper(!count($selectList)); ?>

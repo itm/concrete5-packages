@@ -1,7 +1,11 @@
-<?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
+<?php
+defined('C5_EXECUTE') or die(_("Access Denied."));
+$dh = Loader::helper('concrete/dashboard');
+?>
 
-<h1><span style="color: red"><?php echo t('ERROR: configuration corrupted') ?></span></h1>
-<div class="ccm-dashboard-inner">
-	<p><?= $msg ?></p>
-	<p><?= t('Please change settings at <i>Dashboard / Users and Groups / LDAP</i>.') ?></p>
-</div>
+<?php echo $dh->getDashboardPaneHeaderWrapper('<span style="color: red">'.t('ERROR: configuration required').'</span>', false, false, true, array(), Page::getByPath("/dashboard")); ?>
+
+<p><?= $msg ?></p>
+<p><?= t('Please change settings at <i>Dashboard / Users and Groups / LDAP</i>.') ?></p>
+
+<?php echo $dh->getDashboardPaneFooterWrapper(); ?>
