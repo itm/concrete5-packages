@@ -3,12 +3,14 @@ body,td,th {
 	font-size: 12px;
 	color: #000;
 }
+
 body {
 	background-color: #f3f3f0;
 	margin-left: 0px;
 	margin-top: 10px;
 	margin-right: 0px;
 	margin-bottom: 0px;
+	line-height: 1.5;
 }
 
 h1 {
@@ -22,6 +24,7 @@ h2 {
 	font-size:14px;
 	color:#666;
 	font-weight:bold;
+
 }
 
 h4 {
