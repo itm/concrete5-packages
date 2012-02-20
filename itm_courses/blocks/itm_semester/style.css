@@ -1,0 +1,32 @@
+table.itmThesisOverview
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+table.itmThesisOverview th
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	background-color: #E4E4DD;
+}
+
+table.itmThesisOverview td
+{
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px;
+	border-bottom: 1px dotted #B8B8B2;
+}
+
+table.itmThesisOverview topic
+{
+	padding-right: 10px;
+}
+
+table.itmThesisOverview type
+{
+	padding-right: 10px;
+}
