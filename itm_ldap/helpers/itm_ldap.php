@@ -10,15 +10,7 @@ Loader::model('page_list');
  */
 class ItmLdapHelper
 {
-
-	/**
-	 * Creates a new ADOdb connection and binds LDAP to the base given in the
-	 * package 'ldap_auth'.
-	 * 
-	 * @global array $LDAP_CONNECT_OPTIONS will be overwritten.
-	 * @return mixed ADOdb connection. 
-	 */
-	public function ldapBindStaff()
+	public function ldapBind($ldapBase)
 	{
 		$ldap = NewADOConnection('ldap');
 		global $LDAP_CONNECT_OPTIONS;
@@ -36,7 +28,7 @@ class ItmLdapHelper
 		{
 			throw new Exception('LDAP connection failed. Reason: no ldap_auth package found.');
 		}
-
+		
 		$config = new Config();
 		$config->setPackageObject(Package::getByHandle('ldap_auth'));
 		if ($config->get('LDAP_HOST') == NULL)
@@ -44,49 +36,53 @@ class ItmLdapHelper
 			throw new Exception('LDAP host has not been specified.');
 		}
 
-		if (!$ldap->Connect($config->get('LDAP_HOST'), '', '', $config->get('LDAP_BASE')))
+		if (!$ldap->Connect($config->get('LDAP_HOST'), '', '', $config->get($ldapBase)))
 		{
 			throw new Exception(t('LDAP connection failed!'));
 		}
-
+		
 		$ldap->SetFetchMode(ADODB_FETCH_ASSOC);
 
 		return $ldap;
 	}
+	/**
+	 * Creates a new ADOdb connection and binds LDAP to the base given in the
+	 * package 'ldap_auth'.
+	 * 
+	 * @global array $LDAP_CONNECT_OPTIONS will be overwritten.
+	 * @return mixed ADOdb connection. 
+	 */
+	public function ldapBindStaff()
+	{
+		return $this->ldapBind('LDAP_BASE_STAFF');
+	}
 
+	public function ldapBindGroups()
+	{
+		return $this->ldapBind('LDAP_BASE_GROUPS');
+	}
+	
 	/**
 	 * Resolves a LDAP user with uid $uid.
 	 * Optionally $ldapBind can be used as a custom ADOdb connection.
 	 * 
 	 * @param string $uid the LDAP uid (no fully qualified name)
-	 * @param mixed $ldapBind default value is false and a new binding will be
-	 *                        created. If it matches any other value, it will be
-	 *                        utilized as a ADOdb connection.
-	 * @return type 
+	 * 
+	 * @return array assoc. array of LDAP user data or null if not found.
 	 */
-	public function getLdapUser($uid, $ldapBind = false)
+	public function getLdapUser($uid)
 	{
-		$ldap = $ldapBind;
-		if (!$ldap)
+		$users = $this->getLdapStaff();
+		
+		foreach ($users as $user)
 		{
-			$ldap = $this->ldapBindStaff();
+			if ($user['uid'] == $uid)
+			{
+				return $user;
+			}
 		}
-
-		$result = $ldap->GetArray('(uid=' . $uid . ')');
-
-		if (!$ldapBind)
-		{
-			$ldap->Close();
-		}
-
-		if (count($result) == 1)
-		{
-			return $result[0];
-		}
-		else
-		{
-			return null;
-		}
+		
+		return null;
 	}
 
 	/**
@@ -264,22 +260,36 @@ class ItmLdapHelper
 	 * 
 	 * @return array array of LDAP entries (which are in turn assoc. arrays).
 	 */
-	public function getLdapStaff($ldapBind = false)
+	public function getLdapStaff()
 	{
-		$ldap = $ldapBind;
-		if (!$ldap)
-		{
-			$ldap = $this->ldapBindStaff();
-		}
-
-		if (!$ldap)
+		$ldapStaff = $this->ldapBindStaff();
+		
+		$ldapGroups = $this->ldapBindGroups();
+		
+		if (!$ldapStaff || !$ldapGroups)
 		{
 			throw new Exception(t('LDAP connection failed!'));
 		}
 
-		$result = $ldap->GetArray('(uid=*)');
-
-		$ldap->Close();
+		//$ldapStaffResult = $ldapStaff->GetArray('(uid=*)');
+		$ldapGroupsResult = $ldapGroups->GetArray('(cn=c5-*)');
+		
+		$result = array();
+		foreach ($ldapGroupsResult as $ldapGroup)
+		{
+			for ($i = 0; $i < count($ldapGroup['memberUid']); $i++)
+			{
+				$tmpRes = $ldapStaff->GetArray(sprintf('(uid=%s)', $ldapGroup['memberUid'][$i]));
+				if (count($tmpRes))
+				{
+					$tmpRes[0]['cn'] = $ldapGroup['memberUid']['cn'];
+					$result = array_merge($result, $tmpRes);
+				}
+			}
+		}
+		
+		$ldapStaff->Close();
+		$ldapGroups->Close();
 
 		return $result;
 	}

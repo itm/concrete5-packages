@@ -11,23 +11,24 @@ class DashboardUsersLdapController extends Controller {
 		$config->setPackageObject(Package::getByID($this->c->pkgID));
 		$host	= $config->get('LDAP_HOST');
 		$domain	= $config->get('LDAP_DOMAIN_NAME');
-		$base	= $config->get('LDAP_BASE');
+		$baseStaff	= $config->get('LDAP_BASE_STAFF');
+		$baseGroups	= $config->get('LDAP_BASE_GROUPS');
 		$filter	= $config->get('LDAP_FILTER');
 		$prefix	= $config->get('LDAP_GROUP_IMPORT_PREFIX');
-		if($_POST && !$_POST['ldap_test']) {
+		if($_POST && !$_POST['ldap_test'])
+		{
 			$host = $_POST['LDAP_HOST'];
 			$config->save('LDAP_HOST', $host);
 			if(!$host) $config->clear('LDAP_HOST');
 			$domain = $_POST['LDAP_DOMAIN_NAME'];
 			$config->save('LDAP_DOMAIN_NAME', $domain);
 			if(!$domain) $config->clear('LDAP_DOMAIN_NAME');
-			if(empty($_POST['LDAP_BASE'])) {
-				$base = 'dc='.str_replace('.', ',dc=', $_POST['LDAP_DOMAIN_NAME']);
-			} else {
-				$base = $_POST['LDAP_BASE'];
-			}
-			$config->save('LDAP_BASE', $base);
-			if($base == 'dc=') { $config->clear('LDAP_BASE'); $base = ''; }
+			$baseStaff = $_POST['LDAP_BASE_STAFF'];
+			$config->save('LDAP_BASE_STAFF', $baseStaff);
+			if(!$baseStaff) $config->clear('LDAP_BASE_STAFF');
+			$baseGroups = $_POST['LDAP_BASE_GROUPS'];
+			$config->save('LDAP_BASE_GROUPS', $baseGroups);
+			if(!$baseGroups) $config->clear('LDAP_BASE_GROUPS');
 			$filter = $_POST['LDAP_FILTER'];
 			$config->save('LDAP_FILTER', $filter);
 			if(!$filter) $config->clear('LDAP_FILTER');
@@ -39,7 +40,8 @@ class DashboardUsersLdapController extends Controller {
 		unset($_POST);
 		$this->set('host', $host);
 		$this->set('domain', $domain);
-		$this->set('base', $base);
+		$this->set('baseStaff', $baseStaff);
+		$this->set('baseGroups', $baseGroups);
 		$this->set('filter', $filter);
 		$this->set('prefix', $prefix);
 		
