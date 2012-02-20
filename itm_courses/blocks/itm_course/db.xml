@@ -1,35 +1,14 @@
 <?xml version="1.0"?>
 <schema version="0.3">
-	<table name="btItmThesis">
+	<table name="btItmCourse">
 		<field name="bID" type="I">
 			<key />
 			<unsigned />
 		</field>
-		<!--
-			Self-describing field names.
-			Following values of type represent:
-			0: Bachelor thesis
-			1: Master thesis
-			2: Both
-			
-			Following values of status represent:
-			0: Topic is open
-			1: Topic is processed
-			2: Topic is finished
-			
-			Beginning should be a date, but can be any other stuff limited
-			to 100 characters. Per convention an empty value or a zero are
-			recognized as an "as-soon-as-possible"-value.
-			
-			Fields supervisor and tutor might be LDAP user names. If so,
-			names should begin with a qualifier, defaultly set to 'ldap:'.
-		-->
-		<field name="topic" type="C" size="255" />
-		<field name="type" type="I" size="255" />
-		<field name="status" type="I" />
-		<field name="student" type="C" size="100" />
-		<field name="tutor" type="C" size="100" />
-		<field name="supervisor" type="C" size="100" />
-		<field name="beginning" type="C" size="100" />
+		<field name="name" type="C" size="255" />
+		<field name="type" type="I" />
+		<field name="credits" type="C" size="255"/>
+		<field name="lecturers" type="X" />
+		<field name="assistants" type="X" />
 	</table>
 </schema>

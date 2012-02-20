@@ -31,7 +31,8 @@ class ItmCoursesPackage extends Package
 
 		// install blocks
 		BlockType::installBlockTypeFromPackage('itm_course', $pkg);
-		BlockType::installBlockTypeFromPackage('itm_course_overview', $pkg);
+		BlockType::installBlockTypeFromPackage('itm_semester', $pkg);
+		BlockType::installBlockTypeFromPackage('itm_semester_overview', $pkg);
 
 		// install page type
 		Loader::model('collection_types');
@@ -81,7 +82,7 @@ class ItmCoursesPackage extends Package
 		//$btThesisEntry = BlockType::getByHandle("itm_thesis_entry");
 		//$btThesisCustomContent = BlockType::getByHandle("itm_titled_paragraph");
 
-		$btCourseOverview = BlockType::getByHandle("itm_course_overview");
+		$btSemester = BlockType::getByHandle("itm_semester");
 
 		// set default data for thesis entry block, add and save it
 		/* $defaultThesisEntryData = array(
@@ -98,16 +99,10 @@ class ItmCoursesPackage extends Package
 //		var_dump($aSemesterInformation);
 //		var_dump($mTplItmSemesterPage);
 
-		
-		try
-		{
-			$bSemesterData = $mTplItmSemesterPage->addBlock($btCourseOverview, $aSemesterInformation, array());
-			//$bSemesterData->getController()->save(array());
-		}
-		catch (Exception $e)
-		{
-			$pkg->uninstall();
-		}
+
+		$bSemesterData = $mTplItmSemesterPage->addBlock($btSemester, $aSemesterInformation, array());
+		//$bSemesterData->getController()->save(array());
+
 
 		// do the same like above for research and thesis topic blocks
 		/* $defaultResearchAreaData = array(

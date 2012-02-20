@@ -1,133 +1,87 @@
-<h1 class="itmThesisEntryTitle"><?= $topic ?></h1>
-
+<?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 <?php
 switch ($type)
 {
 	case 0:
-		$typePlain = t('Bachelor thesis');
+		$typePlain = t('Course');
 		break;
 
 	case 1 :
-		$typePlain = t('Master thesis');
+		$typePlain = t('Seminar');
 		break;
 
 	default :
-		$typePlain = t('Bachelor or master thesis');
+		$typePlain = t('Practical Course');
 		break;
-}
-
-switch ($status)
-{
-	case 0 :
-		$statusPlain = t('Open');
-		break;
-
-	case 1 :
-		$statusPlain = t('Running');
-		break;
-
-	default :
-		$statusPlain = t('Finished');
-		break;
-}
-
-if (empty($beginning) || $beginning == '0')
-{
-	$beginningPlain = 'As soon as possible';
-}
-else
-{
-	$beginningPlain = "From $beginning";
-}
-
-if (empty($student))
-{
-	$studentPlain = 'N/A';
-}
-else
-{
-	$studentPlain = $student;
 }
 ?>
 
-<div class="itmThesisEntryType">
-	<span class="itmThesisEntryCaption"><?= t('Type') ?>:</span>
-	<span class="itmThesisEntryValue"><?= $typePlain ?></span>
+<h1 class="itmCourseEntryName"><?= $name ?></h1>
+
+<h2 class="itmCourseEntry"><?=t('Course type')?></h2>
+<div class="itmCourseEntry">
+	<?=$typePlain?>
 </div>
-<div class="itmThesisEntryStatus">
-	<span class="itmThesisEntryCaption"><?= t('Status') ?>:</span>
-	<span class="itmThesisEntryValue"><?= $statusPlain ?></span>
+
+<h2 class="itmCourseEntry"><?=t('Semester')?></h2>
+<div class="itmCourseEntry">
+	SUMMER/WINTER TERM + YEAR
 </div>
-<div class="itmThesisEntryBegin">
-	<span class="itmThesisEntryCaption"><?= t('Begin') ?>:</span>
-	<span class="itmThesisEntryValue"><?= $beginningPlain ?></span>
+
+<h2 class="itmCourseEntry"><?=t('Semester')?></h2>
+<div class="itmCourseEntry">
+	SUMMER/WINTER TERM + YEAR
 </div>
-<div class="itmThesisEntryStudent"">
-	 <span class="itmThesisEntryCaption"><?= t('Student') ?>:</span>
-	<span class="itmThesisEntryValue"><?= $studentPlain ?></span>
+
+<h2 class="itmCourseEntry"><?=t('Credits')?></h2>
+<div class="itmCourseEntry">
+	<?=$credits?>
 </div>
-<div class="itmThesisEntryTutor">
-	<span class="itmThesisEntryCaption"><?= t('Tutor') ?>:</span>
-	<span class="itmThesisEntryValue">
-		<?php
-		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
-		if ($this->controller->isLdapTutor())
+
+<?php
+	$lecturers = $this->controller->getLecturers();
+	$assistants = $this->controller->getAssistants();
+	
+	
+?>
+
+
+<h2 class="itmCourseEntry"><?=t('Lecturer')?></h2>
+<div class="itmCourseEntry">
+	<?php
+	$first = 1;
+	foreach ($lecturers as $lecturer)
+	{
+		if (!$first)
 		{
-			$ui = UserInfo::getByUserName($this->controller->getTutorName());
-			if (!empty($ui))
-			{
-				$name = $ui->getAttribute('name');
-				if (!empty($name))
-				{
-					$fullName = $ldapHelper->getFullName($ui);
-					$link = $ldapHelper->getUserPageLink($this->controller->getTutorName());
-					if ($link)
-					{
-						echo '<a href="' . $link . '">' . $fullName . '</a>';
-					}
-					else
-					{
-						echo $fullName;
-					}
-				}
-			}
+			echo ', ';
 		}
-		else
+		$rendered = $this->controller->renderName($lecturer);
+		if (strlen($rendered))
 		{
-			echo $tutor;
+			echo $rendered;
 		}
-		?>
-	</span>
+		$first = 0;
+	}
+	?>
 </div>
-<div class="itmThesisEntrySupervisor">
-	<span class="itmThesisEntryCaption"><?= t('Supervisor') ?>:</span>
-	<span class="itmThesisEntryValue">
-		<?php
-		if ($this->controller->isLdapSupervisor())
+
+<h2 class="itmCourseEntry"><?=t('Teaching Assistants')?></h2>
+<div class="itmCourseEntry">
+	<?php
+	$first = 1;
+	foreach ($assistants as $assistant)
+	{
+		if (!$first)
 		{
-			$ui = UserInfo::getByUserName($this->controller->getSupervisorName());
-			if (!empty($ui))
-			{
-				$name = $ui->getAttribute('name');
-				if (!empty($name))
-				{
-					$fullName = $ldapHelper->getFullName($ui);;
-					$link = $ldapHelper->getUserPageLink($this->controller->getSupervisorName());
-					if ($link)
-					{
-						echo '<a href="' . $link . '">' . $fullName . '</a>';
-					}
-					else
-					{
-						echo $fullName;
-					}
-				}
-			}
+			echo ', ';
 		}
-		else
+		$rendered = $this->controller->renderName($assistant);
+		if (strlen($rendered))
 		{
-			echo $supervisor;
+			echo $rendered;
 		}
-		?>
-	</span>
+		$first = 0;
+	}
+	?>
 </div>

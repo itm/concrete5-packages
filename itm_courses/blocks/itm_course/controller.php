@@ -23,17 +23,8 @@ class ItmCourseBlockController extends BlockController
 
 	public function save($data)
 	{
-		// save special value for supervior/tutor if none is specified
-		
-		if (!strlen($data['supervisor']))
-		{
-			$data['supervisor'] = $data['supervisor_ldap'] == 'none' ? '' : $data['supervisor_ldap'];
-		}
-		
-		if (!strlen($data['tutor']))
-		{
-			$data['tutor'] = $data['tutor_ldap'] == 'none' ? '' : $data['tutor_ldap'];
-		}
+		$data['lecturers'] = $data['lecturersJson'];
+		$data['assistants'] = $data['assistantsJson'];
 		
 		parent::save($data);
 	}
@@ -42,67 +33,14 @@ class ItmCourseBlockController extends BlockController
 	{
 		// return translated strings available for Java Script
 		return array(
-			'title-required' => t('Please enter a thesis topic.'),
-			'invalid_supervisor' => t('Supervisor name is invalid.'),
-			'invalid_tutor' => t('Tutor name is invalid.')
+			'invalid_lecturer' => t('At least one lecturer is invalid (none selected or empty field). Take a look at position: '),
+			'invalid_assistant' => t('At least one assistant is invalid (none selected or empty field). Take a look at position: ')
 		);
 	}
 
 	/**
-	 * @return bool true if supervisor is from LDAP, otherwise false
-	 */
-	public function isLdapSupervisor()
-	{
-		return Loader::helper('itm_thesis', 'itm_thesis')->isLdapName($this->supervisor);
-	}
-
-	/**
-	 * @return bool true if tutor is from LDAP, otherwise false 
-	 */
-	public function isLdapTutor()
-	{
-		return Loader::helper('itm_thesis', 'itm_thesis')->isLdapName($this->tutor);
-	}
-
-	/**
-	 * Returns the supervisor name excluding the ITM_THESIS_LDAP_PREFIX
-	 * (defaultly set to 'ldap:').
-	 * 
-	 * @return string name without ITM_THESIS_LDAP_PREFIX
-	 */
-	public function getSupervisorName()
-	{
-		if ($this->isLdapSupervisor())
-		{
-			return substr($this->supervisor, strlen(ITM_THESIS_LDAP_PREFIX));
-		}
-		else
-		{
-			return $this->supervisor;
-		}
-	}
-
-	/**
-	 * Returns the tutor name excluding the ITM_THESIS_LDAP_PREFIX
-	 * (defaultly set to 'ldap:').
-	 * 
-	 * @return string name without ITM_THESIS_LDAP_PREFIX
-	 */
-	public function getTutorName()
-	{
-		if ($this->isLdapTutor())
-		{
-			return substr($this->tutor, strlen(ITM_THESIS_LDAP_PREFIX));
-		}
-		else
-		{
-			return $this->tutor;
-		}
-	}
-
-	/**
 	 * @return array asso. array of UserInfo elements with qualified user names
-	 *               as keys (qualified means: ITM_THESIS_LDAP_PREFIX + user
+	 *               as keys (qualified means: ITM_COURSES_LDAP_PREFIX + user
 	 *               name)
 	 */
 	public function getLdapUsers()
@@ -112,16 +50,91 @@ class ItmCourseBlockController extends BlockController
 			return array();
 		}
 
+		Loader::helper('itm_courses', 'itm_courses');
+		
 		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
 
-		$result = array('none' => t('None'));
+		$result = array('ldap:none' => t('None'));
 		foreach ($ilh->getLdapStaffFromC5() as $user)
 		{
-			$result['ldap:' . $user->uName] = $user->uName;
+			$result[ITM_COURSES_LDAP_PREFIX . $user->uName] = $user->uName;
 		}
 		return $result;
 	}
 
+	public function getLecturers()
+	{
+		if (!strlen($this->lecturers))
+		{
+			return array();
+		}
+		return Loader::helper('json')->decode($this->lecturers);
+	}
+	
+	public function getAssistants()
+	{
+		if (!strlen($this->assistants))
+		{
+			return array();
+		}
+		return Loader::helper('json')->decode($this->assistants);
+	}
+	
+	public function isLdapName($name)
+	{
+		return Loader::helper('itm_courses', 'itm_courses')->isLdapName($name);
+	}
+	
+	public function isEmptyName($name)
+	{
+		return empty($name) || $name == ITM_COURSES_LDAP_PREFIX . 'none';
+	}
+	
+	public function cutLdapPrefix($name)
+	{
+		if ($this->isLdapName($name))
+		{
+			return substr($name, strlen(ITM_COURSES_LDAP_PREFIX));
+		}
+		
+		return $name;
+	}
+	
+	public function renderName($name)
+	{
+		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
+		if ($this->isEmptyName($name))
+		{
+			return '';
+		}
+		
+		if (!$this->isLdapName($name))
+		{
+			return $name;
+		}
+		
+		$name = $this->cutLdapPrefix($name);
+		$ui = UserInfo::getByUserName($name);
+		if (!empty($ui))
+		{
+			$name = $ui->getAttribute('name');
+			if (!empty($name))
+			{
+				$fullName = $ldapHelper->getFullName($ui);
+				$link = $ldapHelper->getUserPageLink($name);
+				if ($link)
+				{
+					echo '<a href="' . $link . '">' . $fullName . '</a>';
+				}
+				else
+				{
+					echo $fullName;
+				}
+			}
+		}
+		return '';
+	}
+	
 	/**
 	 * @return bool true if ITM LDAP package is available and at least one LDAP
 	 *                   user entry exists, otherwise false
