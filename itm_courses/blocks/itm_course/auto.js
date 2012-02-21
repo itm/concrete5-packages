@@ -69,6 +69,10 @@ var CourseEntry =
 	},
 	renderLdap: function(type, index, key)
 	{
+		if (CourseData.LDAP_USERS.length == 0)
+		{
+			return this.renderRaw(type, index, '');
+		}
 		idAndName = type + '_' + index;
 		htmlSelect = '<select onchange="CourseEntry.updateItems(\'' + type + '\');" style="width: 200px" id="' + idAndName + '" name="' + idAndName + '">';
 		htmlSelect += this.renderLdapOptionValues(key);
@@ -87,8 +91,12 @@ var CourseEntry =
 	{
 		return '<a href="#" onclick="CourseEntry.updateItems(\'' + type + '\'); CourseEntry.removeItem(\'' + type + '\', ' + index + '); return false;">' + CourseData.ICON_REMOVE + '</a>';
 	},
-	renderEditMode: function(type, index, view)
+	renderEditMode: function(type, index)
 	{
+		if (CourseData.LDAP_USERS.length == 0)
+		{
+			return '';
+		}
 		return '<a href="#" onclick="CourseEntry.updateItems(\'' + type + '\'); CourseEntry.switchEditMode(\'' + type + '\', ' + index + '); return false;">' + CourseData.ICON_SWITCH + '</a>';
 	},
 	renderList: function(type)
@@ -96,9 +104,8 @@ var CourseEntry =
 		list = this.getListByType(type);
 		
 		htmlDiv = '<div id="' + type + '">';
-		i = 0;
 		
-		for (; i < list.length; i++)
+		for (var i = 0; i < list.length; i++)
 		{
 			id = type + '_' + i;
 			htmlDiv += '<div class="clearfix" style="margin-bottom: 4px">';
@@ -122,6 +129,11 @@ var CourseEntry =
 	},
 	switchEditMode: function(type, index)
 	{
+		if (CourseData.LDAP_USERS.length == 0)
+		{
+			return;
+		}
+		
 		elem = $('#' + type + '_' + index);
 		isSelect = elem.is('select');
 		
@@ -133,11 +145,19 @@ var CourseEntry =
 		{
 			elem.replaceWith(this.renderLdap(type, index, ''));
 		}
+		elem.focus();
 	},
 	addItem: function(type)
 	{
 		list = this.getListByType(type);
-		list.push('ldap:none');
+		if (CourseData.LDAP_USERS.length > 0)
+		{
+			list.push('ldap:none');
+		}
+		else
+		{
+			list.push('');
+		}
 		
 		$('#' + type).replaceWith(this.renderList(type));
 	},

@@ -21,4 +21,57 @@ class ItmCoursesHelper
 	{
 		return strpos($name, ITM_COURSES_LDAP_PREFIX) === 0 || $name == '';
 	}
+	
+	public function getCourseGroups()
+	{
+		$db = Loader::db();
+		$query = 'SELECT * FROM itmcoursesgroups ORDER BY name ASC';
+		$r = $db->query($query);
+		$result = array();
+		while ($row = $r->fetchRow())
+		{
+			$result[$row['handle']] = new ItmCourseGroup($row['itmCGID'], $row['handle'], $row['name']);
+		}
+		return $result;
+	}
+	
+	public function deleteCourseGroup($handle)
+	{
+		$db = Loader::db();
+		$q = 'DELETE FROM itmcoursesgroups WHERE handle LIKE "?"';
+		$r = $db->query($q, array($handle));
+	}
+	
+	public function changeCourseGroup($handle, $name)
+	{
+		$db = Loader::db();
+		$q = 'UPDATE itmcoursesgroups SET name = "?" WHERE handle LIKE "?"';
+		$r = $db->query($q, array($name, $handle));
+	}
+	
+	public function addCourseGroup($handle, $name)
+	{
+		$db = Loader::db();
+		$q = 'INSERT INTO itmcoursesgroups (handle, name) VALUES ("?", "?")';
+		$r = $db->query($q, array($handle, $name));
+	}
+}
+
+class ItmCourseGroup
+{
+	public $itmCGID;
+	public $handle;
+	public $name;
+	
+	public function __construct($itmCGID, $handle, $name)
+	{
+		$this->itmCGID = $itmCGID;
+		$this->handle = $handle;
+		$this->name = $name;
+	}
+	
+	public function __toString()
+	{
+		return $this->name;
+	}
 }

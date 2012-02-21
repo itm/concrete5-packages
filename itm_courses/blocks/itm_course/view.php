@@ -18,34 +18,31 @@ switch ($type)
 
 <h1 class="itmCourseEntryName"><?= $name ?></h1>
 
-<h2 class="itmCourseEntry"><?=t('Course type')?></h2>
-<div class="itmCourseEntry">
-	<?=$typePlain?>
+<div class="itmCourseEntry"><?=$typePlain?>
+<?php
+$parentPage = Page::getByID(Page::getCurrentPage()->getCollectionParentID());
+if ($parentPage->getCollectionTypeHandle() == 'itm_semester_page') :
+?>
+	<?=t('in')?>&nbsp;<?=$parentPage->getCollectionAttributeValue('semester_term')?>&nbsp;<?=$parentPage->getCollectionAttributeValue('semester_year')?>
+<?php endif; ?>
 </div>
-
-<h2 class="itmCourseEntry"><?=t('Semester')?></h2>
-<div class="itmCourseEntry">
-	SUMMER/WINTER TERM + YEAR
-</div>
-
-<h2 class="itmCourseEntry"><?=t('Semester')?></h2>
-<div class="itmCourseEntry">
-	SUMMER/WINTER TERM + YEAR
-</div>
-
+<?php
+ if (strlen($credits)) :
+?>
 <h2 class="itmCourseEntry"><?=t('Credits')?></h2>
 <div class="itmCourseEntry">
 	<?=$credits?>
 </div>
+<?php endif; ?>
 
 <?php
 	$lecturers = $this->controller->getLecturers();
 	$assistants = $this->controller->getAssistants();
-	
-	
 ?>
 
-
+<?php
+	if (count($lecturers)) :
+?>
 <h2 class="itmCourseEntry"><?=t('Lecturer')?></h2>
 <div class="itmCourseEntry">
 	<?php
@@ -65,7 +62,11 @@ switch ($type)
 	}
 	?>
 </div>
+<?php endif; ?>
 
+<?php
+	if (count($assistants)) :
+?>
 <h2 class="itmCourseEntry"><?=t('Teaching Assistants')?></h2>
 <div class="itmCourseEntry">
 	<?php
@@ -85,3 +86,4 @@ switch ($type)
 	}
 	?>
 </div>
+<?php endif; ?>

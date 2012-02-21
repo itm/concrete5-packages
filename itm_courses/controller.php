@@ -31,9 +31,15 @@ class ItmCoursesPackage extends Package
 
 		// install blocks
 		BlockType::installBlockTypeFromPackage('itm_course', $pkg);
+		BlockType::installBlockTypeFromPackage('itm_course_item', $pkg);
 		BlockType::installBlockTypeFromPackage('itm_semester', $pkg);
 		BlockType::installBlockTypeFromPackage('itm_semester_overview', $pkg);
 
+		// install single pages
+		Loader::model('single_page');
+		$sp1 = SinglePage::add('/dashboard/itm_courses', $pkg);
+		$sp1->update(array('cName' => t('ITM Courses'), 'cDescription' => t('Courses Management')));
+		
 		// install page type
 		Loader::model('collection_types');
 		$ctItmCoursePage = CollectionType::getByHandle('itm_course_page');

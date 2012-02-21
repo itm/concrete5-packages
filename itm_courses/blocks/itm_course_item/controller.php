@@ -2,20 +2,20 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class ItmTitledParagraphBlockController extends ContentBlockController
+class ItmCourseItemBlockController extends ContentBlockController
 {
-	protected $btTable = 'btItmTitledParagraph';
+	protected $btTable = 'btItmCourseItem';
 	protected $btInterfaceHeight = "500";
 	protected $btWrapperClass = 'ccm-ui';
 
 	public function getBlockTypeDescription()
 	{
-		return t("HTML/WYSIWYG Editor with extra title field.");
+		return t("HTML/WYSIWYG Editor with option list for course paragraphs.");
 	}
 
 	public function getBlockTypeName()
 	{
-		return t("ITM Titled Paragraph");
+		return t("ITM General Course Item");
 	}
 
 	function save($data)

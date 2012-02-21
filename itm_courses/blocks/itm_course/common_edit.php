@@ -67,6 +67,13 @@ if (!isset($type))
 				</td>
 			</tr>
 			<tr>
+				<td><?= t('Groups') ?></td>
+				<?php
+					$ch = Loader::helper('itm_courses', 'itm_courses');
+				?>
+				<td><?= $form->selectMultiple('groups', $ch->getCourseGroups(), false, array('style' => 'width: 100%')) ?></td>
+			</tr>
+			<tr>
 				<td><?= t('Credits') ?></td>
 				<td><?= $form->text('credits', $credits, array('style' => 'width: 100%')) ?></td>
 			</tr>
