@@ -70,7 +70,8 @@ class ItmCoursesPackage extends Package
 
 		$ctItmSemesterPage->assignCollectionAttribute($cakYear);
 		$ctItmSemesterPage->assignCollectionAttribute($cakTerm);
-
+		$ctItmSemesterPage->assignCollectionAttribute(CollectionAttributeKey::getByHandle('exclude_nav'));
+		
 		// add default attribute
 		$ctItmCoursePage->assignCollectionAttribute(CollectionAttributeKey::getByHandle('exclude_nav'));
 
@@ -79,34 +80,23 @@ class ItmCoursesPackage extends Package
 		// a default "Research Area" custom content block and a default
 		// "The Thesis Topic" custom content block
 		// obtain master template
-		$mTplItmSemesterPage = $ctItmSemesterPage->getMasterTemplate();
+		$mTplItmCoursePage = $ctItmCoursePage->getMasterTemplate();
 		// create content area within master template
-		$aSemesterInformation = Area::getOrCreate($mTplItmSemesterPage, 'Semester Information');
+		$aCourseInformation = Area::getOrCreate($mTplItmCoursePage, 'Course Information');
 		// create data array that is passed to addBlock() - what data ever...
 		// $data = array();
 		// get thesis entry and thesis custom content block types
 		//$btThesisEntry = BlockType::getByHandle("itm_thesis_entry");
 		//$btThesisCustomContent = BlockType::getByHandle("itm_titled_paragraph");
 
-		$btSemester = BlockType::getByHandle("itm_semester");
+		$btCourse = BlockType::getByHandle("itm_course");
 
 		// set default data for thesis entry block, add and save it
-		/* $defaultThesisEntryData = array(
-		  'topic' => t('Thesis topic goes here'),
-		  'type' => 0,
-		  'status' => 0,
-		  'student' => '',
-		  'beginning' => '',
-		  'tutor' => '',
-		  'supervisor' => ''
-		  ); */
+		$defaultCourseData = array(
+			'name' => t('Click and select Edit to enter course data.')
+		);
 
-//		var_dump($btCourseOverview);
-//		var_dump($aSemesterInformation);
-//		var_dump($mTplItmSemesterPage);
-
-
-		$bSemesterData = $mTplItmSemesterPage->addBlock($btSemester, $aSemesterInformation, array());
+		$bSemesterData = $mTplItmCoursePage->addBlock($btCourse, $aCourseInformation, $defaultCourseData);
 		//$bSemesterData->getController()->save(array());
 
 

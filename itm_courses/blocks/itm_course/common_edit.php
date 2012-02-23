@@ -39,9 +39,9 @@ if (!isset($type))
 				<td><?= t('Name') ?></td>
 				<?php
 					$cp = Page::getCurrentPage();
-					if ($topic == t('Course topic goes here'))
+					if ($name == t('Click and select Edit to enter course data.'))
 					{
-						$topic = $cp->getCollectionName();
+						$name = $cp->getCollectionName();
 					}
 				?>
 				<td><?= $form->text('name', $name, array('style' => 'width: 100%')) ?></td>
@@ -71,7 +71,7 @@ if (!isset($type))
 				<?php
 					$ch = Loader::helper('itm_courses', 'itm_courses');
 				?>
-				<td><?= $form->selectMultiple('groups', $ch->getCourseGroups(), false, array('style' => 'width: 100%')) ?></td>
+				<td><?= $form->selectMultiple('groups', $ch->getCourseGroups(), $this->controller->getCourseGroups(), array('style' => 'width: 100%')) ?></td>
 			</tr>
 			<tr>
 				<td><?= t('Credits') ?></td>
@@ -92,7 +92,7 @@ if (!isset($type))
 			ICON_DOWN: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_down_black.png" width="11" height="6" alt="<?= t('Move Down') ?>" title="<?= t('Move Down') ?>" style="vertical-align: middle"/>',
 			ICON_UP_DISABLED: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_up.png" width="11" height="6" alt="<?= t('Move Up disabled') ?>" title="<?= t('Move Up disabled') ?>" style="vertical-align: middle"/>',
 			ICON_DOWN_DISABLED: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_down.png" width="11" height="6" alt="<?= t('Move disabled') ?>" title="<?= t('Move Down disabled') ?>" style="vertical-align: middle"/>',
-			LDAP_USERS: <?= $json->encode($this->controller->getLdapUsers()) ?>,
+			LDAP_USERS: <?=$json->encode($this->controller->getLdapUsers())?>,
 			lecturers: <?= $json->encode($this->controller->getLecturers()) ?>,
 			assistants: <?= $json->encode($this->controller->getAssistants()) ?>,
 			serializeLecturers: function()
@@ -109,7 +109,7 @@ if (!isset($type))
 
 	<table class="itmCourse zebra-striped">
 		<thead>
-			<th colspan="2"><?= t('People') ?></th>
+			<th colspan="2"><?=$jsLdapUsers?><?= t('People') ?></th>
 		</thead>
 		<tr>
 			<td style="width: 150px"><?= t('Lecturer(s)') ?></td>

@@ -1,78 +1,57 @@
 <?php
+defined('C5_EXECUTE') or die(_("Access Denied."));
+
 /*
  * Process of this file:
- * 1) Get thesis list
- * 2) Run through the list:
- *    - map type and status integer to senseful captions
- *    - output values in tabular form
+ * 1) Get course list
+ * 2) Run through the list and output courses that belongs to given group
  */
 
-$list = $this->controller->getThesisList();
+$list = $this->controller->getCourseList();
+$ch = Loader::helper('itm_courses', 'itm_courses');
+$groupTitle = t($ch->getCourseGroupByHandle($groupName)->name);
 
-echo '<h2>' . t('Theses') . '</h2>';
+$typeMapping = array(t('Course'), t('Seminar'), t('Practical Course'));
+
+
+echo '<h2>' . $groupTitle . '</h2>';
 
 if (!count($list)) :
-	echo '<p>' . (empty($uName) ? t('There are currently no theses available.') : t('There are currently no theses supervised by me.')) . '</p>';
+	echo !empty($groupName) ? '<p>' . t('There are no courses available for ') . $groupTitle . '.</p>' : '';
 else :
 	?>
-	<table class="itmThesisOverview">
+	<table class="itmTable">
 		<tr>
-			<th class="topic">
-				<?= t('Topic') ?>
+			<th>
+				<?= t('Name') ?>
 			</th>
-			<th class="type">
+			<th>
 				<?= t('Type') ?>
 			</th>
-			<th class="status">
-				<?= t('Status') ?>
+			<th>
+				<?= t('Credits') ?>
 			</th>
+			<!--<th>
+				<?= t('Mode') ?>
+			</th>-->
 		</tr>
 		<?php for ($i = 0; $i < count($list); $i++): ?>
-			<?php
-			$topic = $list[$i]['topic'];
-			$link = $list[$i]['link'];
-			switch ($list[$i]['type'])
-			{
-				case 0:
-					$type = t('Bachelor thesis');
-					break;
-
-				case 1 :
-					$type = t('Master thesis');
-					break;
-
-				default :
-					$type = t('Both');
-					break;
-			}
-
-			switch ($list[$i]['status'])
-			{
-				case 0 :
-					$status = t('Open');
-					break;
-
-				case 1 :
-					$status = t('Running');
-					break;
-
-				default :
-					$status = t('Finished');
-					break;
-			}
-			?>
+		
 			<tr>
-				<td class="topic">
-					<a href="<?= $link ?>" class="itmThesisOverviewLink">
-						<?= $topic ?>
+				<td>
+					<a href="<?= $list[$i]['link'] ?>">
+						<?= $list[$i]['name'] ?>
 					</a>
 				</td>
-				<td class="type">
-					<?= $type ?>
+				<td>
+					<?= $typeMapping[$list[$i]['type']] ?>
 				</td>
-				<td class="status">
-					<?= $status ?>
+				<td>
+					<?= strlen($list[$i]['credits']) ? $list[$i]['credits'] : 'N/A' ?>
 				</td>
+				<!--<td>
+					<?= $list[$i]['mode'] ?>
+				</td>-->
 			</tr>
 		<?php endfor; ?>
 	</table>

@@ -25,6 +25,7 @@ class ItmCourseBlockController extends BlockController
 	{
 		$data['lecturers'] = $data['lecturersJson'];
 		$data['assistants'] = $data['assistantsJson'];
+		$data['groups'] = Loader::helper('json')->encode($data['groups']);
 		
 		parent::save($data);
 	}
@@ -62,6 +63,16 @@ class ItmCourseBlockController extends BlockController
 		return $result;
 	}
 
+	public function getCourseGroups()
+	{
+		if (strlen($this->groups))
+		{
+			return Loader::helper('json')->decode($this->groups);
+		}
+		
+		return array();
+	}
+	
 	public function getLecturers()
 	{
 		if (!strlen($this->lecturers))

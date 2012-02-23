@@ -35,24 +35,31 @@ class ItmCoursesHelper
 		return $result;
 	}
 	
+	public function getCourseGroupByHandle($handle)
+	{
+		$db = Loader::db();
+		$query = 'SELECT * FROM itmcoursesgroups WHERE handle LIKE ?';
+		$r = $db->query($query, array($handle));
+		
+		if ($row = $r->fetchRow())
+		{
+			return new ItmCourseGroup($row['itmCGID'], $row['handle'], $row['name']);
+		}
+		return null;
+	}
+
+
 	public function deleteCourseGroup($handle)
 	{
 		$db = Loader::db();
-		$q = 'DELETE FROM itmcoursesgroups WHERE handle LIKE "?"';
+		$q = 'DELETE FROM itmcoursesgroups WHERE handle LIKE ?';
 		$r = $db->query($q, array($handle));
-	}
-	
-	public function changeCourseGroup($handle, $name)
-	{
-		$db = Loader::db();
-		$q = 'UPDATE itmcoursesgroups SET name = "?" WHERE handle LIKE "?"';
-		$r = $db->query($q, array($name, $handle));
 	}
 	
 	public function addCourseGroup($handle, $name)
 	{
 		$db = Loader::db();
-		$q = 'INSERT INTO itmcoursesgroups (handle, name) VALUES ("?", "?")';
+		$q = 'INSERT INTO itmcoursesgroups (handle, name) VALUES (?, ?)';
 		$r = $db->query($q, array($handle, $name));
 	}
 }
@@ -72,6 +79,6 @@ class ItmCourseGroup
 	
 	public function __toString()
 	{
-		return $this->name;
+		return empty($this->name) ? '' : $this->name;
 	}
 }

@@ -7,73 +7,38 @@
  *    - output values in tabular form
  */
 
-$list = $this->controller->getThesisList();
-
-echo '<h2>' . t('Theses') . '</h2>';
+$list = $this->controller->getSemesterList();
+$wtCaption = t('Winter term');
+$stCaption = t('Summer term');
+echo '<h1>' . t('Teaching') . '</h1>';
 
 if (!count($list)) :
-	echo '<p>' . (empty($uName) ? t('There are currently no theses available.') : t('There are currently no theses supervised by me.')) . '</p>';
+	echo '<p>' . t('There are currently no summer or winter terms available.') . '</p>';
 else :
 	?>
-	<table class="itmThesisOverview">
-		<tr>
-			<th class="topic">
-				<?= t('Topic') ?>
-			</th>
-			<th class="type">
-				<?= t('Type') ?>
-			</th>
-			<th class="status">
-				<?= t('Status') ?>
-			</th>
-		</tr>
-		<?php for ($i = 0; $i < count($list); $i++): ?>
-			<?php
-			$topic = $list[$i]['topic'];
-			$link = $list[$i]['link'];
-			switch ($list[$i]['type'])
+	<table class="itmSemesterOverview">
+		<?php
+		foreach($list as $key => $item)
+		{
+			echo '<tr>';
+			if (!empty($item['winterterm']))
 			{
-				case 0:
-					$type = t('Bachelor thesis');
-					break;
-
-				case 1 :
-					$type = t('Master thesis');
-					break;
-
-				default :
-					$type = t('Both');
-					break;
+				echo sprintf('<td><a href="%s">%s %s</td>', $item['winterterm'], $wtCaption, $key . '/' . substr(($key+1), 2, 2));
 			}
-
-			switch ($list[$i]['status'])
+			else
 			{
-				case 0 :
-					$status = t('Open');
-					break;
-
-				case 1 :
-					$status = t('Running');
-					break;
-
-				default :
-					$status = t('Finished');
-					break;
+				echo '<td></td>';
 			}
-			?>
-			<tr>
-				<td class="topic">
-					<a href="<?= $link ?>" class="itmThesisOverviewLink">
-						<?= $topic ?>
-					</a>
-				</td>
-				<td class="type">
-					<?= $type ?>
-				</td>
-				<td class="status">
-					<?= $status ?>
-				</td>
-			</tr>
-		<?php endfor; ?>
+			
+			if (!empty($item['summerterm']))
+			{
+				echo sprintf('<td><a href="%s">%s %s</td>', $item['summerterm'], $stCaption, $key);
+			}
+			else
+			{
+				echo '<td></td>';
+			}
+		}
+		?>
 	</table>
 <?php endif; ?>

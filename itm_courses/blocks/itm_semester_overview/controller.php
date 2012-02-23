@@ -42,110 +42,38 @@ class ItmSemesterOverviewBlockController extends BlockController
 	 *               keys 'topic', 'status', 'type' and 'link', whereby 'link'
 	 *               is a URL to the thesis resource.
 	 */
-	public function getThesisList()
+	public function getSemesterList()
 	{
 		// load navigation helper to create links from pages
 		$nh = Loader::helper('navigation');
 		
-		// load thesis helper
-		$th = Loader::helper('itm_thesis', 'itm_thesis');
 		$pl = new PageList();
 		$pl->ignoreAliases();
 		$pl->ignorePermissions();
-		$pl->filterByCollectionTypeHandle('itm_thesis_page');
+		$pl->filterByCollectionTypeHandle('itm_semester_page');
 
 		$collections = $pl->get();
 		
-		// create placeholder for thesis entries and their maintained data
-		$items = array();
-		
 		foreach ($collections as $collection)
 		{
-			$blocks = $collection->getBlocks();
-			foreach ($blocks as $block)
+			$aTerm = $collection->getCollectionAttributeValue('semester_term');
+			$term = $aTerm->current();
+			if ($term == t('Summer term'))
 			{
-				$bCtrl = $block->getController();
-				if ($bCtrl instanceof ItmThesisEntryBlockController)
-				{
-					// get controller data - amongst others the thesis
-					// data is included
-					$ctrlData = $bCtrl->getBlockControllerData();
-					
-					//check user filter
-					if (!empty($this->uName))
-					{
-						if ($th->isLdapName($ctrlData->tutor))
-						{
-							if (ITM_THESIS_LDAP_PREFIX . $this->uName != $ctrlData->tutor)
-							{
-								continue;
-							}
-						}
-						else
-						{
-							continue;
-						}
-					}
-					
-					// copy that data to a new item array plus a page link
-					$item = array(
-						'topic' => $ctrlData->topic,
-						'status' => $ctrlData->status,
-						'type' => $ctrlData->type,
-						'link' => $nh->getLinkToCollection($collection)
-					);
-					
-					// add item to result list
-					$items[] = $item;
-					
-					break;
-				}
+				$term = 'summerterm';
 			}
+			else
+			{
+				$term = 'winterterm';
+			}
+			
+			$year = $collection->getAttribute('semester_year');
+			$items[$year][$term] = $nh->getLinkToCollection($collection);			
 		}
 		
+		krsort($items);
 		return $items;
 	}
-
-	/**
-	 * @return array assoc. array of UserInfo objects with user names as keys
-	 */
-	public function getLdapUsers()
-	{
-		if (!$this->hasUsers())
-		{
-			return array();
-		}
-
-		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
-
-		$result['0'] = t('Show all');
-		foreach ($ilh->getLdapStaffFromC5() as $user)
-		{
-			$result[$user->uName] = $user->uName;
-		}
-		return $result;
-	}
-
-	/**
-	 *
-	 * @return bool true if LDAP users are present, otherwise false
-	 */
-	public function hasUsers()
-	{
-		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
-		if ($ilh->hasLdapAuth())
-		{
-			try
-			{
-				return count($ilh->getLdapStaffFromC5()) > 0;
-			}
-			catch (Exception $e)
-			{
-				return false;
-			}
-		}
-	}
-	
 }
 
 ?>

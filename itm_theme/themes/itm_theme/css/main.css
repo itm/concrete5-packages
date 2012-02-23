@@ -352,7 +352,7 @@ table.Download td {
 	border-spacing: 0px;
 }
 
-.itmTableTh
+.itmTable th
 {
 	vertical-align: middle;
 	text-align: left;
@@ -360,7 +360,7 @@ table.Download td {
 	background-color: #E4E4DD;
 }
 
-.itmTableTd
+.itmTable td
 {
 	vertical-align: middle;
 	text-align: left;
@@ -368,7 +368,9 @@ table.Download td {
 	border-bottom: 1px dotted #B8B8B2;
 }
 
+/*
 a[href^="http://"]:before,
 a[href^="https://"]:before {
   content: "\2197\00A0";
 }
+*/

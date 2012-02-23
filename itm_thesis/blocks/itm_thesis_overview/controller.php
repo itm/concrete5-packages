@@ -28,14 +28,6 @@ class ItmThesisOverviewBlockController extends BlockController
 	{
 		parent::save($data);
 	}
-
-	// is called during page view and adds custom stylesheet
-	public function on_page_view()
-	{
-		$bt = BlockType::getByHandle($this->btHandle);
-		$uh = Loader::helper('concrete/urls');
-		$this->addHeaderItem('<link rel="stylesheet" type="text/css" href="'. $uh->getBlockTypeAssetsURL($bt, 'style.css') .'" />');
-	}
 	
 	/**
 	 * @return array array of thesis items. Thesis items are assoc. arrays with

@@ -94,6 +94,7 @@ class DashboardItmLdapSynchronizationController extends Controller
 		$uName = $this->post('uid');
 
 		$ldapUser = $this->helper->getLdapUser($uName);
+
 		if (empty($ldapUser))
 		{
 			$val->add(sprintf(t("LDAP user <b>%s</b> does not exist. Update process aborted."), $uName));

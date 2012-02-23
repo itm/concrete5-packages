@@ -38,7 +38,7 @@ if (!isset($type))
 				<td><?= t('Topic *') ?></td>
 				<?php
 					$cp = Page::getCurrentPage();
-					if ($topic == t('Thesis topic goes here'))
+					if ($topic == t('Click and select Edit to enter thesis data.'))
 					{
 						$topic = $cp->getCollectionName();
 					}

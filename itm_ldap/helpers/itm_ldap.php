@@ -88,18 +88,24 @@ class ItmLdapHelper
 	/**
 	 * Inserts or updates a user from LDAP server in the concrete5 database.
 	 * 
-	 * @param string $ldapUser User name (just uid) of the LDAP user.
+	 * @param string $ldapUser record of the LDAP user.
 	 */
 	public function addUserFromLdap($ldapUser)
 	{
 		$group = Group::getByName('ldap');
-		$ldapGID = $group->getGroupID();
-
-		if (!$ldapGID)
+		if (empty($group))
 		{
-			throw new Exception("Required group named ldap not found. Update process aborted.");
+			throw new Exception("Required group named 'ldap' not found. Update process aborted.");
 		}
-
+		$ldapGID = $group->getGroupID();
+		
+		$group = Group::getByName($ldapUser['cn']);
+		if (empty($group))
+		{
+			throw new Exception(sprintf("Required group named '%s' was not found. Update process aborted.", $ldapUser['cn']));
+		}
+		$cnGID = $group->getGroupID();
+		
 		// by now put all users to the Administrators group
 		// later on it might be useful to costumize this
 		$group = Group::getByName('Administrators');
@@ -129,13 +135,17 @@ class ItmLdapHelper
 			throw new Exception('Updating LDAP user in concrete5 database failed. Update process aborted.');
 		}
 
-		$userInfo->updateGroups(array($ldapGID, $adminGID));
+		$userInfo->updateGroups(array($ldapGID, $adminGID, $cnGID));
 
 		$this->setAttr($userInfo, $ldapUser['telephoneNumber'], 'telephone_number');
-		$this->setAttr($userInfo, $ldapUser['telefaxNumber'], 'telefax_number');
+		$this->setAttr($userInfo, $ldapUser['facsimileTelephoneNumber'], 'telefax_number');
+		$this->setAttr($userInfo, $ldapUser['description'], 'description');
 		$this->setAttr($userInfo, $ldapUser['roomNumber'], 'room_number');
 		$this->setAttr($userInfo, $ldapUser['gecos'], 'name');
-		$this->setAttr($userInfo, $ldapUser['displayName'], 'name');
+		if (strlen($ldapUser['displayName']))
+		{
+			$this->setAttr($userInfo, $ldapUser['displayName'], 'name');
+		}
 		$this->setAttr($userInfo, $ldapUser['skypeNumber'], 'skype');
 		$this->setAttr($userInfo, $ldapUser['icqNumber'], 'icq');
 		$this->setAttr($userInfo, $ldapUser['title'], 'title');
@@ -282,7 +292,7 @@ class ItmLdapHelper
 				$tmpRes = $ldapStaff->GetArray(sprintf('(uid=%s)', $ldapGroup['memberUid'][$i]));
 				if (count($tmpRes))
 				{
-					$tmpRes[0]['cn'] = $ldapGroup['memberUid']['cn'];
+					$tmpRes[0]['cn'] = $ldapGroup['cn'];
 					$result = array_merge($result, $tmpRes);
 				}
 			}

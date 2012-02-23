@@ -69,7 +69,7 @@ var CourseEntry =
 	},
 	renderLdap: function(type, index, key)
 	{
-		if (CourseData.LDAP_USERS.length == 0)
+		if (!this.hasLdapUsers())
 		{
 			return this.renderRaw(type, index, '');
 		}
@@ -93,7 +93,7 @@ var CourseEntry =
 	},
 	renderEditMode: function(type, index)
 	{
-		if (CourseData.LDAP_USERS.length == 0)
+		if (!this.hasLdapUsers())
 		{
 			return '';
 		}
@@ -129,7 +129,7 @@ var CourseEntry =
 	},
 	switchEditMode: function(type, index)
 	{
-		if (CourseData.LDAP_USERS.length == 0)
+		if (!this.hasLdapUsers())
 		{
 			return;
 		}
@@ -150,7 +150,7 @@ var CourseEntry =
 	addItem: function(type)
 	{
 		list = this.getListByType(type);
-		if (CourseData.LDAP_USERS.length > 0)
+		if (this.hasLdapUsers())
 		{
 			list.push('ldap:none');
 		}
@@ -226,5 +226,15 @@ var CourseEntry =
 			}
 		}
 		return invalid;
+	},
+	hasLdapUsers: function()
+	{
+		var i = 0;
+		jQuery.each(CourseData.LDAP_USERS, function(k, v)
+		{
+			i++;
+		});
+		
+		return i > 1;
 	}
 }

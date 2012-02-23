@@ -29,12 +29,12 @@ class ItmSemesterBlockController extends BlockController
 		parent::save($data);
 	}
 
-	// is called during page view and adds custom stylesheet
-	public function on_page_view()
+	public function getJavaScriptStrings()
 	{
-		$bt = BlockType::getByHandle($this->btHandle);
-		$uh = Loader::helper('concrete/urls');
-		$this->addHeaderItem('<link rel="stylesheet" type="text/css" href="'. $uh->getBlockTypeAssetsURL($bt, 'style.css') .'" />');
+		// return translated strings available for Java Script
+		return array(
+			'group-required' => t('Please select a group.'),
+		);
 	}
 	
 	/**
@@ -42,8 +42,13 @@ class ItmSemesterBlockController extends BlockController
 	 *               keys 'topic', 'status', 'type' and 'link', whereby 'link'
 	 *               is a URL to the thesis resource.
 	 */
-	public function getThesisList()
+	public function getCourseList()
 	{
+		if (empty($this->groupName))
+		{
+			return array();
+		}
+		
 		// load navigation helper to create links from pages
 		$nh = Loader::helper('navigation');
 		
@@ -52,52 +57,42 @@ class ItmSemesterBlockController extends BlockController
 		$pl = new PageList();
 		$pl->ignoreAliases();
 		$pl->ignorePermissions();
-		$pl->filterByCollectionTypeHandle('itm_thesis_page');
+		$pl->filterByCollectionTypeHandle('itm_course_page');
+		$pl->filterByParentID(Page::getCurrentPage()->getCollectionID());
 
 		$collections = $pl->get();
 		
-		// create placeholder for thesis entries and their maintained data
+		// create placeholder for courses and their maintained data
 		$items = array();
-		
 		foreach ($collections as $collection)
 		{
 			$blocks = $collection->getBlocks();
 			foreach ($blocks as $block)
 			{
 				$bCtrl = $block->getController();
-				if ($bCtrl instanceof ItmThesisEntryBlockController)
+				if ($bCtrl instanceof ItmCourseBlockController)
 				{
-					// get controller data - amongst others the thesis
-					// data is included
 					$ctrlData = $bCtrl->getBlockControllerData();
 					
 					//check user filter
-					if (!empty($this->uName))
+					$groups = $bCtrl->getCourseGroups();
+					foreach ($groups as $group)
 					{
-						if ($th->isLdapName($ctrlData->tutor))
+						if ($group == $this->groupName)
 						{
-							if (ITM_THESIS_LDAP_PREFIX . $this->uName != $ctrlData->tutor)
-							{
-								continue;
-							}
-						}
-						else
-						{
-							continue;
+							// copy data to a new item array plus a page link
+							$item = array(
+								'credits' => $ctrlData->credits,
+								'mode' => $ctrlData->mode,
+								'type' => $ctrlData->type,
+								'name' => $ctrlData->name,
+								'link' => $nh->getLinkToCollection($collection)
+							);
+							// add item to result list
+							$items[] = $item;
+							break;
 						}
 					}
-					
-					// copy that data to a new item array plus a page link
-					$item = array(
-						'topic' => $ctrlData->topic,
-						'status' => $ctrlData->status,
-						'type' => $ctrlData->type,
-						'link' => $nh->getLinkToCollection($collection)
-					);
-					
-					// add item to result list
-					$items[] = $item;
-					
 					break;
 				}
 			}
@@ -105,47 +100,6 @@ class ItmSemesterBlockController extends BlockController
 		
 		return $items;
 	}
-
-	/**
-	 * @return array assoc. array of UserInfo objects with user names as keys
-	 */
-	public function getLdapUsers()
-	{
-		if (!$this->hasUsers())
-		{
-			return array();
-		}
-
-		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
-
-		$result['0'] = t('Show all');
-		foreach ($ilh->getLdapStaffFromC5() as $user)
-		{
-			$result[$user->uName] = $user->uName;
-		}
-		return $result;
-	}
-
-	/**
-	 *
-	 * @return bool true if LDAP users are present, otherwise false
-	 */
-	public function hasUsers()
-	{
-		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
-		if ($ilh->hasLdapAuth())
-		{
-			try
-			{
-				return count($ilh->getLdapStaffFromC5()) > 0;
-			}
-			catch (Exception $e)
-			{
-				return false;
-			}
-		}
-	}
-	
 }
 
 ?>

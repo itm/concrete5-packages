@@ -15,7 +15,7 @@ if (!count($list)) :
 	echo '<p>' . (empty($uName) ? t('There are currently no theses available.') : t('There are currently no theses supervised by me.')) . '</p>';
 else :
 	?>
-	<table class="itmThesisOverview">
+	<table class="itmTable">
 		<tr>
 			<th class="topic">
 				<?= t('Topic') ?>
@@ -63,7 +63,7 @@ else :
 			?>
 			<tr>
 				<td class="topic">
-					<a href="<?= $link ?>" class="itmThesisOverviewLink">
+					<a href="<?= $link ?>">
 						<?= $topic ?>
 					</a>
 				</td>

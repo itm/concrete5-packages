@@ -18,14 +18,6 @@ class ItmLdapUserOverviewBlockController extends BlockController
 	{
 		return t("ITM LDAP User Overview");
 	}
-
-	// is called during page view and adds custom stylesheet
-	public function on_page_view()
-	{
-		$bt = BlockType::getByHandle($this->btHandle);
-		$uh = Loader::helper('concrete/urls');
-		$this->addHeaderItem('<link rel="stylesheet" type="text/css" href="'. $uh->getBlockTypeAssetsURL($bt, 'style.css') .'" />');
-	}
 	
 	public function save($data)
 	{
@@ -48,20 +40,23 @@ class ItmLdapUserOverviewBlockController extends BlockController
 		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
 
 		$result = array();
-		foreach ($ilh->getLdapStaffFromC5() as $user)
-		{
-			
-			$staffGroup = $user->getAttribute('staff_group');
-			if (empty($this->groupName) || !empty($staffGroup) && $staffGroup == $this->groupName)
-			{
-				$name = $user->getAttribute('name');
-				$names = explode(' ', $name);
-				$result[$names[count($names)-1]] = $user;
-			}
-		}
 		
-		ksort($result);
-		return $result;
+		$group = Group::getByName($this->groupName);
+		if (empty($group))
+		{
+			return array();
+		}
+		$gId = $group->getGroupID();
+
+		Loader::model('user_list');
+
+		$userList = new UserList();
+		$userList->sortBy('uName', 'asc');
+		$userList->showInactiveUsers = true;
+		$userList->showInvalidatedUsers = true;
+		$userList->filterByGroupID($gId);
+
+		return $userList->get();
 	}
 
 	public function hasUsers()

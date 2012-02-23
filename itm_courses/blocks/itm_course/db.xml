@@ -10,5 +10,6 @@
 		<field name="credits" type="C" size="255"/>
 		<field name="lecturers" type="X" />
 		<field name="assistants" type="X" />
+		<field name="groups" type="X" />
 	</table>
 </schema>

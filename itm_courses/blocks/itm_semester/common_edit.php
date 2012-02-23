@@ -1,26 +1,17 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 <div>
 	<?php
-	$ldapPkg = Package::getByHandle('itm_ldap');
+	$ch = Loader::helper('itm_courses', 'itm_courses');
+	$groups = $ch->getCourseGroups();
+	?>
+	<h4><?= t('Filter courses by selecting a group') ?></h4>
 
-	if (empty($ldapPkg)) :
-		?>
-
-		<h4><?= t('No options available.') ?></h4>
-		<p>
-			<?= t('Please install ITM LDAP package to gain filter functionality.') ?>
+	<?php if (count($groups)) : ?>
+		<p id="userp">
+			<?= $form->select('groupName', $groups, $groupName, array('style' => 'width: 100%')) ?>
 		</p>
-		<?php
-	else :
-		?>
-		<h4><?= t('Filter theses by selecting a user') ?></h4>
-
-		<?php if ($this->controller->hasUsers()) : ?>
-			<p id="userp">
-				<?= $form->select('uName', $this->controller->getLdapUsers(), $uName, array('style' => 'width: 100%')) ?>
-			</p>
-		<?php else : ?>
-			<?php echo t('There are currently no users available. Confirm dialog to show all theses.'); ?>
-		<?php endif; ?>
+	<?php else : ?>
+		<?php echo t('There are currently no groups available. Go to <i>Dashboard / ITM Courses</i> and define at least one.'); ?>
+		<?=$form->hidden('groupName', '')?>
 	<?php endif; ?>
 </div>
