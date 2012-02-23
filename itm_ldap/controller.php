@@ -71,16 +71,27 @@ class ItmLdapPackage extends Package
 		$bLdapUserData = $mTplItmLdapUserPage->addBlock($btLdapUser, $aUserInformation, $data);
 		$bLdapUserData->getController()->save($defaultLdapUserData);
 
-		// add ldap group
-		try
+		// add groups
+		
+		$groups = array(
+			'ldap' => t('Includes all users from LDAP servers.'),
+			'c5-mitarb' => t('Corresponds to LDAP group c5-mitarb.'),
+			'c5-head' => t('Corresponds to LDAP group c5-head.'),
+			'c5-alumni' => t('Corresponds to LDAP group c5-alumni.'),
+			'c5-admin' => t('Corresponds to LDAP group c5-admin.')
+		);
+		foreach ($groups as $k => $v)
 		{
-			Group::add('ldap', t('Includes all users from LDAP servers.'));
+			try
+			{
+				Group::add($k, $v);
+			}
+			catch (Exception $e)
+			{
+				// ignore
+			}
 		}
-		catch (Exception $e)
-		{
-			// ignore
-		}
-
+		
 		// fields
 
 		Loader::model('user_attributes');
@@ -105,12 +116,12 @@ class ItmLdapPackage extends Package
 		ItmLdapPackage::addUserTextAttr('room_number', t('Room number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('telephone_number', t('Telephone number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('telefax_number', t('Telefax number'), $pkg);
+		ItmLdapPackage::addUserTextAttr('description', t('Description'), $pkg);
 		ItmLdapPackage::addUserTextAttr('consultation', t('Consultation'), $pkg);
 		ItmLdapPackage::addUserTextAttr('icq_number', t('ICQ number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('skype_number', t('Skype number'), $pkg);
 		ItmLdapPackage::addUserTextAttr('name', t('Name'), $pkg);
 		ItmLdapPackage::addUserTextAttr('title', t('Title'), $pkg);
-		ItmLdapPackage::addUserTextAttr('staff_group', t('Staff group'), $pkg);
 	}
 	
 	public static function setupConfig($pkg)

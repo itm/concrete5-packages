@@ -63,7 +63,7 @@ class ItmThesisPackage extends Package
 
 		// set default data for thesis entry block, add and save it
 		$defaultThesisEntryData = array(
-			'topic' => t('Thesis topic goes here'),
+			'topic' => t('Click and select Edit to enter thesis data.'),
 			'type' => 0,
 			'status' => 0,
 			'student' => '',
@@ -78,14 +78,14 @@ class ItmThesisPackage extends Package
 		// do the same like above for research and thesis topic blocks
 		$defaultResearchAreaData = array(
 			'title' => t('Research Area'),
-			'content' => 'Type in your content here.'
+			'content' => t('Click and select Edit to enter custom data.')
 		);
 		$bResearchArea = $mTplItmThesisPage->addBlock($btThesisCustomContent, $aThesisInformation, $data);
 		$bResearchArea->getController()->save($defaultResearchAreaData);
 
 		$defaultThesisTopicData = array(
 			'title' => t('The Thesis Topic'),
-			'content' => 'Type in your content here'
+			'content' => t('Click and select Edit to enter custom data.')
 		);
 		$bThesisTopic = $mTplItmThesisPage->addBlock($btThesisCustomContent, $aThesisInformation, $data);
 		$bThesisTopic->getController()->save($defaultThesisTopicData);

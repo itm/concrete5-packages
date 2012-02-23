@@ -31,12 +31,17 @@ $dh = Loader::helper('concrete/dashboard');
 						<td><small><em>server.domain.tld:port or 128.1.1.1:389</em></small></td>
 					</tr>
 					<tr>
-						<td><?php echo t('Default Base Query:')?></td>
-						<td><?php echo $form->text('LDAP_BASE', $base, array('style' => 'width: 200px'))?></td>
+						<td><?php echo t('Staff Base Query:')?></td>
+						<td><?php echo $form->text('LDAP_BASE_STAFF', $baseStaff, array('style' => 'width: 200px'))?></td>
 						<td><small><em>ou=People,o=Company,c=US</em></small></td>
 					</tr>
 					<tr>
-						<td><?php echo t('Default Domain Name:')?></td>
+						<td><?php echo t('Groups Base Query:')?></td>
+						<td><?php echo $form->text('LDAP_BASE_GROUPS', $baseGroups, array('style' => 'width: 200px'))?></td>
+						<td><small><em>ou=People,o=Company,c=US</em></small></td>
+					</tr>
+					<tr>
+						<td><?php echo t('Domain Name:')?></td>
 						<td><?php echo $form->text('LDAP_DOMAIN_NAME', $domain, array('style' => 'width: 200px'))?></td>
 						<td><small><em>domain.tld</em></small></td>
 					</tr>

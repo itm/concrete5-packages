@@ -7,15 +7,21 @@ function ItmBibtexBuildUrl($bibEntry)
 
 class ItmBibtexHelper
 {
-
-	public function renderBibEntry($bibEntry, $rawLink = false, $jsCall = '')
+	private static $bibIdCounter = 0;
+	
+	public function renderBibEntry($bibEntry, $rawLink = false)
 	{
 		$result = '<li>';
 		$result .= bib2html($bibEntry);
 
 		if ($rawLink)
 		{
-			$result .= '<a target="_blank" class="biburl" title="' . $bibEntry->getKey() . '" href="' . $rawLink . '" onclick="' . $jsCall . '; return false;">[bib]</a>';
+			$id = 'bibModal' . self::$bibIdCounter++;
+			$result .= '
+			<div id="' . $id . '" style="display: none">
+                <pre style="font-family: \'Courier New\', Courier, monospace;">' . $this->renderBibEntryRaw($bibEntry) . '</pre>
+            </div>';
+			$result .= '<a class="biburl" title="' . $bibEntry->getKey() . '" href="' . $rawLink . '" onclick="$(\'#'.$id.'\').dialog({width: 900, height: 300, modal: true, show: \'fade\', hide: \'fade\', title: \'Raw Bib Entry View\'}); return false;">[bib]</a>';	
 		}
 
 		if ($bibEntry->hasField('doi'))

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<schema version="0.3">
+	<table name="itmCoursesGroups">
+		<field name="itmCGID" type="I">
+			<key />
+			<autoincrement/>
+			<unsigned />
+		</field>
+		<field name="handle" type="C" size="50">
+			 <unique/>
+		</field>
+		<field name="name" type="C" size="100" />
+	</table>
+</schema>

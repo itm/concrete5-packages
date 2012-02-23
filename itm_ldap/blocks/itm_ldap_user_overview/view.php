@@ -9,8 +9,8 @@ if (!count($members)):
 		<?php echo t('No user entries for given group.'); ?>
 	</h1>
 <?php else : ?>
-	<?= empty($groupName) ? '' : '<h2>' . t($groupName) . '</h2>' ?>
-	<table class="itmStaffGroupTable">
+	<?= empty($caption) ? '' : '<h2>' . t($caption) . '</h2>' ?>
+	<table class="itmTable">
 		<tr>
 			<th>
 				<?= t('Name') ?>

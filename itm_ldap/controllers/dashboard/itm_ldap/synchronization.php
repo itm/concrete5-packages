@@ -50,7 +50,7 @@ class DashboardItmLdapSynchronizationController extends Controller
 		// fetch concrete5 and LDAP users
 		$c5LdapUsers = $this->helper->getLdapStaffFromC5();
 		$ldapLdapUsers = $this->helper->getLdapStaff();
-
+		
 		// generate intersection and finally merge them with the rest
 		// this is done to distinguish between any type of users
 		$resultSet = $this->helper->intersect($c5LdapUsers, $ldapLdapUsers);
@@ -94,6 +94,7 @@ class DashboardItmLdapSynchronizationController extends Controller
 		$uName = $this->post('uid');
 
 		$ldapUser = $this->helper->getLdapUser($uName);
+
 		if (empty($ldapUser))
 		{
 			$val->add(sprintf(t("LDAP user <b>%s</b> does not exist. Update process aborted."), $uName));

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<schema version="0.3">
+	<table name="btItmCourse">
+		<field name="bID" type="I">
+			<key />
+			<unsigned />
+		</field>
+		<field name="name" type="C" size="255" />
+		<field name="type" type="I" />
+		<field name="credits" type="C" size="255"/>
+		<field name="lecturers" type="X" />
+		<field name="assistants" type="X" />
+		<field name="groups" type="X" />
+	</table>
+</schema>

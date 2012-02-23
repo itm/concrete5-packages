@@ -5,6 +5,7 @@
 			<key />
 			<unsigned />
 		</field>
-		<field name="groupName" type="C" size="255"/>
+		<field name="groupName" type="C" size="50"/>
+		<field name="caption" type="C" size="100"/>
 	</table>
 </schema>

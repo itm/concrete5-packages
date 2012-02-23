@@ -117,7 +117,7 @@ class ItmThesisEntryBlockController extends BlockController
 		$result = array('none' => t('None'));
 		foreach ($ilh->getLdapStaffFromC5() as $user)
 		{
-			$result['ldap:' . $user->uName] = $user->uName;
+			$result[ITM_THESIS_LDAP_PREFIX . $user->uName] = $user->uName;
 		}
 		return $result;
 	}
