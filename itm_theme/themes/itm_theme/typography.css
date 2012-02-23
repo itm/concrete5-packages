@@ -3,12 +3,14 @@ body,td,th {
 	font-size: 12px;
 	color: #000;
 }
+
 body {
-	background-color: #fff;
+	background-color: #f3f3f0;
 	margin-left: 0px;
 	margin-top: 10px;
 	margin-right: 0px;
 	margin-bottom: 0px;
+	line-height: 1.5;
 }
 
 h1 {
@@ -22,6 +24,7 @@ h2 {
 	font-size:14px;
 	color:#666;
 	font-weight:bold;
+
 }
 
 h4 {
@@ -50,6 +53,208 @@ a:visited  {color: #006977; }
 a:active   {color: #cd0000; }
 a:hover    {color: #cd0000; }
 a:bb:hover {color: #cd0000; }
+
+
+#rahmen{
+	width:960px;
+	background-color:#FFF;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#logo {
+	
+}
+
+#logoUni {
+	float:left;
+	width:280px;
+	height:115px;
+	margin:25px 0 0 10px;
+}
+
+#logoSlogan {
+	float:right;
+	position:relative;
+	width:650px;
+	height:140px;
+	margin:0 10px 0 0;
+	text-align:right;
+}
+
+#logoSlogan img{
+	position:absolute;
+	bottom:0px;
+	right:0px;
+}
+
+#kopfBalken {
+	clear:both;
+}
+
+#pfad {
+
+}
+
+#pfadTitel {
+	float:left;
+	width:280px;
+	height:11px;
+	line-height:11px;
+	font-size:11px;
+	color:#666;
+	margin:10px 0 10px 10px;
+	text-transform:uppercase;
+	letter-spacing:1px;
+}
+
+#pfadTitel a:link     {color: #006977; } 
+#pfadTitel a:visited  {color: #006977; }
+#pfadTitel a:active   {color: #cd0000; }
+#pfadTitel a:hover    {color: #cd0000; }
+#pfadTitel a:bb:hover {color: #cd0000; }
+
+#pfadLeiste {
+	float:right;
+	width:650px;
+	height:11px;
+	line-height:11px;
+	font-size:11px;
+	color:#666;
+	margin:10px 0 10px 10px;
+}
+
+#pfadLeiste a:link     {color: #006977; } 
+#pfadLeiste a:visited  {color: #006977; }
+#pfadLeiste a:active   {color: #cd0000; }
+#pfadLeiste a:hover    {color: #cd0000; }
+#pfadLeiste a:bb:hover {color: #cd0000; }
+
+#teaser {
+	clear:both;
+}
+
+#teaserLinks {
+	float:left;
+	width:280px;
+	height: 140px;
+	margin:0 10px 10px 10px;
+	overflow: hidden;
+	background-image: url('images/teaserMuster1.gif');
+}
+
+#teaserRechts {
+	float:left;
+	width:650px;
+	height: 140px;
+	margin:0 0 10px 0px;
+	overflow: hidden;
+	background-image: url('images/teaserLogoSchief.jpg');
+}
+
+#mitte {
+	clear:both;
+}
+
+#menu {
+	float:left;
+	width:280px;
+	padding:20px 10px 20px 10px;
+	font-size:11px;
+}
+
+#menu ul {
+	list-style-type:none;
+	margin:0 0 0 0;
+	padding:0;
+}
+
+.menuItem {
+	width:240px;
+	border-top:1px solid #b8b8b2;
+	line-height:19px;
+}
+
+.menuItem a {
+	display:block;
+	background:url(images/pfeilLeer.gif) no-repeat center left;
+	padding-left:20px;
+}
+
+.menuItem a.nav-selected {
+	display:block;
+	background:url(images/pfeilKleinBlau.gif) no-repeat center left;
+	padding-left:20px;
+}
+
+
+/* Menu 2. Ebene */
+.menuItem .SubMenu {
+	/* background-color:#f9f9f6; */
+}
+
+.menuItem .SubMenu .menuItem{
+	width:225px;
+	border-top:1px solid #b8b8b2;
+	line-height:19px;
+	padding-left:15px;
+}
+
+/* Menu 3. Ebene */
+.menuItem .SubSubMenu .menuItem{
+	width:210px;
+	border-top:1px solid #b8b8b2;
+	line-height:19px;
+	padding-left:15px;
+}
+
+
+.menuItem a:link     {color: #006977; } 
+.menuItem a:hover    {color: #cd0000; background-color:#f3f3f0; }
+.menuItem a:visited  {color: #006977; }
+.menuItem a:active   {color: #cd0000; background-color:#f3f3f0; }
+.menuItem a:bb:hover {color: #cd0000; background-color:#f3f3f0; }
+
+#seite {
+	float:right;
+	/*width:650px;*/
+	width:480px;
+	padding:20px 10px 20px 0;
+}
+
+#seiteVollbreite {
+	float:right;
+	width:650px;
+	/*width:480px;*/
+	padding:20px 10px 20px 0;
+}
+
+#rechts {
+	float:right;
+	width:160px;
+	padding:20px 10px 20px 0px;
+}
+
+#links {
+	float:left;
+	width:160px;
+	padding:20px 10px 20px 0px;
+}
+
+#fuss {
+	clear:both;
+	padding:20px 0 10px 0;
+}
+
+.bildtitel {
+	font-style:italic;
+	color:#008799;
+}
+
+.blau {
+	color:#008799;
+}
+
 
 /* Form */
 
@@ -147,7 +352,7 @@ table.Download td {
 	border-spacing: 0px;
 }
 
-.itmTableTh
+.itmTable th
 {
 	vertical-align: middle;
 	text-align: left;
@@ -155,7 +360,7 @@ table.Download td {
 	background-color: #E4E4DD;
 }
 
-.itmTableTd
+.itmTable td
 {
 	vertical-align: middle;
 	text-align: left;
@@ -163,7 +368,9 @@ table.Download td {
 	border-bottom: 1px dotted #B8B8B2;
 }
 
+/*
 a[href^="http://"]:before,
 a[href^="https://"]:before {
   content: "\2197\00A0";
 }
+*/

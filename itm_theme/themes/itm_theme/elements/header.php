@@ -14,14 +14,15 @@
 	echo '<link rel="stylesheet" type="text/css" href="'.$themeUrl.'/bootstrap/css/bootstrap-responsive.css" />';
 	echo '<script language="JavaScript" type="text/javascript" src="'.$themeUrl.'/bootstrap/js/bootstrap.min.js"></script>';
 	*/
+	$u = new User();
 	?>
 	
-	<?php if (!$c->isEditMode()) : ?>
+	<?php if (!$c->isEditMode() && !$u->isRegistered()) : ?>
 	<link rel="stylesheet" type="text/css" href="<?=$themeUrl?>/jquery-ui/css/jquery-ui-1.8.17.custom.css" />
 	<script language="JavaScript" type="text/javascript" src="<?=$themeUrl?>/jquery-ui/js/jquery-ui-1.8.17.custom.min.js"></script>
 	<?php endif; ?>
 	<link rel="stylesheet" media="screen" type="text/css" href="<?php echo $this->getStyleSheet('css/main.css')?>" />
-	<!-- <link rel="stylesheet" media="screen" type="text/css" href="<?php echo $this->getStyleSheet('css/typography.css')?>" /> -->
+	<link rel="stylesheet" media="screen" type="text/css" href="<?php echo $this->getStyleSheet('css/typography.css')?>" />
 </head>
 <body>
 <div id="rahmen">
