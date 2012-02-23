@@ -54,6 +54,7 @@ class ItmSemesterOverviewBlockController extends BlockController
 
 		$collections = $pl->get();
 		
+		$items = array();
 		foreach ($collections as $collection)
 		{
 			$aTerm = $collection->getCollectionAttributeValue('semester_term');
