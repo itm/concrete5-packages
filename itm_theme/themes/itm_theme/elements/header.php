@@ -41,6 +41,7 @@
 			?>
 		</div>
 	</div>
+<!--
 	<div id="teaser">
 		<div id="teaserLinks">
 			<?php
@@ -57,6 +58,7 @@
 			?>
 		</div>
 	</div>
+-->
 	<div id="mitte">
 		<div id="menu">
 			<div>

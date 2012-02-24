@@ -30,11 +30,21 @@ if (!count($members)):
 		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
 		$link = $ldapHelper->getUserPageLink($user->uName);
 		$name = $user->getAttribute('name');
+		$description = $user->getAttribute('description');
+
+
+		$tmpemail=split("@",$user->uEmail);
+		$email_description = $tmpemail[0] . "@itm..."; 
+
 		?>
 			<tr>
-				<td><?= $link ? '<a href="'.$link.'">' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?></td>
+				<td>
+					<?= $link ? '<a href="'.$link.'">' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?>
+					<br/>
+					<?= empty($description) ? "" : "(" . $description . ")" ?>
+				</td>
 
-				<td><a href="mailto:<?= $user->uEmail ?>"><?= $user->uEmail ?></a></td>
+				<td><a href="mailto:<?= $user->uEmail ?>"><?= $email_description?></a></td>
 
 				<td><?= $user->getAttribute('telephone_number') ?></td>
 

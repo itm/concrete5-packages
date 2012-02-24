@@ -59,7 +59,7 @@ if (!strlen($uName)) :
 		echo "$zip $city<br/><br/>";
 		echo $phone == '' ? '' : t('Phone:') . " $phone<br/>";
 		echo $fax == '' ? '' : t('Fax:') . " $fax<br/>";
-		echo $email == '' ? '' : t('E-Mail:') . " $email<br/>";
+		echo $email == '' ? '' : t('E-Mail:') . " <a href=\"$email\">$email</a><br/>";
 		echo $consultation == '' ? '' : t('Consultation:') . " $consultation";
 
 		echo '</div>';
