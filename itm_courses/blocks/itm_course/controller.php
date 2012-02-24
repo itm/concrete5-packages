@@ -125,10 +125,10 @@ class ItmCourseBlockController extends BlockController
 		}
 		
 		$name = $this->cutLdapPrefix($name);
+
 		$ui = UserInfo::getByUserName($name);
 		if (!empty($ui))
 		{
-			$name = $ui->getAttribute('name');
 			if (!empty($name))
 			{
 				$fullName = $ldapHelper->getFullName($ui);
