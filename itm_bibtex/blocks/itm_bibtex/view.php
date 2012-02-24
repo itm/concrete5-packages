@@ -9,7 +9,14 @@ if (!count($pubList)) :
 		<?php echo t('Please specify required filter data.'); ?>
 	</h1>
 <?php else : ?>
-	<h2>Publications</h2>
+
+	<?php 
+		if(empty($author)) 
+			echo "<h1>Publications</h1>";
+		else 
+			echo "<h2>Publications</h2>";
+	
+	?>
 	<div>
 		<?php
 		$bh = Loader::helper('itm_bibtex', 'itm_bibtex');

@@ -46,11 +46,6 @@ class ItmBibtexBlockController extends BlockController
 
 	public function getFilteredPubList()
 	{
-		if (empty($this->author))
-		{
-			return array();
-		}
-
 		$filter = array();
 		if (!empty($this->since))
 		{
