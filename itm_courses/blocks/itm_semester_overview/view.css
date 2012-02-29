@@ -1,32 +1,6 @@
-table.itmSemesterOverview
-{
-	width: 60%;
-	border-collapse: collapse;
-	border-spacing: 0px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-table.itmThesisOverview th
+table.itmSemesterOverview td, table.itmSemesterOverview th
 {
 	vertical-align: middle;
-	text-align: left;
-	padding: 5px;
-	background-color: #E4E4DD;
-}
-
-table.itmSemesterOverview tr td:nth-child(odd)
-{
-	vertical-align: middle;
-	text-align: left;
+	text-align: center;
 	width: 50%;
-	padding: 5px;
-}
-
-table.itmSemesterOverview tr td:nth-child(even)
-{
-	vertical-align: middle;
-	text-align: right;
-	width: 50%;
-	padding: 5px;
 }

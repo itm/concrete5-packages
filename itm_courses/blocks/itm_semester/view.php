@@ -20,15 +20,15 @@ if (!count($list)) :
 	echo !empty($groupName) ? '<p>' . t('There are no courses available for ') . $groupTitle . '.</p>' : '';
 else :
 	?>
-	<table class="itmTable">
+	<table class="itmTable itmSemester">
 		<tr>
-			<th>
+			<th class="name">
 				<?= t('Name') ?>
 			</th>
-			<th>
+			<th class="type">
 				<?= t('Type') ?>
 			</th>
-			<th>
+			<th class="credits">
 				<?= t('Credits') ?>
 			</th>
 			<!--<th>

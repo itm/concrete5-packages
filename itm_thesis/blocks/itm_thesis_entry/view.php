@@ -40,7 +40,7 @@ else
 	$beginningPlain = "From $beginning";
 }
 
-if (empty($student))
+if (empty($student) || !$status)
 {
 	$studentPlain = 'N/A';
 }
@@ -71,6 +71,7 @@ else
 	<span class="itmThesisEntryValue">
 		<?php
 		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
+
 		if ($this->controller->isLdapTutor())
 		{
 			$ui = UserInfo::getByUserName($this->controller->getTutorName());
@@ -111,7 +112,7 @@ else
 				$name = $ui->getAttribute('name');
 				if (!empty($name))
 				{
-					$fullName = $ldapHelper->getFullName($ui);;
+					$fullName = $ldapHelper->getFullName($ui);
 					$link = $ldapHelper->getUserPageLink($this->controller->getSupervisorName());
 					if ($link)
 					{

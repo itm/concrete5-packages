@@ -3,6 +3,7 @@
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
 Loader::model('page_list');
+Loader::helper('itm_thesis', 'itm_thesis');
 
 class ItmThesisEntryBlockController extends BlockController
 {
@@ -106,7 +107,7 @@ class ItmThesisEntryBlockController extends BlockController
 	 *               name)
 	 */
 	public function getLdapUsers()
-	{
+	{	
 		if (!$this->hasItmLdap())
 		{
 			return array();
