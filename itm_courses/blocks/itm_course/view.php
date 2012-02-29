@@ -77,6 +77,7 @@ if ($parentPage->getCollectionTypeHandle() == 'itm_semester_page') :
 		{
 			echo ', ';
 		}
+		
 		$rendered = $this->controller->renderName($assistant);
 		if (strlen($rendered))
 		{

@@ -1,6 +1,8 @@
 <?php
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
+$emailIconUrl = PageTheme::getByHandle('itm_theme')->getThemeURL() . '/images/email.png';
+
 $members = $this->controller->getGroupMembers();
 
 if (!count($members)):
@@ -10,18 +12,18 @@ if (!count($members)):
 	</h1>
 <?php else : ?>
 	<?= empty($caption) ? '' : '<h2>' . t($caption) . '</h2>' ?>
-	<table class="itmTable">
+	<table class="itmTable itmldapUsers">
 		<tr>
-			<th>
+			<th class="name">
 				<?= t('Name') ?>
 			</th>
-			<th>
+			<th class="email">
 				<?= t('E-Mail') ?>
 			</th>
-			<th>
+			<th class="phone">
 				<?= t('Phone') ?>
 			</th>
-			<th>
+			<th class="room">
 				<?= t('Room') ?>
 			</th>
 		</tr>
@@ -30,15 +32,26 @@ if (!count($members)):
 		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
 		$link = $ldapHelper->getUserPageLink($user->uName);
 		$name = $user->getAttribute('name');
+		$description = $user->getAttribute('description');
+
+
+		$tmpemail=split("@",$user->uEmail);
+		//$email_description = $tmpemail[0] . "@itm..."; 
+		$email_description = sprintf('<img src="%s" alt="%s" title="%s" width="20" height="20" style="border: 0"/>', $emailIconUrl, $user->uEmail, t('Send mail to ' . $name));
+
 		?>
 			<tr>
-				<td><?= $link ? '<a href="'.$link.'">' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?></td>
+				<td class="name">
+					<?= $link ? '<a href="'.$link.'">' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?>
+					<br/>
+					<?= empty($description) ? "" : "(" . $description . ")" ?>
+				</td>
 
-				<td><a href="mailto:<?= $user->uEmail ?>"><?= $user->uEmail ?></a></td>
+				<td class="email"><a href="mailto:<?= $user->uEmail ?>"><?= $email_description?></a></td>
 
-				<td><?= $user->getAttribute('telephone_number') ?></td>
+				<td class="phone"><?= $user->getAttribute('telephone_number') ?></td>
 
-				<td><?= $user->getAttribute('room_number') ?></td>
+				<td class="room"><?= $user->getAttribute('room_number') ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</table>

@@ -25,7 +25,7 @@ class ItmCoursesHelper
 	public function getCourseGroups()
 	{
 		$db = Loader::db();
-		$query = 'SELECT * FROM itmcoursesgroups ORDER BY name ASC';
+		$query = 'SELECT * FROM itmCoursesGroups ORDER BY name ASC';
 		$r = $db->query($query);
 		$result = array();
 		while ($row = $r->fetchRow())
@@ -38,7 +38,7 @@ class ItmCoursesHelper
 	public function getCourseGroupByHandle($handle)
 	{
 		$db = Loader::db();
-		$query = 'SELECT * FROM itmcoursesgroups WHERE handle LIKE ?';
+		$query = 'SELECT * FROM itmCoursesGroups WHERE handle LIKE ?';
 		$r = $db->query($query, array($handle));
 		
 		if ($row = $r->fetchRow())
@@ -52,14 +52,14 @@ class ItmCoursesHelper
 	public function deleteCourseGroup($handle)
 	{
 		$db = Loader::db();
-		$q = 'DELETE FROM itmcoursesgroups WHERE handle LIKE ?';
+		$q = 'DELETE FROM itmCoursesGroups WHERE handle LIKE ?';
 		$r = $db->query($q, array($handle));
 	}
 	
 	public function addCourseGroup($handle, $name)
 	{
 		$db = Loader::db();
-		$q = 'INSERT INTO itmcoursesgroups (handle, name) VALUES (?, ?)';
+		$q = 'INSERT INTO itmCoursesGroups (handle, name) VALUES (?, ?)';
 		$r = $db->query($q, array($handle, $name));
 	}
 }

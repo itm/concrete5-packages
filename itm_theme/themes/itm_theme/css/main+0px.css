@@ -1,6 +1,6 @@
 body, td, th {
 	font-family: Tahoma, sans-serif, Arial, Helvetica;
-	font-size: 13px;
+	font-size: 12px;
 	color: #000;
 }
 
@@ -19,7 +19,7 @@ h1, h2, h3
 }
 
 h1 {
-	font-size:21px;
+	font-size:20px;
 	color:#008799;
 	font-weight:normal;
 	margin-top: 0;
@@ -27,7 +27,7 @@ h1 {
 }
 
 h2, h3 {
-	font-size:15px;
+	font-size:14px;
 	color:#666;
 	font-weight:bold;
 	margin-top: 25px;
@@ -36,25 +36,25 @@ h2, h3 {
 
 h3
 {
-	font-size: 13px;
+	font-size: 12px;
 }
 
 h4 {
-	font-size:14px;
+	font-size:13px;
 	color:#008799;
 	font-weight:bold;
 	display:block;
-	line-height:23px;
+	line-height:24px;
 	/*border-top:10px solid #e4e4dd;*/
 	border-top:1px solid #b8b8b2;
 }
 
 h5 {
-	font-size:13px;
+	font-size:12px;
 	color:#008799;
 	font-weight:bold;
 	display:block;
-	line-height:23px;
+	line-height:22px;
 	border-top:1px solid #b8b8b2;
 }
 
@@ -117,9 +117,9 @@ a:bb:hover {color: #cd0000; }
 #pfadTitel {
 	float:left;
 	width:280px;
-	height:10px;
-	line-height:10px;
-	font-size:12px;
+	height:11px;
+	line-height:11px;
+	font-size:11px;
 	color:#666;
 	margin:10px 0 10px 10px;
 	text-transform:uppercase;
@@ -135,9 +135,9 @@ a:bb:hover {color: #cd0000; }
 #pfadLeiste {
 	float:right;
 	width:650px;
-	height:10px;
-	line-height:10px;
-	font-size:12px;
+	height:11px;
+	line-height:11px;
+	font-size:11px;
 	color:#666;
 	margin:10px 0 10px 10px;
 }
@@ -178,7 +178,7 @@ a:bb:hover {color: #cd0000; }
 	float:left;
 	width:280px;
 	padding:20px 10px 20px 10px;
-	font-size:12px;
+	font-size:13px;
 }
 
 #menu ul {
@@ -190,7 +190,7 @@ a:bb:hover {color: #cd0000; }
 .menuItem {
 	width:240px;
 	border-top:1px solid #b8b8b2;
-	line-height:20px;
+	line-height:19px;
 }
 
 .menuItem a {
@@ -214,7 +214,7 @@ a:bb:hover {color: #cd0000; }
 .menuItem .SubMenu .menuItem{
 	width:225px;
 	border-top:1px solid #b8b8b2;
-	line-height:20px;
+	line-height:19px;
 	padding-left:15px;
 }
 
@@ -222,7 +222,7 @@ a:bb:hover {color: #cd0000; }
 .menuItem .SubSubMenu .menuItem{
 	width:210px;
 	border-top:1px solid #b8b8b2;
-	line-height:20px;
+	line-height:19px;
 	padding-left:15px;
 }
 
@@ -330,12 +330,12 @@ a:bb:hover {color: #cd0000; }
 }
 
 .TLinkButton {
-	font-size:12px;
+	font-size:11px;
 }
 
 .TTextBox100{
 	width:385px;	
-	font-size:14px;
+	font-size:13px;
 	font-family: Tahoma, sans-serif, Arial, Helvetica;
 	border:none;
 	background-color:#FFF;

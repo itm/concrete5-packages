@@ -41,6 +41,14 @@
 			?>
 		</div>
 	</div>
+	<?php
+		$atl = new Area('Teaser Image Left');
+		$atl->setBlockLimit(1);
+		$atr = new Area('Teaser Image Right');
+		$atr->setBlockLimit(1);
+		
+		if ($c->isEditMode() || $atl->getTotalBlocksInArea($c) || $atr->getTotalBlocksInArea($c)) :
+	?>
 	<div id="teaser">
 		<div id="teaserLinks">
 			<?php
@@ -57,6 +65,8 @@
 			?>
 		</div>
 	</div>
+	<?php endif; ?>
+	
 	<div id="mitte">
 		<div id="menu">
 			<div>
