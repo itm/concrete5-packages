@@ -99,6 +99,33 @@ if (!isset($type))
 		</tbody>
 	</table>
 
+	<?php
+	$json = Loader::helper('json');
+	?>
+	<script language="JavaScript" type="text/javascript">
+		var ThesisData = 
+		{
+			ICON_REMOVE: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/delete_small.png" width="16" height="16" alt="<?= t('Remove') ?>" title="<?= t('Remove') ?>" style="vertical-align: middle"/>',
+			ICON_SWITCH: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/edit_small.png" width="16" height="16" alt="<?= t('Switch Edit Mode') ?>" title="<?= t('Switch Edit Mode') ?>" style="vertical-align: middle"/>',
+			ICON_UP: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_up_black.png" width="11" height="6" alt="<?= t('Move Up') ?>" title="<?= t('Move Up') ?>" style="vertical-align: middle"/>',
+			ICON_DOWN: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_down_black.png" width="11" height="6" alt="<?= t('Move Down') ?>" title="<?= t('Move Down') ?>" style="vertical-align: middle"/>',
+			ICON_UP_DISABLED: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_up.png" width="11" height="6" alt="<?= t('Move Up disabled') ?>" title="<?= t('Move Up disabled') ?>" style="vertical-align: middle"/>',
+			ICON_DOWN_DISABLED: '<img src="<?= ASSETS_URL_IMAGES ?>/icons/arrow_down.png" width="11" height="6" alt="<?= t('Move disabled') ?>" title="<?= t('Move Down disabled') ?>" style="vertical-align: middle"/>',
+			LDAP_USERS: <?=$json->encode($this->controller->getLdapUsers())?>,
+			tutors: <?= $json->encode($this->controller->getTutors()) ?>,
+			supervisors: <?= $json->encode($this->controller->getSupervisors()) ?>,
+			serializeTutors: function()
+			{
+				return JSON.stringify(this.tutors);
+			},
+			serializeSupervisors: function()
+			{
+				return JSON.stringify(this.supervisors);
+			}
+		}
+		
+	</script>
+
 	<table class="itmThesisEntry zebra-striped">
 		<thead>
 			<th colspan="2"><?= t('People') ?></th>
@@ -115,44 +142,35 @@ if (!isset($type))
 			</td>
 		</tr>
 		<tr>
-			<td><?= t('Tutor *') ?></td>
+			<td style="width: 150px"><?= t('Tutor(s)') ?></td>
 			<td>
-				<?php if ($this->controller->hasItmLdap()) :?>
-				<div id="tutorLdap">
-					<?= $form->select('tutor_ldap', $this->controller->getLdapUsers(), $this->controller->isLdapTutor() ? $tutor : false, $this->controller->isLdapTutor() ? array('style' => 'width: 80%') : array('style' => 'width: 80%', 'disabled' => 'disabled'))?>
-					<span style="font-size: 8pt"><a href="#" onclick="LdapEntry.switchEntry('tutor', '', ''); return false;">Customize...</a></span>
+				<div id="tutorWrapper">
+					<script language="JavaScript" type="text/javascript">
+						$('#tutorWrapper').wrapInner(ThesisEntry.renderList('tutor'));
+					</script>
 				</div>
-				<div id="tutorRaw" style="margin-top: 5px; display: <?= $this->controller->isLdapTutor() ? 'none' : 'block' ?>;">
-					<?= $form->text('tutor', $this->controller->isLdapTutor() ? '' : $tutor, array('style' => 'width: 80%')) ?>
-					<a href="#" onclick="LdapEntry.hideEntry('tutor', ''); return false;">
-						<img src="<?= ASSETS_URL_IMAGES ?>/icons/remove.png" width="16" height="16" alt="<?= t('Remove') ?>" style="vertical-align: middle"/>
+				<div>
+					<a href="#" onclick="ThesisEntry.addItem('tutor'); return false;" style="border: 0px">
+						<img src="<?= ASSETS_URL_IMAGES ?>/icons/add_small.png" width="16" height="16" alt="<?= t('Add item') ?>" title="<?= t('Add item') ?>" style="vertical-align: middle"/>
 					</a>
 				</div>
-				<?php else : ?>
-					<?= $form->text('tutor', $tutor, array('style' => 'width: 100%')) ?>
-				<?php endif; ?>
+				<input type="hidden" id="tutorsJson" name="tutorsJson" value=""/>
 			</td>
 		</tr>
 		<tr>
-			<td><?= t('Supervisor *') ?></td>
+			<td><?= t('Supervisor(s) ') ?></td>
 			<td>
-				<?php if ($this->controller->hasItmLdap()) :?>
-				<div id="supervisorLdap">
-					<?= $form->select('supervisor_ldap', $this->controller->getLdapUsers(), $this->controller->isLdapSupervisor() ? $supervisor : false, $this->controller->isLdapSupervisor() ? array('style' => 'width: 80%') : array('style' => 'width: 80%', 'disabled' => 'disabled'))?>
-					<span style="font-size: 8pt"><a href="#" onclick="LdapEntry.switchEntry('supervisor', '', ''); return false;">Customize...</a></span>
+				<div id="supervisorWrapper">
+					<script language="JavaScript" type="text/javascript">
+						$('#supervisorWrapper').wrapInner(ThesisEntry.renderList('supervisor'));
+					</script>
 				</div>
-				<div id="supervisorRaw" style="margin-top: 5px; display: <?= $this->controller->isLdapSupervisor() ? 'none' : 'block' ?>;">
-					<?= $form->text('supervisor', $this->controller->isLdapSupervisor() ? '' : $supervisor, array('style' => 'width: 80%')) ?>
-					<a href="#" onclick="LdapEntry.hideEntry('supervisor', ''); return false;">
-						<img src="<?= ASSETS_URL_IMAGES ?>/icons/remove.png" width="16" height="16" alt="<?= t('Remove') ?>" style="vertical-align: middle"/>
+				<div>
+					<a href="#" onclick="ThesisEntry.addItem('supervisor'); return false;" style="border: 0px">
+						<img src="<?= ASSETS_URL_IMAGES ?>/icons/add_small.png" width="16" height="16" alt="<?= t('Add item') ?>" title="<?= t('Add item') ?>" style="vertical-align: middle"/>
 					</a>
 				</div>
-				<?php else : ?>
-					<?= $form->text('supervisor', $supervisor, array('style' => 'width: 100%')) ?>
-				<?php endif; ?>
+				<input type="hidden" id="supervisorsJson" name="supervisorsJson" value=""/>
 			</td>
 		</tr>
 	</table>
-	<p class="note">
-<?= t('* Required information') ?>
-	</p>
