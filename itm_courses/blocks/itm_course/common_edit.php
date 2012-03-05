@@ -109,7 +109,7 @@ if (!isset($type))
 
 	<table class="itmCourse zebra-striped">
 		<thead>
-			<th colspan="2"><?=$jsLdapUsers?><?= t('People') ?></th>
+			<th colspan="2"><?= t('People') ?></th>
 		</thead>
 		<tr>
 			<td style="width: 150px"><?= t('Lecturer(s)') ?></td>
