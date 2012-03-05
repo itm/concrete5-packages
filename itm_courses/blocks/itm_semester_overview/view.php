@@ -8,15 +8,19 @@
  */
 
 $list = $this->controller->getSemesterList();
-$wtCaption = t('Winter term');
-$stCaption = t('Summer term');
+$wtCaption = t('Winter Term');
+$stCaption = t('Summer Term');
 echo '<h1>' . t('Teaching') . '</h1>';
 
 if (!count($list)) :
 	echo '<p>' . t('There are currently no summer or winter terms available.') . '</p>';
 else :
 	?>
-	<table class="itmSemesterOverview">
+	<table class="itmTable itmSemesterOverview">
+		<tr>
+			<th><?=t('Winter Terms')?></th>
+			<th><?=t('Summer Terms')?></th>
+		</tr>
 		<?php
 		foreach($list as $key => $item)
 		{
@@ -27,7 +31,7 @@ else :
 			}
 			else
 			{
-				echo '<td></td>';
+				echo '<td>&ndash;</td>';
 			}
 			
 			if (!empty($item['summerterm']))
@@ -36,7 +40,7 @@ else :
 			}
 			else
 			{
-				echo '<td></td>';
+				echo '<td>&ndash;</td>';
 			}
 		}
 		?>

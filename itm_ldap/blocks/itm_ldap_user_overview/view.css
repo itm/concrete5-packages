@@ -1,0 +1,20 @@
+table.itmldapUsers .name
+{
+	width: 200px;
+}
+
+table.itmldapUsers .email
+{
+	text-align: center;
+	width: 60px;
+}
+
+table.itmldapUsers .phone
+{
+	width: 160px;
+}
+
+table.itmldapUsers .room
+{
+	
+}
