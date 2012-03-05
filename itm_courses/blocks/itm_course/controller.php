@@ -55,7 +55,7 @@ class ItmCourseBlockController extends BlockController
 		
 		$ilh = Loader::helper('itm_ldap', 'itm_ldap');
 
-		$result = array('ldap:none' => t('None'));
+		$result = array(ITM_COURSES_LDAP_PREFIX . 'none' => t('None'));
 		foreach ($ilh->getLdapStaffFromC5() as $user)
 		{
 			$result[ITM_COURSES_LDAP_PREFIX . $user->uName] = $user->uName;

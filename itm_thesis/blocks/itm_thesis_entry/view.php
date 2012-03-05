@@ -66,36 +66,28 @@ else
 	 <span class="itmThesisEntryCaption"><?= t('Student') ?>:</span>
 	<span class="itmThesisEntryValue"><?= $studentPlain ?></span>
 </div>
+<?php
+	$tutors = $this->controller->getTutors();
+	$supervisors = $this->controller->getSupervisors();
+?>
 <div class="itmThesisEntryTutor">
 	<span class="itmThesisEntryCaption"><?= t('Tutor') ?>:</span>
 	<span class="itmThesisEntryValue">
 		<?php
-		$ldapHelper = Loader::helper('itm_ldap', 'itm_ldap');
-
-		if ($this->controller->isLdapTutor())
+		$first = 1;
+		foreach ($tutors as $item)
 		{
-			$ui = UserInfo::getByUserName($this->controller->getTutorName());
-			if (!empty($ui))
+			if (!$first)
 			{
-				$name = $ui->getAttribute('name');
-				if (!empty($name))
-				{
-					$fullName = $ldapHelper->getFullName($ui);
-					$link = $ldapHelper->getUserPageLink($this->controller->getTutorName());
-					if ($link)
-					{
-						echo '<a href="' . $link . '">' . $fullName . '</a>';
-					}
-					else
-					{
-						echo $fullName;
-					}
-				}
+				echo ', ';
 			}
-		}
-		else
-		{
-			echo $tutor;
+
+			$rendered = $this->controller->renderName($item);
+			if (strlen($rendered))
+			{
+				echo $rendered;
+			}
+			$first = 0;
 		}
 		?>
 	</span>
@@ -104,30 +96,20 @@ else
 	<span class="itmThesisEntryCaption"><?= t('Supervisor') ?>:</span>
 	<span class="itmThesisEntryValue">
 		<?php
-		if ($this->controller->isLdapSupervisor())
+		$first = 1;
+		foreach ($supervisors as $item)
 		{
-			$ui = UserInfo::getByUserName($this->controller->getSupervisorName());
-			if (!empty($ui))
+			if (!$first)
 			{
-				$name = $ui->getAttribute('name');
-				if (!empty($name))
-				{
-					$fullName = $ldapHelper->getFullName($ui);
-					$link = $ldapHelper->getUserPageLink($this->controller->getSupervisorName());
-					if ($link)
-					{
-						echo '<a href="' . $link . '">' . $fullName . '</a>';
-					}
-					else
-					{
-						echo $fullName;
-					}
-				}
+				echo ', ';
 			}
-		}
-		else
-		{
-			echo $supervisor;
+
+			$rendered = $this->controller->renderName($item);
+			if (strlen($rendered))
+			{
+				echo $rendered;
+			}
+			$first = 0;
 		}
 		?>
 	</span>
