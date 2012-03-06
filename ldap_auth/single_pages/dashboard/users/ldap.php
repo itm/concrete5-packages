@@ -36,6 +36,11 @@ $dh = Loader::helper('concrete/dashboard');
 						<td><small><em>ou=People,o=Company,c=US</em></small></td>
 					</tr>
 					<tr>
+						<td><?php echo t('Students Base Query:')?></td>
+						<td><?php echo $form->text('LDAP_BASE_STUDENTS', $baseStudents, array('style' => 'width: 200px'))?></td>
+						<td><small><em>ou=People,o=Company,c=US</em></small></td>
+					</tr>
+					<tr>
 						<td><?php echo t('Groups Base Query:')?></td>
 						<td><?php echo $form->text('LDAP_BASE_GROUPS', $baseGroups, array('style' => 'width: 200px'))?></td>
 						<td><small><em>ou=People,o=Company,c=US</em></small></td>

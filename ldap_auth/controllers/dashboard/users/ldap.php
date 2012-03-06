@@ -12,6 +12,7 @@ class DashboardUsersLdapController extends Controller {
 		$host	= $config->get('LDAP_HOST');
 		$domain	= $config->get('LDAP_DOMAIN_NAME');
 		$baseStaff	= $config->get('LDAP_BASE_STAFF');
+		$baseStudents = $config->get('LDAP_BASE_STUDENTS');
 		$baseGroups	= $config->get('LDAP_BASE_GROUPS');
 		$filter	= $config->get('LDAP_FILTER');
 		$prefix	= $config->get('LDAP_GROUP_IMPORT_PREFIX');
@@ -26,6 +27,9 @@ class DashboardUsersLdapController extends Controller {
 			$baseStaff = $_POST['LDAP_BASE_STAFF'];
 			$config->save('LDAP_BASE_STAFF', $baseStaff);
 			if(!$baseStaff) $config->clear('LDAP_BASE_STAFF');
+			$baseStudents = $_POST['LDAP_BASE_STUDENTS'];
+			$config->save('LDAP_BASE_STUDENTS', $baseStudents);
+			if(!$baseStudents) $config->clear('LDAP_BASE_STUDENTS');
 			$baseGroups = $_POST['LDAP_BASE_GROUPS'];
 			$config->save('LDAP_BASE_GROUPS', $baseGroups);
 			if(!$baseGroups) $config->clear('LDAP_BASE_GROUPS');
@@ -41,6 +45,7 @@ class DashboardUsersLdapController extends Controller {
 		$this->set('host', $host);
 		$this->set('domain', $domain);
 		$this->set('baseStaff', $baseStaff);
+		$this->set('baseStudents', $baseStudents);
 		$this->set('baseGroups', $baseGroups);
 		$this->set('filter', $filter);
 		$this->set('prefix', $prefix);
