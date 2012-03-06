@@ -10,7 +10,7 @@ class LdapAuthenticatorHelper {
 		return $filter;
 	}
 	
-	public function query($uName, $uPassword, $filter) {
+	public function query($uName, $uPassword, $filter, $base = 'LDAP_BASE_STAFF') {
 		$ldap = NewADOConnection('ldap');
 		global $LDAP_CONNECT_OPTIONS;
 		$LDAP_CONNECT_OPTIONS = Array(
@@ -33,7 +33,7 @@ class LdapAuthenticatorHelper {
 				$config->get('LDAP_HOST'), 
 				$uName, 
 				$uPassword, 
-				$config->get('LDAP_BASE')
+				$config->get($base)
 			);
 			$message .= 'Successfully connected and authenticated';
 			/* No longer required
@@ -69,7 +69,7 @@ class LdapAuthenticatorHelper {
 		return array('return' => true, 'message' => $message, 'errors' => $errors);
 	}
 	
-	public function login($uName, $uPassword) {
+	public function login($uName, $uPassword, $base = 'LDAP_BASE_STAFF') {
 		$filter = self::getFilter();
 		if (empty($filter))
 		{
@@ -79,7 +79,7 @@ class LdapAuthenticatorHelper {
 		{
 			$filter = '(&'.self::getFilter().'(uid='.$uName.'))';
 		}
-		$q = self::query($uName, $uPassword, $filter);
+		$q = self::query($uName, $uPassword, $filter, $base);
 
 		if (!empty($q['errors']))
 		{
