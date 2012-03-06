@@ -171,7 +171,21 @@ class LDAPLoginController extends Controller {
 				if($config->get('LDAP_HOST') == NULL) {
 					throw new Exception('LDAP host has been specified.');
 				}
-				Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
+				try
+				{
+					Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
+				}
+				catch (Exception $e)
+				{
+					try
+					{
+						Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
+					}
+					catch (Exception $e)
+					{
+						throw new Exception(t('Invalid username or password.'));
+					}
+				}
 				
 				$res = $userInfo->update(array(
 					'uPassword' => $this->post('uPassword'),
