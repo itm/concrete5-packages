@@ -6,7 +6,7 @@ class ItmThesisPackage extends Package
 {
 	protected $pkgHandle = 'itm_thesis';
 	protected $appVersionRequired = '5.5.1';
-	protected $pkgVersion = '1.1';
+	protected $pkgVersion = '1.2';
 
 	public function getPackageDescription()
 	{
