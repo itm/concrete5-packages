@@ -45,7 +45,7 @@ class ItmThesisOverviewBlockController extends BlockController
 		$pl->ignoreAliases();
 		$pl->ignorePermissions();
 		$pl->filterByCollectionTypeHandle('itm_thesis_page');
-
+		
 		$collections = $pl->get();
 		
 		// create placeholder for thesis entries and their maintained data
@@ -98,9 +98,23 @@ class ItmThesisOverviewBlockController extends BlockController
 			}
 		}
 		
+		usort($items, array("ItmThesisOverviewBlockController", "cmpThesisItem"));
 		return $items;
 	}
-
+	
+	private function cmpThesisItem($a, $b)
+	{
+		if ($a['status'] == $b['status'])
+		{
+			if ($a['topic'] == $b['topic'])
+			{
+				return 0;
+			}
+			return ($a['topic'] < $b['topic']) ? -1 : 1;
+		}
+		return ($a['status'] < $b['status']) ? -1 : 1;
+	}
+	
 	/**
 	 * @return array assoc. array of UserInfo objects with user names as keys
 	 */
