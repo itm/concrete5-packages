@@ -45,8 +45,9 @@ class ItmLdapHelper
 
 		return $ldap;
 	}
+	
 	/**
-	 * Creates a new ADOdb connection and binds LDAP to the base given in the
+	 * Creates a new ADOdb connection and binds LDAP to the staff base given in the
 	 * package 'ldap_auth'.
 	 * 
 	 * @global array $LDAP_CONNECT_OPTIONS will be overwritten.
@@ -55,6 +56,18 @@ class ItmLdapHelper
 	public function ldapBindStaff()
 	{
 		return $this->ldapBind('LDAP_BASE_STAFF');
+	}
+	
+	/**
+	 * Creates a new ADOdb connection and binds LDAP to the students base given in the
+	 * package 'ldap_auth'.
+	 * 
+	 * @global array $LDAP_CONNECT_OPTIONS will be overwritten.
+	 * @return mixed ADOdb connection. 
+	 */
+	public function ldapBindStudents()
+	{
+		return $this->ldapBind('LDAP_BASE_STUDENTS');
 	}
 
 	public function ldapBindGroups()
@@ -273,10 +286,10 @@ class ItmLdapHelper
 	public function getLdapStaff()
 	{
 		$ldapStaff = $this->ldapBindStaff();
-		
+		$ldapStudents = $this->ldapBindStudents();
 		$ldapGroups = $this->ldapBindGroups();
 		
-		if (!$ldapStaff || !$ldapGroups)
+		if (!$ldapStaff || !$ldapGroups || !$ldapStudents)
 		{
 			throw new Exception(t('LDAP connection failed!'));
 		}
@@ -290,10 +303,15 @@ class ItmLdapHelper
 			for ($i = 0; $i < count($ldapGroup['memberUid']); $i++)
 			{
 				$tmpRes = $ldapStaff->GetArray(sprintf('(uid=%s)', $ldapGroup['memberUid'][$i]));
+				if (!count($tmpRes))
+				{
+					$tmpRes = $ldapStudents->GetArray(sprintf('(uid=%s)', $ldapGroup['memberUid'][$i]));
+				}
+				
 				if (count($tmpRes))
 				{
 					$tmpRes[0]['cn'] = $ldapGroup['cn'];
-					$result = array_merge($result, $tmpRes);
+					$result[] = $tmpRes[0];
 				}
 			}
 		}
