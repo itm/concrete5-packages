@@ -173,17 +173,17 @@ class LDAPLoginController extends Controller {
 				}
 				try
 				{
-					Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
+					Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'), 'LDAP_BASE_STAFF');
 				}
 				catch (Exception $e)
 				{
 					try
 					{
-						Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'));
+						Loader::helper('ldap_authenticator', 'ldap_auth')->login($this->post('uName'), $this->post('uPassword'), 'LDAP_BASE_STUDENTS');
 					}
 					catch (Exception $e)
 					{
-						throw new Exception(t('Invalid username or password.'));
+						throw new Exception(t('Could not authenticate via LDAP.'));
 					}
 				}
 				
