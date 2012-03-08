@@ -5,6 +5,7 @@
 
 <script type="text/javascript">
 var switchIcon = '<img src="<?= ASSETS_URL_IMAGES ?>/icons/edit_small.png" width="16" height="16" alt="<?= t('Switch Edit Mode') ?>" title="<?= t('Switch Edit Mode') ?>" style="vertical-align: middle"/>';
+// TODO: hard coded - not kind... but functional.
 var items =
 [
 	'Place and Time',
@@ -16,9 +17,11 @@ var items =
 	'Links',
 	'Documents',
 	'Exercise Documents',
-	'Voluntary Exercises'
+	'Voluntary Exercises',
+	'Hint',
+	'Maximum Number of Participants'
 ];
-	
+
 var ccm_editorCurrentAuxTool = '';
 var editor_id = 'ccm-content-<?php echo $a->getAreaID()?>';
 

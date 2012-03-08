@@ -2,7 +2,8 @@ var CourseItem =
 {
 	switchIcon: 'Switch',
 	items: [],
-	editMode: false,
+	editMode: false, //true = raw, false = list
+	bkpCaption: '',
 	renderOptionList: function(selValue)
 	{
 		htmlOptions = '';
@@ -20,6 +21,7 @@ var CourseItem =
 	},
 	renderSelect: function(selValue)
 	{
+		this.editMode = false;
 		htmlSelect = '<select style="width: 80%" id="title" name="title">';
 		htmlSelect += this.renderOptionList(selValue);
 		htmlSelect += '</select>';
@@ -27,6 +29,7 @@ var CourseItem =
 	},
 	renderRaw: function(value)
 	{
+		this.editMode = true;
 		htmlText = '<input style="width: 80%" type="text" id="title" name="title" value="' + value + '"/>';
 		return htmlText;
 	},
@@ -36,14 +39,13 @@ var CourseItem =
 	},
 	switchEditMode: function()
 	{
-		this.editMode = !this.editMode;
-		if (this.editMode)
+		if (!this.editMode)
 		{
-			$('#title').replaceWith(this.renderRaw(''));
+			$('#title').replaceWith(this.renderRaw(this.bkpCaption));
 		}
 		else
 		{
-			$('#title').replaceWith(this.renderSelect(''));
+			$('#title').replaceWith(this.renderSelect(this.bkpCaption));
 		}
 		$('#title').focus();
 	},
@@ -79,7 +81,7 @@ var CourseItem =
 			}
 			else
 			{
-				html += this.renderRaw('');
+				html += this.renderRaw(selValue);
 			}
 		}
 		
