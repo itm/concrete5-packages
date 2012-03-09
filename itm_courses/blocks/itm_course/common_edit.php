@@ -77,6 +77,10 @@ if (!isset($type))
 				<td><?= t('Credits') ?></td>
 				<td><?= $form->text('credits', $credits, array('style' => 'width: 100%')) ?></td>
 			</tr>
+			<tr>
+				<td><?= t('Credit Hours') ?></td>
+				<td><?= $form->text('creditHours', $creditHours, array('style' => 'width: 100%')) ?></td>
+			</tr>
 		</tbody>
 	</table>
 

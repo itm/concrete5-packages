@@ -11,5 +11,6 @@
 		<field name="lecturers" type="X" />
 		<field name="assistants" type="X" />
 		<field name="groups" type="X" />
+		<field name="creditHours" type="C" size="50" />
 	</table>
 </schema>

@@ -27,11 +27,17 @@ if ($parentPage->getCollectionTypeHandle() == 'itm_semester_page') :
 <?php endif; ?>
 </div>
 <?php
- if (strlen($credits)) :
+ if (strlen($credits) || strlen($creditHours)) :
 ?>
-<h2 class="itmCourseEntry"><?=t('Credits')?></h2>
+<h2 class="itmCourseEntry">
+<?php
+if (strlen($credits)) echo t('Credits');
+if (strlen($credits) && strlen($creditHours)) echo ' / ';
+if (strlen($creditHours)) echo t('Credit Hours');
+?>
+</h2>
 <div class="itmCourseEntry">
-	<?=$credits?>
+	<?=$credits?> <?=strlen($credits) && strlen($creditHours) ? ' / ' : ''?> <?=$creditHours?>
 </div>
 <?php endif; ?>
 
