@@ -61,7 +61,12 @@ if (!isset($type))
 					</div>
 					<div>
 						<label for="type3">
-							<?= $form->radio('type', '2', $type) ?> <?= t('Practical Course') ?>
+							<?= $form->radio('type', '2', $type) ?> <?= t('Workshop') ?>
+						</label>
+					</div>
+					<div>
+						<label for="type4">
+							<?= $form->radio('type', '3', $type) ?> <?= t('Practical Course') ?>
 						</label>
 					</div>
 				</td>

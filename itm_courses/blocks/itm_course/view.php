@@ -10,6 +10,10 @@ switch ($type)
 		$typePlain = t('Seminar');
 		break;
 
+	case 2 :
+		$typePlain = t('Workshop');
+		break;
+		
 	default :
 		$typePlain = t('Practical Course');
 		break;
