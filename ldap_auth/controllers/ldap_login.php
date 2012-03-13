@@ -183,7 +183,7 @@ class LDAPLoginController extends Controller {
 					}
 					catch (Exception $e)
 					{
-						throw new Exception(t('Invalid username or password.'));
+						throw new Exception(t('Could not authenticate via LDAP.'));
 					}
 				}
 				

@@ -3,6 +3,12 @@ table.itmldapUsers .name
 	width: 200px;
 }
 
+table.itmldapUsers .avatar
+{
+	width: 30px;
+	text-align: center;
+}
+
 table.itmldapUsers .email
 {
 	text-align: center;

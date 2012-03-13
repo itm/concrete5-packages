@@ -28,7 +28,7 @@ class LdapAuthenticatorHelper {
 			
 			//if(strpos($uName, '@') === false) $uName = $uName.'@'.$config->get('LDAP_DOMAIN_NAME');
 			//if($uName == '@') $uName = NULL;
-			$uName = "uid=$uName,".$config->get('LDAP_DOMAIN_NAME');
+			$uName = "uid=$uName,".$config->get($base);
 			$ldap->Connect(
 				$config->get('LDAP_HOST'), 
 				$uName, 

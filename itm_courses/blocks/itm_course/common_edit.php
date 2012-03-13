@@ -61,7 +61,12 @@ if (!isset($type))
 					</div>
 					<div>
 						<label for="type3">
-							<?= $form->radio('type', '2', $type) ?> <?= t('Practical Course') ?>
+							<?= $form->radio('type', '2', $type) ?> <?= t('Workshop') ?>
+						</label>
+					</div>
+					<div>
+						<label for="type4">
+							<?= $form->radio('type', '3', $type) ?> <?= t('Practical Course') ?>
 						</label>
 					</div>
 				</td>
@@ -76,6 +81,10 @@ if (!isset($type))
 			<tr>
 				<td><?= t('Credits') ?></td>
 				<td><?= $form->text('credits', $credits, array('style' => 'width: 100%')) ?></td>
+			</tr>
+			<tr>
+				<td><?= t('Credit Hours') ?></td>
+				<td><?= $form->text('creditHours', $creditHours, array('style' => 'width: 100%')) ?></td>
 			</tr>
 		</tbody>
 	</table>

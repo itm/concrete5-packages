@@ -11,7 +11,7 @@ $list = $this->controller->getCourseList();
 $ch = Loader::helper('itm_courses', 'itm_courses');
 $groupTitle = t($ch->getCourseGroupByHandle($groupName)->name);
 
-$typeMapping = array(t('Course'), t('Seminar'), t('Practical Course'));
+$typeMapping = array(t('Course'), t('Seminar'), t('Workshop'), t('Practical Course'));
 
 
 echo '<h2>' . $groupTitle . '</h2>';

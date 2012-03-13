@@ -14,6 +14,9 @@ if (!count($members)):
 	<?= empty($caption) ? '' : '<h2>' . t($caption) . '</h2>' ?>
 	<table class="itmTable itmldapUsers">
 		<tr>
+			<th class="avatar">
+				<!-- void -->
+			</th>
 			<th class="name">
 				<?= t('Name') ?>
 			</th>
@@ -41,6 +44,18 @@ if (!count($members)):
 
 		?>
 			<tr>
+				<td class="avatar">
+					<?php
+					if ($user->hasAvatar())
+					{
+						echo ($link ? '<a href="'.$link.'">' : '') . '<img src="' . Loader::helper('concrete/avatar')->getImagePath($user) . '" width="30" alt="Portrait of ' . $ldapHelper->getFullName($user) . '"/>' . ($link ? '</a>' : '');
+					}
+					else
+					{
+						echo ($link ? '<a href="'.$link.'">' : '') . '<img src="' . DIR_REL . '/packages/itm_ldap/images/noavatar.png" width="26" style="border: 1px solid #e4e4dd; padding: 1px;" alt="' . t('Portrait not available') . '"/>' . ($link ? '</a>' : '');
+					}
+				?>
+				</td>
 				<td class="name">
 					<?= $link ? '<a href="'.$link.'">' . $ldapHelper->getFullName($user) . '</a>' : $ldapHelper->getFullName($user) ?>
 					<br/>
