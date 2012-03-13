@@ -7,6 +7,7 @@ $bt->inc('editor_init.php');
 	<h4><?= t('Course Item Caption') ?></h4>
 	<div id="titleFieldWrapper">
 		<script language="JavaScript">
+			CourseItem.bkpCaption = '<?=$title?>';
 			CourseItem.items = items;
 			CourseItem.switchIcon = switchIcon;
 			$('#titleFieldWrapper').append(CourseItem.renderTitleField('<?=$title?>'));
