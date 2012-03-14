@@ -14,8 +14,12 @@ switch ($type)
 		$typePlain = t('Workshop');
 		break;
 		
-	default :
+	case 3 :
 		$typePlain = t('Practical Course');
+		break;
+	
+	default :
+		$typePlain = t('Project');
 		break;
 }
 ?>
