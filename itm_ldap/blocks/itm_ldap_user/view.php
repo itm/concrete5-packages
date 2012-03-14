@@ -29,20 +29,38 @@ if (!strlen($uName)) :
 		$email = $userInfo->uEmail;
 		$consultation = $userInfo->getAttribute('consultation');
 		
-		echo '<div style="width: 160px; float: left">';
+		$av = Loader::helper('concrete/avatar');
+		$imgWidth = 150;
+		$paddingRight = 10;
+		
+		if ($userInfo->hasAvatar())
+		{
+			$imgWidth = getimagesize(DIR_FILES_AVATARS . '/' . $userInfo->getUserID() . '.jpg');
+
+			if (is_array($imgWidth))
+			{
+				$imgWidth = $imgWidth[0];
+			}
+			else
+			{
+				$imgWidth = 160;
+			}
+		}
+		
+		echo '<div style="width: ' . ($imgWidth + $paddingRight) . 'px; float: left">';
 
 		if ($userInfo->hasAvatar())
 		{
-			$av = Loader::helper('concrete/avatar');
+			
 			echo $av->outputUserAvatar($userInfo, true);
 		}
 		else
 		{
-			echo '<img src="' . DIR_REL . '/packages/itm_ldap/images/noavatar.png" width="150" style="border: 1px solid #e4e4dd; padding: 1px;" alt="' . t('No avatar available') . '"/>';
+			echo '<img src="' . DIR_REL . '/packages/itm_ldap/images/noavatar.png" width="' . $imgWidth . '" style="border: 1px solid #e4e4dd; padding: 1px;" alt="' . t('No avatar available') . '"/>';
 		}
 
 		echo '</div>';
-		echo '<div style="margin-left: 160px;">';
+		echo '<div style="margin-left: ' . ($imgWidth + $paddingRight) . 'px;">';
 		
 		if ($name != '')
 		{
