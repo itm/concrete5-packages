@@ -1,4 +1,4 @@
-/* table.itmTable topic
+table.itmTable topic
 {
 	padding-right: 10px;
 }
@@ -6,10 +6,4 @@
 table.itmTable type
 {
 	padding-right: 10px;
-} */
-
-table.itmTable td.status
-{
-	vertical-align: middle;
-	text-align: center;
 }

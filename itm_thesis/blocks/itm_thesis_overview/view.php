@@ -53,22 +53,18 @@ else :
 					break;
 			}
 
-			$imgBase = DIR_REL . '/packages/itm_thesis/images/';
 			switch ($list[$i]['status'])
 			{
 				case 0 :
 					$status = t('Open');
-					$statusImg = $imgBase . 'light_green.png';
 					break;
 
 				case 1 :
 					$status = t('Running');
-					$statusImg = $imgBase . 'light_yellow.png';
 					break;
 
 				default :
 					$status = t('Finished');
-					$statusImg = $imgBase . 'light_red.png';
 					break;
 			}
 			?>
@@ -82,7 +78,7 @@ else :
 					<?= $type ?>
 				</td>
 				<td class="status">
-					<img src="<?= $statusImg ?>" width="16" height="16" style="border: 0px;" alt="<?= $status ?>" title="<?= $status ?>"/>
+					<?= $status ?>
 				</td>
 			</tr>
 		<?php endfor; ?>
