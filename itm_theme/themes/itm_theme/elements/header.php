@@ -1,7 +1,8 @@
 <?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?php
 	$theme = PageTheme::getByHandle('itm_theme');
-	$themeUrl = $theme->getThemeURL();
+	$themeUrl = $this->getThemePath();
+//	echo $themeUrl;
 	$imgBase = $themeUrl . "/images";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
