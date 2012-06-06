@@ -67,6 +67,8 @@ class ItmThesisOverviewBlockController extends BlockController
 					if (!empty($this->uName))
 					{
 						$tutors = $bCtrl->getTutors();
+						$supervisors = $bCtrl->getSupervisors();
+						$tutors = array_merge($tutors, $supervisors);
 						$found = false;
 						foreach ($tutors as $tutor)
 						{
