@@ -100,6 +100,15 @@ a:bb:hover {color: #cd0000; }
 	text-align:right;
 }
 
+#logoUni_klein {
+	float:right;
+	position:relative;
+	width:650px;
+	height:46px;
+	margin:25px 10px 0 0;
+	text-align:right;
+}
+
 #logoSlogan img{
 	position:absolute;
 	bottom:0px;
