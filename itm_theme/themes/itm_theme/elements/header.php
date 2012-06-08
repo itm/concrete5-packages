@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+﻿<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?php
 	$theme = PageTheme::getByHandle('itm_theme');
 	$themeUrl = $this->getThemePath();
@@ -28,12 +28,13 @@
 <body>
 <div id="rahmen">
 	<div id="logo">
-		<div id="logoUni"><img src="<?=$imgBase?>/LogoITM.png" width="280" height="87" alt="Universit&auml;t zu L&uuml;beck"></div>
+		<div id="logoUni"><a href="http://www.itm.uni-luebeck.de"><img src="<?=$imgBase?>/LogoITM.png" width="280" height="87" alt="University of Lübeck - Institute of Telematics"></a></div>
+		<div id="logoUni_klein"><a href="http://www.uni-luebeck.de"><img src="<?=$imgBase?>/LogoUni_klein.png" width="146" height="48" alt="University of Lübeck" title="Visit University of Lübeck main page"></a></div>
 		<div id="logoSlogan"><img src="<?=$imgBase?>/sloganHell.gif" width="158" height="28" alt="Im Focus das Leben"></div>
 	</div>
 	<div id="kopfBalken"><img src="<?=$imgBase?>/strichSchmalGrau.gif" width="280" height="10" hspace="10"><img src="<?=$imgBase?>/balkenBreitGrauHell.gif" width="650" height="10"></div>
 	<div id="pfad">
-		<div id="pfadTitel"><a href="<?= DIR_REL ?>">INSTITUTE OF TELEMATICS</a></div>
+		<div id="pfadTitel"><a href="http://www.itm.uni-luebeck.de">INSTITUTE OF TELEMATICS</a></div>
 		<div id="pfadLeiste">
 			<?php
 			$as = new GlobalArea('Breadcrumbs');
