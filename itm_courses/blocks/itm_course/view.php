@@ -34,6 +34,20 @@ if ($parentPage->getCollectionTypeHandle() == 'itm_semester_page') :
 	<?=t('in')?>&nbsp;<?=$parentPage->getCollectionAttributeValue('semester_term')?>&nbsp;<?=$parentPage->getCollectionAttributeValue('semester_year')?>
 <?php endif; ?>
 </div>
+<h2 class="itmCourseEntry"><?=t('Course of Studies')?></h2>
+<div class="itmCourseEntry">
+	<?php
+		$ch = Loader::helper('itm_courses', 'itm_courses');
+		$courseOfStudiesList = $this->controller->getCourseGroups();
+		$addComma = false;
+		foreach ($courseOfStudiesList as $item)
+		{
+			if ($addComma) echo ', ';
+			echo $ch->getCourseGroupByHandle($item)->name;
+			$addComma = true;
+		}
+	?>
+</div>
 <?php
  if (strlen($credits) || strlen($creditHours)) :
 ?>
