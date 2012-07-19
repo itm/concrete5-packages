@@ -372,6 +372,33 @@ table.Download td {
 	margin:0px;
 }
 
+
+table
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+table thead 
+{
+	vertical-align: middle;
+        text-align: left;
+        padding: 5px;
+        background-color: #E4E4DD;
+
+}
+
+table td
+{
+        vertical-align: middle;
+        text-align: left;
+        padding: 5px;
+        border-bottom: 1px dotted #B8B8B2;
+}
+
+
+
 .itmTable
 {
 	width: 100%;

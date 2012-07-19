@@ -6,5 +6,7 @@
 			<unsigned />
 		</field>
 		<field name="groupName" type="C" size="100"/>
+		<field name="groupFilter" type="C" size="100"/>
+		<field name="groupTitle" type="C" size="100"/>
 	</table>
 </schema>

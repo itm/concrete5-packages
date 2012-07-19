@@ -11,7 +11,7 @@ class ItmSemesterBlockController extends BlockController
 {
 	protected $btTable = "btItmSemester";
 	protected $btInterfaceWidth = "300";
-	protected $btInterfaceHeight = "200";
+	protected $btInterfaceHeight = "300";
 	protected $btWrapperClass = 'ccm-ui';
 
 	public function getBlockTypeDescription()
@@ -38,13 +38,29 @@ class ItmSemesterBlockController extends BlockController
 	}
 	
 	/**
+	 * @return string custom group title from DB record.
+	 */
+	public function getCustomTitle()
+	{
+		return $this->groupTitle;
+	}
+	
+	/**
+	 * @return string group filter.
+	 */
+	public function getGroupFilter()
+	{
+		return $this->groupFilter;
+	}
+	
+	/**
 	 * @return array array of thesis items. Thesis items are assoc. arrays with
 	 *               keys 'topic', 'status', 'type' and 'link', whereby 'link'
 	 *               is a URL to the thesis resource.
 	 */
 	public function getCourseList()
 	{
-		if (empty($this->groupName))
+		if (empty($this->groupName) && empty($this->groupFilter))
 		{
 			return array();
 		}
@@ -78,7 +94,23 @@ class ItmSemesterBlockController extends BlockController
 					$groups = $bCtrl->getCourseGroups();
 					foreach ($groups as $group)
 					{
-						if ($group == $this->groupName)
+						$match = false;
+						if (strlen($this->groupFilter))
+						{
+							if (!(strpos(strtolower($group), strtolower($this->groupFilter)) === false))
+							{
+								$match = true;
+							}
+						}
+						else
+						{
+							if ($group == $this->groupName)
+							{
+								$match = true;
+							}
+						}
+						
+						if ($match)
 						{
 							// copy data to a new item array plus a page link
 							$item = array(
