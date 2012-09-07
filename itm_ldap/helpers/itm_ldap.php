@@ -149,7 +149,7 @@ class ItmLdapHelper
 		}
 
 		$userInfo->updateGroups(array($ldapGID, $adminGID, $cnGID));
-
+		
 		$this->setAttr($userInfo, $ldapUser['telephoneNumber'], 'telephone_number');
 		$this->setAttr($userInfo, $ldapUser['facsimileTelephoneNumber'], 'telefax_number');
 		$this->setAttr($userInfo, $ldapUser['description'], 'description');
@@ -159,23 +159,20 @@ class ItmLdapHelper
 		{
 			$this->setAttr($userInfo, $ldapUser['displayName'], 'name');
 		}
-		$this->setAttr($userInfo, $ldapUser['skypeNumber'], 'skype');
-		$this->setAttr($userInfo, $ldapUser['icqNumber'], 'icq');
+		$this->setAttr($userInfo, $ldapUser['skypeNumber'], 'skype_number');
+		$this->setAttr($userInfo, $ldapUser['icqNumber'], 'icq_number');
 		$this->setAttr($userInfo, $ldapUser['title'], 'title');
 	}
 
 	private function setAttr($userInfo, $ldapVal, $c5Key)
 	{
-		if ($ldapVal != '')
+		try
 		{
-			try
-			{
-				$userInfo->setAttribute($c5Key, $ldapVal);
-			}
-			catch (Exception $e)
-			{
-				throw new Exception(t('Attribute not found while updating users:') . " $c5Key");
-			}
+			$userInfo->setAttribute($c5Key, $ldapVal);
+		}
+		catch (Exception $e)
+		{
+			throw new Exception(t('Attribute not found while updating users:') . " $c5Key");
 		}
 	}
 
