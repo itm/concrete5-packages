@@ -26,7 +26,8 @@ class ItmSemesterBlockController extends BlockController
 
 	public function save($data)
 	{
-		parent::save($data);
+		var_dump($data);
+		//parent::save($data);
 	}
 
 	public function getJavaScriptStrings()

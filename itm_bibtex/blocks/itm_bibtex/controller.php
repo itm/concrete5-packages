@@ -46,14 +46,6 @@ class ItmBibtexBlockController extends BlockController
 
 	public function getFilteredPubList()
 	{
-		$filter = array();
-		if (!empty($this->since))
-		{
-			$filter['year'] = $since;
-		}
-
-		$filter['author'] = $this->author;
-
 		$bh = Loader::helper('itm_bibtex', 'itm_bibtex');
 		$bibDb = $bh->getBibDb($this->fID);
 		if (empty($bibDb))
@@ -67,7 +59,7 @@ class ItmBibtexBlockController extends BlockController
 		}
 
 		$result = array();
-		for ($i = date('Y'); $i >= $this->since; $i--)
+		for ($i = date('Y') + 1; $i >= $this->since; $i--)
 		{
 			$tmpResult = $bibDb->multisearch(array(
 				"author" => $this->author,

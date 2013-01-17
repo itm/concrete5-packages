@@ -25,7 +25,6 @@ class ItmThesisEntryBlockController extends BlockController
 	public function save($data)
 	{
 		// save special value for supervior/tutor if none is specified
-		
 		$data['tutor'] = $data['tutorsJson'];
 		$data['supervisor'] = $data['supervisorsJson'];
 		
