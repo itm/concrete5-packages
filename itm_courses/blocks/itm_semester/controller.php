@@ -26,8 +26,7 @@ class ItmSemesterBlockController extends BlockController
 
 	public function save($data)
 	{
-		var_dump($data);
-		//parent::save($data);
+		parent::save($data);
 	}
 
 	public function getJavaScriptStrings()
@@ -54,6 +53,12 @@ class ItmSemesterBlockController extends BlockController
 		return $this->groupFilter;
 	}
 	
+	public static function cmpObj($a, $b)
+    {
+        //return strcmp($a['order'], $b['order']);
+		return strcmp($a['name'], $b['name']);
+    }
+	
 	/**
 	 * @return array array of thesis items. Thesis items are assoc. arrays with
 	 *               keys 'topic', 'status', 'type' and 'link', whereby 'link'
@@ -72,12 +77,14 @@ class ItmSemesterBlockController extends BlockController
 		// load thesis helper
 		$th = Loader::helper('itm_thesis', 'itm_thesis');
 		$pl = new PageList();
-		$pl->ignoreAliases();
+		//$pl->ignoreAliases();
 		$pl->ignorePermissions();
 		$pl->filterByCollectionTypeHandle('itm_course_page');
 		$pl->filterByParentID(Page::getCurrentPage()->getCollectionID());
 
 		$collections = $pl->get();
+		
+		//file_put_contents('semov.txt', print_r($collections, true), FILE_APPEND);
 		
 		// create placeholder for courses and their maintained data
 		$items = array();
@@ -89,6 +96,9 @@ class ItmSemesterBlockController extends BlockController
 				$bCtrl = $block->getController();
 				if ($bCtrl instanceof ItmCourseBlockController)
 				{
+					//file_put_contents('semov.txt', print_r($blocks, true), FILE_APPEND);
+					//file_put_contents('semov.txt', '__________________________________________________________________', FILE_APPEND);
+					
 					$ctrlData = $bCtrl->getBlockControllerData();
 					
 					//check user filter
@@ -111,6 +121,8 @@ class ItmSemesterBlockController extends BlockController
 							}
 						}
 						
+						
+						
 						if ($match)
 						{
 							// copy data to a new item array plus a page link
@@ -119,10 +131,12 @@ class ItmSemesterBlockController extends BlockController
 								'mode' => $ctrlData->mode,
 								'type' => $ctrlData->type,
 								'name' => $ctrlData->name,
-								'link' => $nh->getLinkToCollection($collection)
+								'link' => $nh->getLinkToCollection($collection),
+								'order' => $collection->getCollectionDisplayOrder()
 							);
 							// add item to result list
 							$items[] = $item;
+							
 							break;
 						}
 					}
@@ -130,6 +144,8 @@ class ItmSemesterBlockController extends BlockController
 				}
 			}
 		}
+		
+		usort($items, array('ItmSemesterBlockController', 'cmpObj'));
 		
 		return $items;
 	}
